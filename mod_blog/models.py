@@ -28,9 +28,13 @@ class Post(db.Model):
     summary = Column(String(256) , nullable=True , unique=True)
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
+    views = Column(Integer , nullable=False , unique=False)
+    author_id = Column(Integer , ForeignKey('users.id') , nullable=True)
     categories = db.relationship('Category' , secondary=posts_categories , back_populates='posts')
     users_liks = db.relationship('User' , secondary=liks , back_populates='posts_liked')
     users_disliks = db.relationship('User' , secondary=disliks , back_populates='posts_disliked')
+
+
     def __repr__(self):
         return f'Post < {self.id} - {self.title[:24]} - {self.slug}> '
     
@@ -65,8 +69,10 @@ class User(db.Model):
     email = Column(Integer , nullable=False , unique=True)
     password = Column(String(128) , nullable=False , unique=False)
     role = Column(Integer , nullable=False , unique=False)
+    posts = db.relationship('Post' , backref='author')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
     posts_disliked = db.relationship('Post' , secondary=liks , back_populates='users_disliks')
+
     def __repr__(self):
         return f'User < {self.id} - {self.email}> '
     
