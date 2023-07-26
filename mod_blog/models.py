@@ -28,8 +28,10 @@ class Post(db.Model):
     summary = Column(String(256) , nullable=True , unique=True)
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
-    views = Column(Integer , nullable=False , unique=False)
+    
+    views = Column(Integer , nullable=False , unique=False , default=0)
     author_id = Column(Integer , ForeignKey('users.id') , nullable=True)
+    comments = db.relationship('Comment' , backref='post')
     categories = db.relationship('Category' , secondary=posts_categories , back_populates='posts')
     users_liks = db.relationship('User' , secondary=liks , back_populates='posts_liked')
     users_disliks = db.relationship('User' , secondary=disliks , back_populates='posts_disliked')
@@ -44,6 +46,18 @@ class Post(db.Model):
         self.summary = summary
         self.slug = slug
         self.image = image
+
+
+
+class Comment(db.Model):
+    id = Column(Integer , primary_key=True)
+    content = Column(String(1024) , nullable=False , unique=False)
+    post_id = Column(Integer , ForeignKey('posts.id') , nullable=True)
+    user_id = Column(Integer , ForeignKey('users.id') , nullable=True)
+    time = Column(DateTime , default=datetime.now)
+
+    def __repr__(self):
+        return f'Comment ({self.id} , {self.post_id})'
 
 
 class Category(db.Model):
@@ -70,6 +84,7 @@ class User(db.Model):
     password = Column(String(128) , nullable=False , unique=False)
     role = Column(Integer , nullable=False , unique=False)
     posts = db.relationship('Post' , backref='author')
+    comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
     posts_disliked = db.relationship('Post' , secondary=liks , back_populates='users_disliks')
 
@@ -81,4 +96,3 @@ class User(db.Model):
         self.email = email 
         self.password = password
         self.role = role
-        
