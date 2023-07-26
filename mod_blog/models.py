@@ -38,7 +38,7 @@ class Post(db.Model):
 
 
     def __repr__(self):
-        return f'Post < {self.id} - {self.title[:24]} - {self.slug}> '
+        return f'{self.__class__.__name__} < {self.id} - {self.title[:24]} - {self.slug}> '
     
     def __init__(self , title : str , content : str , summary : str , slug : str , image : int ):
         self.title = title
@@ -57,7 +57,7 @@ class Comment(db.Model):
     time = Column(DateTime , default=datetime.now)
 
     def __repr__(self):
-        return f'Comment ({self.id} , {self.post_id})'
+        return f'{self.__class__.__name__} <{self.id} , {self.post_id}> '
 
 
 class Category(db.Model):
@@ -69,7 +69,7 @@ class Category(db.Model):
     posts = db.relationship('Post' , secondary=posts_categories , back_populates='categories')
 
     def __repr__(self):
-        return f'Category <{self.id} - {self.name} - {self.slug}>'
+        return f'{self.__class__.__name__} <{self.id} - {self.name} - {self.slug}>'
     
     def __init__(self , name : str , description : str , slug : str ):
         self.name = name 
@@ -89,7 +89,7 @@ class User(db.Model):
     posts_disliked = db.relationship('Post' , secondary=liks , back_populates='users_disliks')
 
     def __repr__(self):
-        return f'User < {self.id} - {self.email}> '
+        return f'{self.__class__.__name__} < {self.id} - {self.email}> '
     
     def __init__(self , full_name : str , email : str , password : str , role : int):
         self.full_name = full_name
