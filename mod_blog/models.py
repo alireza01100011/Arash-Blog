@@ -29,7 +29,10 @@ class Post(db.Model):
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
     
-    views = Column(Integer , nullable=False , unique=False , default=0)
+    views = Column(Integer , nullable=False , unique=False , default=1)
+    liks = Column(Integer , default=1 , unique=False)
+    disliks = Column(Integer , default=1 , unique=False)
+
     author_id = Column(Integer , ForeignKey('users.id') , nullable=True)
     comments = db.relationship('Comment' , backref='post')
     categories = db.relationship('Category' , secondary=posts_categories , back_populates='posts')
