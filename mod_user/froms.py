@@ -18,7 +18,7 @@ class RegisterForm(FlaskForm):
     fullname = StringField('Full Name' , validators=[DataRequired()])
     email = StringField('Email' , validators=[DataRequired() ])
     password = StringField('Password' , validators=[DataRequired()])
-    confirm_password = StringField('Confirm Password' , validators=[DataRequired() , EqualTo(password , message='Password Must Match')])
+    confirm_password = StringField('Confirm Password' , validators=[DataRequired() , EqualTo('password' , message='Password Must Match')])
 
     def validate_email(self , email):
         e = User.query.filter(User.email.ilike(f'{email}')).first()
