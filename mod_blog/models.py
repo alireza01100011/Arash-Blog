@@ -1,7 +1,12 @@
 from sqlalchemy import Column , Integer , String , Text , Table , ForeignKey , DateTime
-from app import db 
+from datetime import datetime
+from flask_login import UserMixin
+from app import db , login_manager
 
-from datetime import datetime 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 liks = Table('liks' , db.metadata ,
     Column('user_id' , Integer , ForeignKey('users.id' , ondelete='cascade')),
@@ -30,8 +35,8 @@ class Post(db.Model):
     image = Column(Integer , nullable=True , unique=False)
     
     views = Column(Integer , nullable=False , unique=False , default=1)
-    liks = Column(Integer , default=1 , unique=False)
-    disliks = Column(Integer , default=1 , unique=False)
+    total_liks = Column(Integer , default=1 , unique=False , nullable=True)
+    total_disliks = Column(Integer , default=1 , unique=False , nullable=True)
 
     author_id = Column(Integer , ForeignKey('users.id') , nullable=True)
     comments = db.relationship('Comment' , backref='post')
@@ -79,11 +84,11 @@ class Category(db.Model):
         self.description = description
         self.slug = slug
 
-class User(db.Model):
+class User(db.Model , UserMixin):
     __tablename__ = 'users'
     id = Column(Integer , primary_key=True)
     full_name = Column(String(128) , nullable=False , unique=False)
-    email = Column(Integer , nullable=False , unique=True)
+    email = Column(String(128) , nullable=False , unique=True)
     password = Column(String(128) , nullable=False , unique=False)
     role = Column(Integer , nullable=False , unique=False)
     posts = db.relationship('Post' , backref='author')
