@@ -91,6 +91,7 @@ class User(db.Model , UserMixin):
     email = Column(String(128) , nullable=False , unique=True)
     password = Column(String(128) , nullable=False , unique=False)
     role = Column(Integer , nullable=False , unique=False)
+    image = Column(Integer , default=1 , unique=False)
     posts = db.relationship('Post' , backref='author')
     comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
