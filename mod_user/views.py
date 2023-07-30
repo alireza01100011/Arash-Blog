@@ -2,6 +2,7 @@ from flask import render_template ,  redirect ,  request , url_for
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
+from mod_user.utils import refute_only_view
 from mod_user.froms import RegisterForm , LoginForm
 from mod_blog.models import User
 from app import db , becrypt 
@@ -13,8 +14,8 @@ def index():
 
 
 @user.route('login/' , methods=['GET' , 'POST'])
+@refute_only_view
 def login():
- 
     form = LoginForm()
     if request.method == 'POST':
         if not form.validate_on_submit():
@@ -30,11 +31,9 @@ def login():
 
 
 @user.route('register/' , methods=['GET' , 'POST'])
+@refute_only_view
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('user.index'))
     form = RegisterForm()
-    
     if request.method == 'POST':
         if not form.validate_on_submit():
             return 'Error'
