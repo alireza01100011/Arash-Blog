@@ -6,6 +6,6 @@ from mod_admin.utils import admin_only_view
 from app import db 
 
 @admin.route('/')
-@admin_only_view
+
 def index():
     return render_template('admin/index.html' , title='Dashboard')
