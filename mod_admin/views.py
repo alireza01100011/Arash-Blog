@@ -55,7 +55,33 @@ def post_create():
 # Edite Post
 @admin.route('posts/edite/<int:post_id>' , methods=['GET' , 'POST'])
 def post_edite(post_id):
-    pass # Todo : Edite Post
+    form = PostForm()
+    post = Post.query.get(int(post_id))
+    
+    if request.method == 'GET' :
+        form.title.data = post.title
+        form.content.data = post.content
+        form.slug.data = post.slug
+        form.summary.data = post.summary
+        
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form)
+        
+        post.title = form.title.data
+        post.content = form.content.data
+        post.slug = form.slug.data
+        post.summary = form.summary.data
+
+        try :
+            db.session.commit()
+            flash('Post successfully update')
+        except IntegrityError :
+            db.session.rollback()
+            flash('Post could not be update successfully')
+
+    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form)
+
 
 
 # Delete Post
