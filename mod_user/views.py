@@ -1,6 +1,6 @@
 from flask import render_template ,  redirect ,  request , url_for
 from sqlalchemy.exc import IntegrityError
-from flask_login import login_user , current_user , logout_user 
+from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
 from mod_user.froms import RegisterForm , LoginForm
 from mod_blog.models import User
@@ -14,8 +14,7 @@ def index():
 
 @user.route('login/' , methods=['GET' , 'POST'])
 def login():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('user.index'))
+ 
     form = LoginForm()
     if request.method == 'POST':
         if not form.validate_on_submit():
@@ -32,8 +31,8 @@ def login():
 
 @user.route('register/' , methods=['GET' , 'POST'])
 def register():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('user.index'))
+    if current_user.is_authenticated:
+        return redirect(url_for('user.index'))
     form = RegisterForm()
     
     if request.method == 'POST':
@@ -55,3 +54,9 @@ def register():
             return 'Error'
     
     return render_template('user/register.html' , title='Register' , form=form)
+
+@user.route('logout/')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('user.index'))
