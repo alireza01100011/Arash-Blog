@@ -1,4 +1,4 @@
-from flask import render_template ,  redirect ,  request , flash
+from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
@@ -90,3 +90,4 @@ def post_delete(post_id):
     post = Post.query.get_or_404(int(post_id))
     db.session.delete(post)
     db.session.commit()
+    return redirect(url_for('admin.post_show'))
