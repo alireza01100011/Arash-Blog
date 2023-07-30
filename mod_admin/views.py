@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request
 from flask_login import login_user , logout_user , login_required , current_user
 
 from mod_admin import admin
-from mod_blog.models import User as Post
+from mod_blog.models import Post
 from app import db 
 
 @admin.route('/')
