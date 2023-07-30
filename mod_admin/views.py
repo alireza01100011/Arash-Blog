@@ -56,7 +56,7 @@ def post_create():
 @admin.route('posts/edite/<int:post_id>' , methods=['GET' , 'POST'])
 def post_edite(post_id):
     form = PostForm()
-    post = Post.query.get(int(post_id))
+    post = Post.query.get_or_404(int(post_id))
     
     if request.method == 'GET' :
         form.title.data = post.title
@@ -87,4 +87,6 @@ def post_edite(post_id):
 # Delete Post
 @admin.route('posts/delete/<int:post_id>')
 def post_delete(post_id):
-    pass # Todo : Delete Post
+    post = Post.query.get_or_404(int(post_id))
+    db.session.delete(post)
+    db.session.commit()
