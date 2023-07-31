@@ -1,4 +1,4 @@
-from flask import render_template ,  redirect ,  request , url_for
+from flask import render_template ,  redirect ,  request , url_for , flash
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
@@ -9,7 +9,7 @@ from app import db , becrypt
 
 @user.route('/')
 def index():
-    return 'User'
+    return render_template('user/index.html' , title='User')
 
 
 
@@ -25,6 +25,7 @@ def login():
         user = User.query.filter(User.email.ilike(f'{email}')).first()
         if becrypt.check_password_hash(user.password , password) and user != None :
             login_user(user , remember=remember)
+            flash('You have successfully logged in')
             return 'Loggin'
         return 'True'
     return render_template('user/login.html' , title='Login' , form=form)
