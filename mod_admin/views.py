@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_blog.models import Post
+from mod_blog.models import Post , Category 
 from mod_blog.forms import PostForm
 from app import db 
 
@@ -19,14 +19,17 @@ def post_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('n' , default=10 , type=int)
     posts = Post.query.paginate(page=page , per_page=per_page , error_out=False)
-    return f'{posts.items}'
-    # return render_template('admin/posts/post.html' , title='Show Posts' , posts=posts)
+    return render_template('admin/posts/post.html' , title='Show Posts' , posts=posts)
 
 # Create Post
 @admin.route('posts/create/' , methods=['GET' , 'POST'])
 def post_create():
     form = PostForm()
-
+    
+    # if request.method == 'GET':
+    #     categories = Category.query.order_by(Category.id.asc()).all()
+    #     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
+    #     form.categories.choices = [(_ , _) for _ in range(2)]
     if request.method == 'POST':
         if not form.validate_on_submit():
             return render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
@@ -40,6 +43,7 @@ def post_create():
         )
         
         NewPost.author = current_user
+        # NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
 
         try :
             db.session.add(NewPost)
