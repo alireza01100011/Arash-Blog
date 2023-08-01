@@ -4,6 +4,9 @@ from wtforms.validators import DataRequired , Email , EqualTo , ValidationError
 from app import becrypt
 from mod_blog.models import User
 
+def _get_fields(obj):
+    fields = [_ for _ in obj._fields]
+    return [getattr(obj , _ ) for _ in fields]
 
 class LoginForm(FlaskForm):
     email = EmailField('Email' ,validators=[DataRequired() ])
@@ -18,8 +21,7 @@ class LoginForm(FlaskForm):
 
 
     def get_fields(self):
-        fields = [_ for _ in self._fields]
-        return [getattr(self , _ ) for _ in fields]
+        return _get_fields(self)
 
 class RegisterForm(FlaskForm):
     fullname = StringField('Full Name' , validators=[DataRequired()])
