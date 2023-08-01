@@ -35,6 +35,7 @@
             </div>
 
             <form action="{{ url_for('user.register') }}" method="POST" class="login100-form validate-form">
+                {% include '_inc/form_error_msg.html' %}
                 {{form.hidden_tag()}}
                 
                 <div class="wrap-input100 validate-input m-b-26" data-validate=" Full Name is required">

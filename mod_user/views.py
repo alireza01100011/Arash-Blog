@@ -37,7 +37,7 @@ def register():
     form = RegisterForm()
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return 'Error'
+            return render_template('user/register.html' , title='Register' , form=form)
         
         NewUser = User(
             form.fullname.data , form.email.data ,

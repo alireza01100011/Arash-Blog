@@ -30,8 +30,8 @@ class RegisterForm(FlaskForm):
     confirm_password = StringField('Confirm Password' , validators=[DataRequired() , EqualTo('password' , message='Password Must Match')])
 
     def validate_email(self , email):
-        e = User.query.filter(User.email.ilike(f'{email}')).first()
-        if e != None :
+        _ = User.query.filter(User.email.ilike(f'{email}')).first()
+        if not _ :
             raise ValidationError('This Email Already Exists')
         
     def get_fields(self):
