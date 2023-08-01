@@ -15,7 +15,7 @@ def index():
 
 
 @user.route('login/' , methods=['GET' , 'POST'])
-
+@refute_only_view
 def login():
     form = LoginForm()
 
