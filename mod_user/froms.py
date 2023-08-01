@@ -33,3 +33,6 @@ class RegisterForm(FlaskForm):
         e = User.query.filter(User.email.ilike(f'{email}')).first()
         if e != None :
             raise ValidationError('This Email Already Exists')
+        
+    def get_fields(self):
+        return _get_fields(self)
