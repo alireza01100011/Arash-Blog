@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired , ValidationError
 from utils.forms import MultipleCheckboxField
 
 from mod_blog.models import Post
+from mod_user.froms import _get_fields
 
 class PostForm(FlaskForm):
     title = StringField( label='Title' , validators=[DataRequired()])
@@ -31,3 +32,6 @@ class PostForm(FlaskForm):
         slug = Post.query.filter(Post.slug.ilike(f'{slug}')).first()
         if slug :
             raise ValidationError('This slug already exists')
+    
+    def get_fields(self):
+        return _get_fields(self)
