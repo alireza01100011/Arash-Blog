@@ -48,10 +48,12 @@ def register():
         try :
             db.session.add(NewUser)
             db.session.commit()
+            flash('Your account has been created successfully')
             return redirect(url_for('user.login'))
         except IntegrityError:
             db.session.rollback()
-            return 'Error'
+            flash('Error, try again')
+            return render_template('user/register.html' , title='Register' , form=form)
     
     return render_template('user/register.html' , title='Register' , form=form)
 
