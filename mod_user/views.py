@@ -8,26 +8,26 @@ from mod_blog.models import User
 from app import db , becrypt 
 
 @user.route('/')
+@user.route('profile/')
 def index():
     return render_template('user/index.html' , title='User')
 
 
 
 @user.route('login/' , methods=['GET' , 'POST'])
-@refute_only_view
+
 def login():
     form = LoginForm()
+
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return 'Error'
+            return render_template('user/login.html' , title='Login' , form=form)
         
-        email , password , remember = form.email.data , form.password.data , form.remember.data
-        user = User.query.filter(User.email.ilike(f'{email}')).first()
-        if becrypt.check_password_hash(user.password , password) and user != None :
-            login_user(user , remember=remember)
-            flash('You have successfully logged in')
-            return 'Loggin'
-        return 'True'
+        user = User.query.filter(User.email.ilike(f'{form.email.data}')).first()
+        login_user(user , remember=form.remember.data)
+        flash('You have successfully logged in' , 'info')
+        return redirect(url_for('user.index'))
+
     return render_template('user/login.html' , title='Login' , form=form)
 
 

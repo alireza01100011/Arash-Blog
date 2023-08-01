@@ -19,7 +19,6 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static' , filename='assets/login_register/css/util.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static' , filename='assets/login_register/css/main.css') }}">
     <!--===============================================================================================-->
-
 {% endblock style%}
 
 
@@ -33,10 +32,12 @@
                     Login
                 </span>
             </div>
-
+            
             <form action="{{ url_for('user.login') }}" method="POST" class="login100-form validate-form">
+                {% include '_inc/form_error_msg.html' %}
                 {{form.hidden_tag()}}
-                
+
+
                 <div class="wrap-input100 validate-input m-b-26" data-validate=" Email is required">
                     <span class="label-input100">{{form.email.label}}</span>
                     {{form.email(class='input100' , placeholder="Enter  Email")}}
