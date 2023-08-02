@@ -95,3 +95,15 @@ def post_delete(post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for('admin.post_show'))
+
+
+
+#### Category ####
+
+# Show List Post
+@admin.route('categories/')
+def category_show():
+    page = request.args.get('p' , default=1 , type=int)
+    per_page = request.args.get('n' , default=10 , type=int)
+    categories = Category.query.paginate(page=page , per_page=per_page , error_out=False)
+    return render_template('admin/categories/category.html' , categories=categories , title='Show Categories')
