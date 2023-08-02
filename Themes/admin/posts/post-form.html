@@ -34,10 +34,10 @@
                 <div class="card-body form-inline">
                     <div class="col-md-13">
                         <div class="form-group">
-                            {% for cat in form.categories %}
+                            {% for cat in form.categories.choices %}
                                 <div class="form-check form-check-primary" style="margin: 20px;">
-                                    <label class="form-check-label" for="{{cat.id}}">
-                                    <input id="{{cat.id}}" name="{{cat.data}}" type="checkbox" class="form-check-input" > {{cat.data}} <i class="input-helper"></i></label>
+                                    <label class="form-check-label" for="categories-{{cat[0] - 1}}">
+                                    <input id="categories-{{cat[0] - 1}}" value="{{cat[0]}}" name="categories" type="checkbox" class="form-check-input" > {{cat[1]}} <i class="input-helper"></i></label>
                                 </div>
                                 <br>
                             {% endfor %}

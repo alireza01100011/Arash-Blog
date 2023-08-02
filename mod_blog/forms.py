@@ -11,7 +11,7 @@ class PostForm(FlaskForm):
     content = TextAreaField(label='Content' , validators=[DataRequired()])
     summary = StringField(label='Summary' , validators=[])
     slug = StringField('Slug' , validators=[DataRequired()])
-    # categories = MultipleCheckboxField(label='Categories' , coerce=int)
+    categories = MultipleCheckboxField(label='Categories' , coerce=int)
 
     def validate_title(self , title):
         _ = Post.query.filter(Post.title.ilike(f'{title.data}')).first()
