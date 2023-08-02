@@ -3,7 +3,7 @@ from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
 from mod_blog.models import Post , Category 
-from mod_blog.forms import PostForm
+from mod_blog.forms import PostForm , CategoryForm
 from app import db 
 
 @admin.route('/')
@@ -107,3 +107,29 @@ def category_show():
     per_page = request.args.get('n' , default=10 , type=int)
     categories = Category.query.paginate(page=page , per_page=per_page , error_out=False)
     return render_template('admin/categories/category.html' , categories=categories , title='Show Categories')
+
+# Create Category
+@admin.route('categories/create' , methods=['GET' , 'POST'])
+def category_create():
+    form = CategoryForm()
+
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            return render_template('admin/categories/category_form.html' , form=form , title='Create Category')
+        
+        NewCategory = Category(
+            name = form.name.data ,
+            description = form.description.data ,
+            slug = form.slug.data
+        )
+
+        try :
+            db.session.add(NewCategory)
+            db.session.commit()
+            flash('Category created successfully')
+            return redirect(url_for('admin.category_show'))
+        except IntegrityError :
+            db.session.rollback()
+            flash('There was a problem creating a new category, please try again!')
+
+    return render_template('admin/categories/category_form.html' , form=form , title='Create Category')

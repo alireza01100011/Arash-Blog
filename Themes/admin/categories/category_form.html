@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">{{title}}</h4>
+        <form action="{{ url_for('admin.category_create') }}" method="POST" class="forms-sample">
+            {% include '_inc/form_error_msg.html' %}
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {{form.name.label}}
+                {{form.name(class='form-control' , placeholder=form.name.label.text)}}
+                    
+            </div>
+
+            <div class="form-group">
+                {{form.description.label}}
+                {{form.description(class='form-control' ,rows="25" ,  placeholder=form.description.label.text)}}  
+            </div>
+            
+            
+            <div class="form-group">
+                {{form.slug.label}}
+                {{form.slug(class='form-control' , placeholder=form.slug.label.text)}}
+            </div>
+
+            
+            <br>
+            <button type="submit" class="btn btn-primary mr-2"> Publish </button>
+            <button class="btn btn-light">Cancel</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
