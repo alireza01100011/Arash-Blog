@@ -23,9 +23,9 @@
                 <tr>
                     <td>{{post.id}}</td>
                     <td>{{post.title}}</td>
-                    <td>{{post.author}}</td>
+                    <td><span class="mdi mdi-account" style="margin:0 5px;"></span><a href="">{{post.author.full_name}}</a></td>
                     <td>{{post.categoris}}</td>
-                    <td>***-**-**</td>
+                    <td>{{post.time.year}}-{{post.time.month}}-{{post.time.day}} | {{post.time.hour}}:{{post.time.minute}}</td>
                     <td>{{post.views}}</td>
                     <td>{{post.total_liks}} / {{post.total_disliks}}</td>
                     <td>
