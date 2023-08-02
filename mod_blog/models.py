@@ -34,9 +34,10 @@ class Post(db.Model):
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
     
-    views = Column(Integer , nullable=False , unique=False , default=1)
-    total_liks = Column(Integer , default=1 , unique=False , nullable=True)
-    total_disliks = Column(Integer , default=1 , unique=False , nullable=True)
+    views = Column(Integer , nullable=False , unique=False , default=0)
+    total_liks = Column(Integer , default=0 , unique=False , nullable=True)
+    total_disliks = Column(Integer , default=0 , unique=False , nullable=True)
+    time = Column(DateTime , default=datetime.now)
 
     author_id = Column(Integer , ForeignKey('users.id') , nullable=True)
     comments = db.relationship('Comment' , backref='post')
