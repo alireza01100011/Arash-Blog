@@ -22,7 +22,7 @@
                     <td>{{category.id}}</td>
                     <td>{{category.name}}</td>
                     <td>{{category.description}}</td>
-                    <td>{{len(category.posts)}}</td>
+                    <td>{{category.posts |length}}</td>
                     <td>{{category.time.year}}-{{category.time.month}}-{{category.time.day}} | {{category.time.hour}}:{{category.time.minute}}</td>
                     <td>
                         <button type="button" class="btn btn-primary btn-fw"> Edite </button> <br> <br>
