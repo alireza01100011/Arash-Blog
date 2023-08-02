@@ -29,9 +29,22 @@
                     
             </div>
 
-                        
-            
-
+            {{form.categories.label}}
+            <div class="card">
+                <div class="card-body form-inline">
+                    <div class="col-md-13">
+                        <div class="form-group">
+                            {% for cat in form.categories %}
+                                <div class="form-check form-check-primary" style="margin: 20px;">
+                                    <label class="form-check-label" for="{{cat.id}}">
+                                    <input id="{{cat.id}}" name="{{cat.data}}" type="checkbox" class="form-check-input" > {{cat.data}} <i class="input-helper"></i></label>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div><br>
             <button type="submit" class="btn btn-primary mr-2"> Publish </button>
             <button class="btn btn-light">Cancel</button>
         </form>
