@@ -26,10 +26,9 @@ def post_show():
 def post_create():
     form = PostForm()
     
-    # if request.method == 'GET':
-    #     categories = Category.query.order_by(Category.id.asc()).all()
-    #     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
-    #     form.categories.choices = [(_ , _) for _ in range(2)]
+    categories = Category.query.order_by(Category.id.asc()).all()
+    form.categories.choices = [(cat.id , cat.name) for cat in categories] 
+
     if request.method == 'POST':
         if not form.validate_on_submit():
             return render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
@@ -43,12 +42,13 @@ def post_create():
         )
         
         NewPost.author = current_user
-        # NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
+        NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
 
         try :
             db.session.add(NewPost)
             db.session.commit()
             flash('Post successfully created')
+            return redirect(url_for('admin.post_show'))
         except IntegrityError :
             db.session.rollback()
             flash('Post could not be created successfully')
