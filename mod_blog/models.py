@@ -75,6 +75,7 @@ class Category(db.Model):
     name = Column(String(128) , nullable=False , unique=True)
     description = Column(String(256) , nullable=True , unique=True)
     slug = Column(String(128) , nullable=False , unique=True)
+    time = Column(DateTime , default=datetime.now)
     posts = db.relationship('Post' , secondary=posts_categories , back_populates='categories')
 
     def __repr__(self):
