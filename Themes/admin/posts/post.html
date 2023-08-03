@@ -29,8 +29,8 @@
                     <td>{{post.views}}</td>
                     <td>{{post.total_liks}} / {{post.total_disliks}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary btn-fw"> Edite </button> <br> <br>
-                        <button type="button" class="btn btn-danger btn-fw"> Delete </button>
+                        <a href="{{ url_for('admin.post_edit' , post_id = post.id) }}"><button type="button" class="btn btn-primary btn-fw"> Edite </button></a> <br> <br>
+                        <a href="{{ url_for('admin.post_delete' , post_id = post.id) }}"><button type="button" class="btn btn-danger btn-fw"> Delete </button></a>
                     </td>
                 </tr>
             {% endfor %}
