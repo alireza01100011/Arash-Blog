@@ -42,8 +42,8 @@ class Post(db.Model):
     author_id = Column(Integer , ForeignKey('users.id') , nullable=True)
     comments = db.relationship('Comment' , backref='post')
     categories = db.relationship('Category' , secondary=posts_categories , back_populates='posts')
-    users_liks = db.relationship('User' , secondary=liks , back_populates='posts_liked')
-    users_disliks = db.relationship('User' , secondary=disliks , back_populates='posts_disliked')
+    users_liks = db.relationship('User' ,viewonly=True,  secondary=liks , back_populates='posts_liked')
+    users_disliks = db.relationship('User' , viewonly=True, secondary=disliks , back_populates='posts_disliked')
 
 
     def __repr__(self):
