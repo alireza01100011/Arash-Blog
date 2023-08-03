@@ -101,6 +101,7 @@ def post_delete(post_id):
     post = Post.query.get_or_404(int(post_id))
     db.session.delete(post)
     db.session.commit()
+    flash('The Post Has Been Successfully Deleted')
     return redirect(url_for('admin.post_show'))
 
 
