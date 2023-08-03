@@ -12,23 +12,37 @@ class PostForm(FlaskForm):
     summary = StringField(label='Summary' , validators=[])
     slug = StringField('Slug' , validators=[DataRequired()])
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
-
+    
+    _post = None 
+    
     def validate_title(self , title):
+        # To avoid "This title already exists" error during update
+        if self._post and self._post.title == title.data : return
+
         _ = Post.query.filter(Post.title.ilike(f'{title.data}')).first()
         if _ :
             raise ValidationError('This title already exists')
     
     def validate_content(self , content):
+        # To avoid "This content already exists" error during update
+        if self._post and self._post.content == content.data : return
+
         _ = Post.query.filter(Post.content.ilike(f'{content.data}')).first()
         if _ :
             raise ValidationError('This content already exists')
         
     def validate_summary(self , summary):
+        # To avoid "This summary already exists" error during update
+        if self._post and self._post.summary == summary.data : return
+
         _ = Post.query.filter(Post.summary.ilike(f'{summary.data}')).first()
         if _ :
             raise ValidationError('This summary already exists')
 
     def validate_slug(self , slug):
+        # To avoid "This slug already exists" error during update
+        if self._post and self._post.slug == slug.data : return
+
         _ = Post.query.filter(Post.slug.ilike(f'{slug.data}')).first()
         if _ :
             raise ValidationError('This slug already exists')
