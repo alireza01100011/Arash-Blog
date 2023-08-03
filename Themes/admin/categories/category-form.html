@@ -4,7 +4,11 @@
 <div class="card">
     <div class="card-body">
         <h4 class="card-title">{{title}}</h4>
+        {% if title == 'Create Category' %}
         <form action="{{ url_for('admin.category_create') }}" method="POST" class="forms-sample">
+        {% else %}
+            <form action="{{ url_for('admin.category_edit' , category_id = category.id) }}" method="POST" class="forms-sample">
+        {% endif %}
             {% include '_inc/form_error_msg.html' %}
             {{form.hidden_tag()}}
             <div class="form-group">
