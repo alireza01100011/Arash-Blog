@@ -56,17 +56,27 @@ class CategoryForm(FlaskForm):
     description = TextAreaField('Description' , validators=[DataRequired() , Length(1 , 256)])
     slug = StringField('Slug' , validators=[DataRequired() , Length(1 , 128)])
 
+    _category = None
     def validate_name(self , name):
+        # To avoid "This name already exists" error during update
+        if self._category and self._category.name == name.data : return
+
         _ = Category.query.filter(Category.name.ilike(f'{name.data}')).first()
         if _ :
             raise ValidationError('This Name Alredy Exists')
     
     def validate_description(self , description):
+        # To avoid "This description already exists" error during update
+        if self._category and self._category.description == description.data : return
+
         _ = Category.query.filter(Category.description.ilike(f'{description.data}')).first()
         if _ :
             raise ValidationError('This Description Alredy Exists')
     
     def validate_slug(self , slug):
+        # To avoid "This slug already exists" error during update
+        if self._category and self._category.slug == slug.data : return
+        
         _ = Category.query.filter(Category.slug.like(f'{slug.data}')).first()
         if _ :
             raise ValidationError("This Slug Alredy Exists")
