@@ -4,7 +4,13 @@
 <div class="card">
     <div class="card-body">
         <h4 class="card-title">{{title}}</h4>
-        <form action="{{ url_for('admin.post_create') }}" method="POST" class="forms-sample">
+
+        {% if title == 'Create New Post' %}
+            <form action="{{ url_for('admin.post_create') }}" method="POST" class="forms-sample">
+        {% else %}
+            <form action="{{ url_for('admin.post_edit' , post_id = post.id) }}" method="POST" class="forms-sample">
+        {% endif %}
+
             {% include '_inc/form_error_msg.html' %}
             {{form.hidden_tag()}}
             <div class="form-group">
@@ -35,9 +41,10 @@
                     <div class="col-md-13">
                         <div class="form-group">
                             {% for cat in form.categories.choices %}
+                                
                                 <div class="form-check form-check-primary" style="margin: 20px;">
                                     <label class="form-check-label" for="categories-{{cat[0] - 1}}">
-                                    <input id="categories-{{cat[0] - 1}}" value="{{cat[0]}}" name="categories" type="checkbox" class="form-check-input" > {{cat[1]}} <i class="input-helper"></i></label>
+                                    <input id="categories-{{cat[0] - 1}}" value="{{cat[0]}}" name="categories" type="checkbox" class="form-check-input" {% if form.categories.data %}{% if cat[0] in form.categories.data %} checked {% endif %}{% endif %}> {{cat[1]}} <i class="input-helper"></i></label>
                                 </div>
                                 <br>
                             {% endfor %}

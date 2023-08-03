@@ -28,7 +28,7 @@ def post_create():
     
     categories = Category.query.order_by(Category.id.asc()).all()
     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
-    #print(form.categories.choices)
+
     if request.method == 'POST':
         if not form.validate_on_submit():
             return render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
@@ -43,7 +43,7 @@ def post_create():
         
         NewPost.author = current_user
         NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
-        
+
         try :
             db.session.add(NewPost)
             db.session.commit()
@@ -57,34 +57,41 @@ def post_create():
 
 
 # Edite Post
-@admin.route('posts/edite/<int:post_id>' , methods=['GET' , 'POST'])
-def post_edite(post_id):
+@admin.route('posts/edit/<int:post_id>' , methods=['GET' , 'POST'])
+def post_edit(post_id):
     form = PostForm()
-    post = Post.query.get_or_404(int(post_id))
     
+    post = Post.query.get_or_404(int(post_id))
+    form._post = post
+    categories = Category.query.order_by(Category.id.asc()).all()
+    form.categories.choices = [(cat.id , cat.name) for cat in categories] 
+
     if request.method == 'GET' :
         form.title.data = post.title
         form.content.data = post.content
         form.slug.data = post.slug
         form.summary.data = post.summary
-        
+        form.categories.data = [category.id for category in post.categories]
+
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form)
+            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post)
         
         post.title = form.title.data
         post.content = form.content.data
         post.slug = form.slug.data
         post.summary = form.summary.data
+        post.categories = [Category.query.get(_) for _ in form.categories.data]
 
         try :
             db.session.commit()
             flash('Post successfully update')
+            return redirect(url_for('admin.post_show'))
         except IntegrityError :
             db.session.rollback()
             flash('Post could not be update successfully')
 
-    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form)
+    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post)
 
 
 
