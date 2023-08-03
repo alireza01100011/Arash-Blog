@@ -85,11 +85,11 @@ def post_edit(post_id):
 
         try :
             db.session.commit()
-            flash('Post successfully update')
+            flash('Post successfully edit')
             return redirect(url_for('admin.post_show'))
         except IntegrityError :
             db.session.rollback()
-            flash('Post could not be update successfully')
+            flash('Post could not be edit successfully')
 
     return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post)
 
@@ -140,4 +140,35 @@ def category_create():
             db.session.rollback()
             flash('There was a problem creating a new category, please try again!')
 
-    return render_template('admin/categories/category_form.html' , form=form , title='Create Category')
+    return render_template('admin/categories/category-form.html' , form=form , title='Create Category')
+
+# Edit Category
+@admin.route('categories/edit/<int:category_id>' , methods=['GET' , 'POST'])
+def category_edit(category_id):
+    form = CategoryForm()
+    category = Category.query.get_or_404(category_id)
+    form._category = category
+
+    if request.method == 'GET':
+        form.name.data = category.name
+        form.description.data = category.description
+        form.slug.data = category.slug
+
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            return render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
+
+        category.name = form.name.data
+        category.description = form.description.data
+        category.slug = form.slug.data
+
+        try :
+            db.session.commit()
+            flash('category successfully edit')
+            return redirect(url_for('admin.category_show'))
+        except IntegrityError :
+            db.session.rollback()
+            flash('There was a problem edit category , please try again!')
+
+    return render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
+        
