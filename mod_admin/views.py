@@ -172,3 +172,15 @@ def category_edit(category_id):
 
     return render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
         
+# Delete Category
+@admin.route('categories/delete/<int:category_id>')
+def category_delete(category_id):
+    category = Category.query.get_or_404(int(category_id))
+    try:
+        db.session.delete(category)
+        db.session.commit()
+        flash('Category removed successfully')
+    except :
+        flash('There was a problem deleting the category')
+        
+    return redirect(url_for('admin.category_show'))
