@@ -93,7 +93,7 @@ class User(db.Model , UserMixin):
     email = Column(String(128) , nullable=False , unique=True)
     password = Column(String(128) , nullable=False , unique=False)
     role = Column(Integer , nullable=False , unique=False)
-    image = Column(Integer , default=1 , unique=False)
+    image = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
     posts = db.relationship('Post' , backref='author')
     comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
@@ -107,3 +107,10 @@ class User(db.Model , UserMixin):
         self.email = email 
         self.password = password
         self.role = role
+
+class ImageProfile(db.Model):
+    __tablename__ = "imageprofile"
+    id = Column(Integer , primary_key=True)
+    filename = Column(String(256) , nullable=False , unique=True)
+    user = db.relationship('User' , backref='image')
+
