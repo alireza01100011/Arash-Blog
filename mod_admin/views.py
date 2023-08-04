@@ -232,6 +232,11 @@ def user_edit(user_id):
 @admin.route('users/delete/<int:user_id>')
 def user_delete(user_id):
     user = User.query.get_or_404(int(user_id))
+
+    if current_user == user : 
+        flash("You cannot delete your account from this section. Please refer to your profile")
+        return redirect(url_for('admin.user_show'))
+    
     try :
         db.session.delete(user)
         db.session.commit()
