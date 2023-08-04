@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField , EmailField , PasswordField , BooleanField
+from wtforms.fields import StringField , EmailField , PasswordField , BooleanField , SelectField
 from wtforms.validators import DataRequired , Email , EqualTo , ValidationError
 from app import becrypt
 from mod_blog.models import User
@@ -44,3 +44,6 @@ class RegisterForm(FlaskForm):
     
     def get_fields(self):
         return _get_fields(self)
+
+class UserRoleForm(FlaskForm):
+    role = SelectField('Role User')
