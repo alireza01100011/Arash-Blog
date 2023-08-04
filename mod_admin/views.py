@@ -199,6 +199,11 @@ def user_show():
     users = User.query.paginate(page=page , per_page=per_page , error_out=False)
     return render_template('admin/users/user.html' , title='Show User' , users=users)
 
+# Create User 
+@admin.route('users/create')
+def user_create():
+    return redirect(url_for('user.register'))
+
 # Edit Role User
 @admin.route('users/edit-role/<int:user_id>' , methods=['POST' , 'GET'])
 def user_edit(user_id):

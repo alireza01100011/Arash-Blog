@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request , url_for , flash
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
-from mod_user.utils import refute_only_view
+from mod_user.utils import refute_only_view , refute_only_view_except_admin
 from mod_user.froms import RegisterForm , LoginForm
 from mod_blog.models import User
 from app import db , becrypt 
@@ -32,7 +32,7 @@ def login():
 
 
 @user.route('register/' , methods=['GET' , 'POST'])
-@refute_only_view
+@refute_only_view_except_admin
 def register():
     form = RegisterForm()
     if request.method == 'POST':
@@ -49,6 +49,9 @@ def register():
             db.session.add(NewUser)
             db.session.commit()
             flash('Your account has been created successfully')
+            # To create a new user by admin
+            if current_user.role == 1 : 
+                return redirect(url_for('admin.user_edit' , user_id = NewUser.id ))
             return redirect(url_for('user.login'))
         except IntegrityError:
             db.session.rollback()

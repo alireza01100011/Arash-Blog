@@ -11,3 +11,16 @@ def refute_only_view(func):
         return func(*args , **kwargs)
     
     return decrtory
+
+def refute_only_view_except_admin(func):
+    @wraps(func)
+    def decrtory(*args , **kwargs):
+        if current_user.is_authenticated :
+            if current_user.role == 1 : 
+                return func(*args , **kwargs)
+            
+            return redirect(url_for('user.index'))
+        
+        return func(*args , **kwargs)
+    
+    return decrtory
