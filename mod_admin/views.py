@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_blog.models import Post , Category 
+from mod_blog.models import Post , Category , User
 from mod_blog.forms import PostForm , CategoryForm
 from app import db 
 
@@ -184,3 +184,16 @@ def category_delete(category_id):
         flash('There was a problem deleting the category')
 
     return redirect(url_for('admin.category_show'))
+
+
+
+
+#### User ###
+
+# Show User (index)
+@admin.route('users/')
+def user_show():
+    page = request.args.get('p' , default=1 , type=int)
+    per_page = request.args.get('p' , default=10 , type=int)
+    users = User.query.paginate(page=page , per_page=per_page , error_out=False)
+    return render_template('admin/users/user.html' , title='Show User' , users=users)

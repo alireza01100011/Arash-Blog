@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="card-body">
+    <h4 class="card-title">{{title}}</h4>
+    <a href="{{url_for('admin.user_show')}}">
+        <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:10px"> Create User </button> 
+    </a>
+    <div class="table-responsive">
+      
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Posts</th>
+            <th>Comments</th>
+            <th>Post Liks</th>
+            <th>Post Disliks</th>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+            {% for user in users.items %}
+                <tr>
+                    <td>{{user.id}}</td>
+                    <td>{{user.full_name}}</td>
+                    <td>{{user.email}}</td>
+                    {% if user.role == 0 %}
+                        <th>User</th>
+                    {% else %}
+                        <th>Admin</th>
+                    {% endif %}
+                    <td>{{user.posts |length}}</td>
+                    <td>{{user.comments |length}}</td>
+                    <td>{{user.posts_liked |length}}</td>
+                    <td>{{user.posts_disliked |length}}</td>
+                    <td>
+                        <a href="{{url_for('admin.user_show')}}"><button type="button" class="btn btn-primary btn-fw"> Edite </button></a> <br> <br>
+                        <a href="{{url_for('admin.user_show')}}"><button type="button" class="btn btn-danger btn-fw"> Delete </button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
