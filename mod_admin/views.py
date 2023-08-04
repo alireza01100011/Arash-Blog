@@ -108,7 +108,7 @@ def post_delete(post_id):
 
 #### Category ####
 
-# Show List Post
+# Show List Category
 @admin.route('categories/')
 def category_show():
     page = request.args.get('p' , default=1 , type=int)
@@ -182,5 +182,5 @@ def category_delete(category_id):
         flash('Category removed successfully')
     except :
         flash('There was a problem deleting the category')
-        
+
     return redirect(url_for('admin.category_show'))
