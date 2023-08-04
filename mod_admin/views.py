@@ -227,3 +227,16 @@ def user_edit(user_id):
             db.session.rollback()
             flash('Failed. Please try again')
     return render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)
+
+# Delete User
+@admin.route('users/delete/<int:user_id>')
+def user_delte(user_id):
+    user = User.query.get_or_404(int(user_id))
+    try :
+        db.session.delete(user)
+        db.session.commit()
+        flash('User deleted successfully')
+    except :
+        flash("Failed to delete user")
+    
+    return redirect(url_for('admin.user_show'))
