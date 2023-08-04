@@ -93,8 +93,9 @@ class User(db.Model , UserMixin):
     email = Column(String(128) , nullable=False , unique=True)
     password = Column(String(128) , nullable=False , unique=False)
     role = Column(Integer , nullable=False , unique=False)
-    image = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
+    image_id = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
     posts = db.relationship('Post' , backref='author')
+    files = db.relationship('File' , backref='uploader')
     comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
     posts_disliked = db.relationship('Post' , secondary=liks , back_populates='users_disliks')
@@ -114,3 +115,13 @@ class ImageProfile(db.Model):
     filename = Column(String(256) , nullable=False , unique=True)
     user = db.relationship('User' , backref='image')
 
+
+class File(db.Model):
+    __tablename__ = 'files'
+    id = Column(Integer , primary_key=True)
+    filename = Column(String(256) , nullable=False , unique=True)
+    name = Column(String(256) , nullable=False , unique=True)
+    alt = Column(String(256) , nullable=True , unique=False)
+    title = Column(String(256) , nullable=True , unique=False)
+    time = Column(DateTime , default=datetime.now)
+    uploader_id = Column(Integer , ForeignKey('users.id'))
