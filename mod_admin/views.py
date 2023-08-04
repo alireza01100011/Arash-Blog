@@ -230,7 +230,7 @@ def user_edit(user_id):
 
 # Delete User
 @admin.route('users/delete/<int:user_id>')
-def user_delte(user_id):
+def user_delete(user_id):
     user = User.query.get_or_404(int(user_id))
     try :
         db.session.delete(user)
