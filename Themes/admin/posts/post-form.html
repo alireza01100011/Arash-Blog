@@ -52,7 +52,11 @@
                     </div>
                 </div>
             </div><br>
-            <button type="submit" class="btn btn-primary mr-2"> Publish </button>
+            {% if title == 'Create New Post' %}
+                <button type="submit" class="btn btn-primary mr-2"> Publish </button>
+            {% else %}
+                <button type="submit" class="btn btn-primary mr-2"> Update </button>
+            {% endif %}            
             <button class="btn btn-light">Cancel</button>
         </form>
     </div>
