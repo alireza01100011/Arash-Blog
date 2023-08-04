@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
 from mod_blog.models import Post , Category , User
 from mod_blog.forms import PostForm , CategoryForm
+from mod_user.froms import UserRoleForm
 from app import db 
 
 @admin.route('/')
@@ -197,3 +198,27 @@ def user_show():
     per_page = request.args.get('p' , default=10 , type=int)
     users = User.query.paginate(page=page , per_page=per_page , error_out=False)
     return render_template('admin/users/user.html' , title='Show User' , users=users)
+
+# Edit Role User
+@admin.route('users/edit-role/<int:user_id>' , methods=['POST' , 'GET'])
+def user_edit(user_id):
+    form = UserRoleForm()
+    form.role.choices = [(0 , 'User') , (1 , 'Admin')]
+
+    user = User.query.get_or_404(int(user_id))
+    
+    if request.method == 'GET':
+        form.role.data = user.role
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            return render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)        
+        user.role = form.role.data
+        try :
+            db.session.commit()
+            flash('User role change was done successfully')
+            return redirect(url_for('admin.user_show'))
+        except :
+            db.session.rollback()
+            flash('Failed. Please try again')
+    return render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)
