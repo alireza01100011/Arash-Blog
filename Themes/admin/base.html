@@ -20,8 +20,15 @@
 
             {% include 'admin/_inc/navbar.html' %}
             <div class="main-panel">
-                
-                {% block content %} {% endblock content %}
+              <div style="margin: 20px;">
+                {% include '_inc/flash-message.html' %}
+              </div>
+              
+              
+                {% block content %}
+                  
+                  
+                {% endblock content %}
                 
                 {% include 'admin/_inc/footer.html' %}
 
