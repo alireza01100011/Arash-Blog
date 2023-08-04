@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_blog.models import Post , Category , User
+from mod_blog.models import Post , Category , User , File
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
 from app import db 
@@ -245,3 +245,17 @@ def user_delete(user_id):
         flash("Failed to delete user")
     
     return redirect(url_for('admin.user_show'))
+
+
+### Madie ###
+
+# Show Madie and File
+@admin.route('files/')
+def file_show():
+    file_type = request.args.get('type' , default='all' , type=str)
+    page = request.args.get('p' , default=1 , type=int)
+    per_page = request.args.get('n' , default=10 , type=int)
+
+    files = File.query.paginate(page=page , per_page=per_page , error_out=False)
+
+    return render_template('admin/files/file.html' , title='Show Files' , files=files)
