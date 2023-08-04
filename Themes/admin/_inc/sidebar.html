@@ -26,12 +26,12 @@
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <a class="nav-link" data-toggle="collapse" href="#post" aria-expanded="false" aria-controls="post">
           <i class="mdi mdi-border-color menu-icon"></i>
           <span class="menu-title">Posts</span>
           <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="ui-basic">
+        <div class="collapse" id="post">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('admin.post_show') }}">Manage Posts</a>
@@ -44,12 +44,12 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <a class="nav-link" data-toggle="collapse" href="#category" aria-expanded="false" aria-controls="category">
           <i class="mdi mdi-tag menu-icon"></i>
           <span class="menu-title">Category</span>
           <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="ui-basic">
+        <div class="collapse" id="category">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item  ">
               <a class="nav-link " href="{{ url_for('admin.category_show') }}">Manage Categoris</a>
@@ -61,7 +61,23 @@
         </div>
       </li>
 
-
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#user" aria-expanded="false" aria-controls="user">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">User</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="user">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item  ">
+              <a class="nav-link " href="{{ url_for('admin.user_show') }}">Manage Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin.user_create') }}">Create New User</a>
+            </li>
+          </ul>
+        </div>
+      </li>
       
       <li class="nav-item sidebar-actions">
         <div class="nav-link">
