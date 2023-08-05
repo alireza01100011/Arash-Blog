@@ -13,7 +13,7 @@ import uuid
 def file_show():
     file_type = request.args.get('type' , default='all' , type=str)
     page = request.args.get('p' , default=1 , type=int)
-    per_page = request.args.get('n' , default=10 , type=int)
+    per_page = request.args.get('n' , default=30 , type=int)
 
     files = File.query.paginate(page=page , per_page=per_page , error_out=False)
 
