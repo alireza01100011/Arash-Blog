@@ -6,12 +6,12 @@
     
     {% for file in files %}
         <div class="card" style="max-width: 250px; margin:20px;text-align: left;">
-            <img src="{{url_for('static' , filename='files/' + file.filename)}}" style="width: 250px; height:250px" class="card-img-top" alt="{{file.alt}}" title="{{file.title}}">
+            <img src="{{url_for('static' , filename='library/files/' + file.filename)}}" style="width: 250px; height:250px" class="card-img-top" alt="{{file.alt}}" title="{{file.title}}">
                 <div class="card-body">
 
                  <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
                 <p class="text-dark">Alt : {{file.alt}}</p>
-                <p class="text-dark">Title : {{file.title}}</p>
+                <p class="text-dark">Discription : {{file.discription}}</p>
                 <a href="#" class="btn btn-info btn-fw mdi mdi-pencil"><span style="margin-left: 4px;">Edit</span></a>
             </div>
         </div>
