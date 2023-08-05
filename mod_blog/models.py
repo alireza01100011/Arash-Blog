@@ -127,6 +127,12 @@ class File(db.Model):
     time = Column(DateTime , default=datetime.now)
     uploader_id = Column(Integer , ForeignKey('users.id'))
 
+    def __init__(self , filename : str , name : str , alt : str , discription : str):
+        self.filename = filename
+        self.name = name
+        self.alt = alt
+        self.discription = discription
+
 
 class Madie(db.Model):
     __tablename__ = 'madies'
