@@ -10,3 +10,6 @@ def admin_only_view_before_request():
 
 from mod_admin import models
 from mod_admin import views
+
+from mod_library import library
+admin.register_blueprint(library)
