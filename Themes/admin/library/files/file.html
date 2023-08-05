@@ -27,7 +27,12 @@
 {% endblock head_tag%}
 
 {% block content %}
-    <h4 style="margin-left: 20px;">{{title}}</h4>
+    <div>
+        <h4 style="margin-left: 20px; display:inline;">{{title}}</h4>
+        <a href="{{url_for('admin.library.file_upload')}}">
+            <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New File </button> 
+         </a>
+    </div>
     <div class="row row-cols-1 row-cols-md-2" style="margin: 10px;">
         
         {% for file in files %}
