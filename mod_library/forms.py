@@ -5,11 +5,11 @@ from wtforms.validators import DataRequired
 
 class FileForm(FlaskForm):
     name = StringField('Name File' , validators=[DataRequired()])
-    title = StringField('Title File' , validators=[])
+    discription = StringField('Discription File' , validators=[])
     alt = StringField('Alt File' , validators=[])
     file = FileField('File' , 
                      validators=[
                          DataRequired() , 
-                         FileAllowed(['jpeg' , 'jpg' , 'png'])
-                         
+                         FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'mp3' , 'mp4', 'exe' , 'apk'] , 'Upload File')
                          ])
+
