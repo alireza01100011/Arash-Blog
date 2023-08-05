@@ -16,6 +16,12 @@
             height:200px ;
             border-radius: 5px;
         }
+        .file-music{
+            margin: auto;
+            width: 150px;
+            height:150px ;
+            border-radius: 5px;
+        }
 
     </style>
 {% endblock head_tag%}
@@ -34,7 +40,7 @@
             
             {% elif format in ['mp3'] %}
                 
-                <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-icon" alt="{{file.alt}}" title="{{file.title}}">
+                <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-music" alt="{{file.alt}}" title="{{file.title}}">
 
                 <audio controls style="width: 240px;margin:auto">
                     <source src="{{url_for('static' , filename='library/files/' + file.filename)}}">
@@ -44,17 +50,25 @@
                 <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
 
             {% endif %}
-                <div class="card-body">
+                <div class="card-body">       
+                    <div style="margin: 0 12px;">
+                        <div class="dropdown" style="margin-bottom:10px;">
+                            <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                            <button style="width: 145px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> File Info </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2" style="padding: 5px;">
+                                <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                             
+                              <p class="text-dark">Alt : {{file.alt}}</p>
+                              <p class="text-dark">Discription : {{file.discription}}</p>
+                              <p class="text-dark">File Type : <span style="text-transform: uppercase;">{{format}}</span></p>
+          
+                            </div>
+                        </div>
 
-                    <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
-                    <p class="text-dark">Alt : {{file.alt}}</p>
-                    <p class="text-dark">Discription : {{file.discription}}</p>
-                    <p class="text-dark">File Type : <span style="text-transform: uppercase;">{{format}}</span></p>
-                    
-
-                    <a href="#" class="btn btn-info" style="width: 65px;">Edit</a>
-                    <a href="#" class="btn btn-info" style="width: 75px;">Open</a>
-                    <a href="#" class="btn btn-danger" style="width: 150px;margin-top:5px;">Delete</a>
+                        <a href="#" class="btn btn-info" style="width: 65px;">Edit</a>
+                        <a href="#" class="btn btn-info" style="width: 75px;">Open</a>
+                        <a href="#" class="btn btn-danger" style="width: 145px;margin-top:5px;">Delete</a>
+                    </div>
                 </div>
         </div>
     {% endfor %}
