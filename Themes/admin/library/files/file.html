@@ -1,21 +1,63 @@
 {% extends "admin/base.html" %}
 
+{% block head_tag %}
+    <style>
+
+        .file-img{
+            margin: auto;
+            width: 200px;
+            height:200px ;
+            border-radius: 5px;
+        }
+        
+        .file-icon{
+            margin: auto;
+            width: 200px;
+            height:200px ;
+            border-radius: 5px;
+        }
+
+    </style>
+{% endblock head_tag%}
+
 {% block content %}
-<h4 style="margin-left: 20px;">{{title}}</h4>
-<div class="row row-cols-1 row-cols-md-2" style="margin: 10px;">
-    
-    {% for file in files %}
-        <div class="card" style="max-width: 250px; margin:20px;text-align: left;">
-            <img src="{{url_for('static' , filename='library/files/' + file.filename)}}" style="width: 250px; height:250px" class="card-img-top" alt="{{file.alt}}" title="{{file.title}}">
+    <h4 style="margin-left: 20px;">{{title}}</h4>
+    <div class="row row-cols-1 row-cols-md-2" style="margin: 10px;">
+        
+        {% for file in files %}
+        <div class="card" style="max-width: 240px; margin:10px;text-align: left;">
+            
+            {% set format = file.filename.split('.')[-1] %}
+            {% if format in ['jpeg' , 'jpg' , 'png' , 'webp' , 'svg'] %}
+            
+                <img src="{{url_for('static' , filename='library/files/' + file.filename)}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
+            
+            {% elif format in ['mp3'] %}
+                
+                <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-icon" alt="{{file.alt}}" title="{{file.title}}">
+
+                <audio controls style="width: 240px;margin:auto">
+                    <source src="{{url_for('static' , filename='library/files/' + file.filename)}}">
+                </audio>
+            
+            {% elif format in ['rar' , 'zip'] %}
+                <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
+
+            {% endif %}
                 <div class="card-body">
 
-                 <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
-                <p class="text-dark">Alt : {{file.alt}}</p>
-                <p class="text-dark">Discription : {{file.discription}}</p>
-                <a href="#" class="btn btn-info btn-fw mdi mdi-pencil"><span style="margin-left: 4px;">Edit</span></a>
-            </div>
+                    <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                    <p class="text-dark">Alt : {{file.alt}}</p>
+                    <p class="text-dark">Discription : {{file.discription}}</p>
+                    <p class="text-dark">File Type : <span style="text-transform: uppercase;">{{format}}</span></p>
+                    
+
+                    <a href="#" class="btn btn-info" style="width: 65px;">Edit</a>
+                    <a href="#" class="btn btn-info" style="width: 75px;">Open</a>
+                    <a href="#" class="btn btn-danger" style="width: 150px;margin-top:5px;">Delete</a>
+                </div>
         </div>
     {% endfor %}
 
-</div>
+    </div>
 {% endblock %}
