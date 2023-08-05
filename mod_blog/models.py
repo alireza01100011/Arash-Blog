@@ -96,6 +96,7 @@ class User(db.Model , UserMixin):
     image_id = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
     posts = db.relationship('Post' , backref='author')
     files = db.relationship('File' , backref='uploader')
+    madies = db.relationship('File' , backref='uploader')
     comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
     posts_disliked = db.relationship('Post' , secondary=liks , back_populates='users_disliks')
@@ -118,6 +119,17 @@ class ImageProfile(db.Model):
 
 class File(db.Model):
     __tablename__ = 'files'
+    id = Column(Integer , primary_key=True)
+    filename = Column(String(256) , nullable=False , unique=True)
+    name = Column(String(256) , nullable=False , unique=True)
+    alt = Column(String(256) , nullable=True , unique=False)
+    discription = Column(String(256) , nullable=True , unique=False)
+    time = Column(DateTime , default=datetime.now)
+    uploader_id = Column(Integer , ForeignKey('users.id'))
+
+
+class Madie(db.Model):
+    __tablename__ = 'madies'
     id = Column(Integer , primary_key=True)
     filename = Column(String(256) , nullable=False , unique=True)
     name = Column(String(256) , nullable=False , unique=True)
