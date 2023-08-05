@@ -96,7 +96,7 @@ class User(db.Model , UserMixin):
     image_id = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
     posts = db.relationship('Post' , backref='author')
     files = db.relationship('File' , backref='uploader')
-    madies = db.relationship('File' , backref='uploader')
+    madies = db.relationship('Madie' , backref='uploader')
     comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
     posts_disliked = db.relationship('Post' , secondary=liks , back_populates='users_disliks')
