@@ -15,7 +15,7 @@ def file_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('n' , default=30 , type=int)
 
-    files = File.query.paginate(page=page , per_page=per_page , error_out=False)
+    files = File.query.order_by(File.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
     return render_template('admin/library/files/file.html' , title='Show Files' , files=files)
 
@@ -27,8 +27,7 @@ def file_upload():
     
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/library/file-library.html' , title='Upload New File' , form=form )
-
+            return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
         _totla_test = 0
         while True :
             _totla_test += 1
