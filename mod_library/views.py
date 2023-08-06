@@ -44,6 +44,8 @@ def file_upload():
             alt=form.alt.data,
             discription=form.discription.data
         )
+        NewFile.uploader = current_user
+        
         try :
             db.session.add(NewFile)
             db.session.commit()
