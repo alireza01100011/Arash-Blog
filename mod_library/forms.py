@@ -13,7 +13,7 @@ class FileForm(FlaskForm):
     file = FileField('File' , 
                      validators=[
                          FileRequired() , 
-                         FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='Filee')
+                         FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'webp' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='This file extension is not supported')
                          ])
     
     def validate_name(self , name):
