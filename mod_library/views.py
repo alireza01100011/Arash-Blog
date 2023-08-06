@@ -6,6 +6,7 @@ from mod_library.forms import FileForm
 from mod_blog.models import File 
 from app import db 
 import uuid
+import os
 ### File ###
 
 # Show  File
@@ -57,3 +58,21 @@ def file_upload():
             db.session.rollback()
             flash("Error, please try again")
     return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
+
+
+
+# File Delete
+@library.route('files/delete/<int:file_id>')
+def file_delete(file_id):
+    file = File.query.get_or_404(int(file_id))
+
+    try :
+        db.session.delete(file)
+        db.session.commit()
+        os.remove( os.path.join('static/library/files' , file.filename))
+        flash('File deleted successfully')
+    except :
+        db.session.rollback()
+        flash('File deletion was not successful')
+    
+    return redirect(url_for('admin.library.file_show'))
