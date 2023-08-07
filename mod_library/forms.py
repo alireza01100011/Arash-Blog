@@ -20,8 +20,8 @@ class FileForm(FlaskForm):
                             ])
     
     def validate_name(self , name):
-        if self._file :
-            pass
+        if self._file and self._file.name == name.data :
+            return
         _ = File.query.filter(File.name.ilike(f'{name.data}')).first()
         if _ :
             raise ValidationError('This Name Is Already Used')
