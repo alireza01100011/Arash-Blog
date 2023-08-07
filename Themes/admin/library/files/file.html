@@ -81,7 +81,7 @@
                             </div>
 
                         </div>
-                        <a href="#" class="btn btn-info" style="width: 100px;">Edit</a>
+                        <a href=" {{ url_for('admin.library.file_edit' , file_id = file.id) }} " class="btn btn-info" style="width: 100px;">Edit</a>
                         <a href="{{url_for('static' , filename='library/files/' + file.filename)}}" target="_blank" class="btn btn-info" style="width: 100px;margin-top:5px;">Open</a>
                         <a href="{{url_for('admin.library.file_delete' , file_id = file.id)}}" class="btn btn-danger" style="width: 100px;margin-top:5px;">Delete</a>
                     </div>
