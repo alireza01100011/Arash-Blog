@@ -10,13 +10,18 @@ class FileForm(FlaskForm):
     name = StringField('Name File' , validators=[DataRequired()])
     discription = StringField('Discription File' , validators=[])
     alt = StringField('Alt File' , validators=[])
+
+    _file = None
+
     file = FileField('File' , 
-                     validators=[
-                         FileRequired() , 
-                         FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'webp' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='This file extension is not supported')
-                         ])
+                        validators =[
+                            FileRequired(),
+                            FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'webp' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='This file extension is not supported')
+                            ])
     
     def validate_name(self , name):
+        if self._file :
+            pass
         _ = File.query.filter(File.name.ilike(f'{name.data}')).first()
         if _ :
             raise ValidationError('This Name Is Already Used')
