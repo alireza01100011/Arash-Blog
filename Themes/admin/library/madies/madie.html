@@ -36,7 +36,7 @@
 {% block content %}
     <div>
         <h4 style="margin-left: 20px; display:inline;">{{title}}</h4>
-        <a href="#">
+        <a href=" {{url_for('admin.library.madie_upload')}} ">
             <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Madie </button> 
          </a>
     </div>
@@ -48,34 +48,37 @@
                 {% set format = madie.filename.split('.')[-1] %}
                 
                 {% if format in ['jpeg' , 'jpg' , 'png' , 'webp' , 'svg'] %}
-                    <img src="{{url_for('static' , filename='library/madies/' + madie.filename)}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
+                    <img src="{{url_for('static' , filename='library/madies/' + madie.filename)}}" class="card-img-top file-img" alt="{{madie.alt}}" title="{{madie.title}}">
                 
                 {% elif format in ['mp3'] %}    
-                    <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-music" alt="{{file.alt}}" title="{{file.title}}">
+                    <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-music" alt="{{madie.alt}}" title="{{madie.title}}">
 
                     <audio controls style="width: 160px ; margin:auto">
                         <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
                     </audio>
-                
+                {% elif format in ['mp4']  %} 
+                    <video style="width: 160px ; margin:auto" controls>
+                        <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
+                    </video>
                 {% elif format in ['rar' , 'zip'] %}
-                    <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
+                    <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{madie.alt}}" title="{{madie.title}}">
                 
                 {% else %}
-                    <img src="{{url_for('static' , filename='images/file-icon/file-all.png')}}" class="card-img-top file-all" alt="{{file.alt}}" title="{{file.title}}">
+                    <img src="{{url_for('static' , filename='images/file-icon/file-all.png')}}" class="card-img-top file-all" alt="{{madie.alt}}" title="{{madie.title}}">
 
                 {% endif %}
                 <div class="card-body">       
                     <div style="margin: 0 12px;">
                         <div class="dropdown" style="margin-bottom:10px;">
-                            <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                            <h5 class="card-title mdi mdi-file">{{madie.name}}</h5>
                             <button style="width: 145px;width: 100px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> File Info </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2" style="padding: 5px;">
-                                <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                                <h5 class="card-title mdi mdi-file">{{madie.name}}</h5>
                             
-                            <p class="text-dark">Alt : <br>{{file.alt}}</p>
-                            <p class="text-dark">Discription : <br>{{file.discription}}</p>
-                            <p class="text-dark">Upload Time : <br>{{file.time.strftime('%b-%d-%Y')}}</p>
-                            <p class="text-dark">Uploader : <br>{{file.uploader.full_name or 'None'}}</p>
+                            <p class="text-dark">Alt : <br>{{madie.alt}}</p>
+                            <p class="text-dark">Title : <br>{{madie.title}}</p>
+                            <p class="text-dark">Upload Time : <br>{{madie.time.strftime('%b-%d-%Y')}}</p>
+                            <p class="text-dark">Uploader : <br>{{madie.uploader.full_name or 'None'}}</p>
                             <p class="text-dark">File Type : <span style="text-transform: uppercase;">{{format}}</span></p>
         
                             </div>
