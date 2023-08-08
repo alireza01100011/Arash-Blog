@@ -25,7 +25,7 @@ def file_show():
 @library.route('files/upload/' , methods=['GET' , 'POST'])
 def file_upload():
     form = FileForm()
-    
+
     if request.method == 'POST':
         if not form.validate_on_submit():
             return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
@@ -59,7 +59,45 @@ def file_upload():
             flash("Error, please try again")
     return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
 
+# File Edit
+@library.route('files/edit/<int:file_id>' , methods=['GET' , 'POST'])
+def file_edit(file_id):
+    file = File.query.get_or_404(int(file_id))
+    
+    from flask_wtf.file import FileAllowed
+    form = FileForm()
+    form._file = file
+    form.file.validators = ([FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'webp' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='This file extension is not supported')])
+    
+    if request.method == 'GET':
+        form.name.data = file.name
+        form.discription.data = file.discription
+        form.alt.data = file.alt
 
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)    
+
+        file.name = form.name.data
+        file.discription = form.discription.data
+        file.alt = form.alt.data
+
+        if request.files['file'] :
+            os.remove(os.path.join('static/library/files' , file.filename))
+            filename = f'{uuid.uuid1()}_{form.file.data.filename}'
+            file.filename = filename
+            request.files['file'].save(os.path.join('static/library/files' , filename))
+
+        try :
+            db.session.commit()
+            flash('File Update successfully')
+            return redirect(url_for('admin.library.file_show'))
+        except :
+            db.session.rollback()
+            flash("Error, please try again")
+
+        
+    return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
 
 # File Delete
 @library.route('files/delete/<int:file_id>')
