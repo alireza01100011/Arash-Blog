@@ -9,6 +9,15 @@ import uuid
 import os
 ### File ###
 
+def CreateFileName(filename):
+    _totla_test = 0
+    while True :
+        _totla_test += 1
+        filename = f'{uuid.uuid1()}_{filename}'
+        _ = File.query.filter(File.filename.ilike(f'{filename}')).first()
+        if not _ : return filename
+        if _totla_test == 256 : return False
+
 # Show  File
 @library.route('files/')
 def file_show():
@@ -29,15 +38,11 @@ def file_upload():
     if request.method == 'POST':
         if not form.validate_on_submit():
             return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
-        _totla_test = 0
-        while True :
-            _totla_test += 1
-            filename = f'{uuid.uuid1()}_{form.file.data.filename}'
-            _ = File.query.filter(File.filename.ilike(f'{filename}')).first()
-            if not _ : break
-            if _totla_test == 100 : 
-                flash('Error, please try again')
-                return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )        
+        
+        filename = CreateFileName(form.file.data.filename)
+        if not filename :
+            flash('Error, please try again')
+            return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )        
         
         NewFile = File(
             filename=filename,
@@ -84,7 +89,12 @@ def file_edit(file_id):
 
         if request.files['file'] :
             os.remove(os.path.join('static/library/files' , file.filename))
-            filename = f'{uuid.uuid1()}_{form.file.data.filename}'
+            filename = CreateFileName(form.file.data.filename)
+            
+            if not filename :
+                flash("Error, please try again (Error creating file name)")
+                return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
+
             file.filename = filename
             request.files['file'].save(os.path.join('static/library/files' , filename))
 
