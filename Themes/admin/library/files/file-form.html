@@ -5,7 +5,11 @@
         <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{title}}</h4>
-              <form action="{{url_for('admin.library.file_upload')}}" method="POST" enctype="multipart/form-data">
+              {% if title == 'Upload New File' %}
+                <form action="{{url_for('admin.library.file_upload')}}" method="POST" enctype="multipart/form-data">
+              {% else %}
+                <form action="{{url_for('admin.library.file_edit' , file_id=file.id)}}" method="POST" enctype="multipart/form-data">
+              {% endif %}
                 {{form.hidden_tag()}}
                 <div class="form-group">
                     {{form.name.label}}
