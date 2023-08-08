@@ -174,3 +174,19 @@ def madie_upload():
             flash('Media upload failed' , 'danger')
     
     return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
+
+
+# Madie DeLete
+@library.route('madies/delete/<int:madie_id>')
+def madie_delete(madie_id):
+    madie = Madie.query.get_or_404(int(madie_id))
+    try :
+        db.session.delete(madie)
+        db.session.commit()
+        os.remove(os.path.join('static/library/madies' , madie.filename))
+        flash('The media was successfully removed')
+    except :
+        db.session.rollback()
+        flash('The media was not successfully deleted')
+    
+    return redirect(url_for('admin.library.madie_show'))
