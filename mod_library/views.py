@@ -1,7 +1,7 @@
 from flask import render_template ,  redirect ,  request ,flash , url_for
 from flask_login import current_user
 from mod_library import library
-from mod_library.forms import FileForm
+from mod_library.forms import FileForm , MadieForm
 
 from mod_blog.models import File , Madie
 from app import db 
@@ -126,6 +126,7 @@ def file_delete(file_id):
     return redirect(url_for('admin.library.file_show'))
 
 
+# Madies
 
 # Show Madie
 @library.route('madies/')
@@ -137,3 +138,39 @@ def madie_show():
     madies = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
     return render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)
+
+
+# Upload Madie
+@library.route('madies/upload/' , methods=['GET' , 'POST'])
+def madie_upload():
+    form = MadieForm()
+    
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
+        
+        file = request.files['madie']
+        filename = CreateFileName(form.madie.data.filename)
+        
+        if not filename :
+            flash("Error, please try again (Error creating file name)")
+            return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
+        
+        NewMadie = Madie(
+            filename=filename , 
+            name = form.name.data ,
+            alt = form.alt.data ,
+            title= form.title.data ,
+        )
+
+        try :
+            db.session.add(NewMadie)
+            db.session.commit()
+            file.save(os.path.join('static/library/madies' , filename))
+            flash('Media upload was successful')
+            return redirect(url_for('admin.library.madie_show'))
+        except :
+            db.session.rollback()
+            flash('Media upload failed' , 'danger')
+    
+    return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
