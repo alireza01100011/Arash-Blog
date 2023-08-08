@@ -8,6 +8,16 @@ from mod_blog.forms  import _get_fields
 from mod_blog.models import File
 from mod_blog.models import Madie
 
+formats = {
+    'image' : ['jpg' , 'jpeg' , 'png' , 'webp' , 'gif' , 'svg'],
+    'audio' : ['mp3' , 'oog'  , 'aac' , 'wav'] ,
+    'video' : ['mp4' , 'wmv' , 'webm'],
+    'exe' : ['exe' , 'apk' , 'bash'],
+    'compressed' : ['zip' , 'rar' , 'gz' , 'tar' , '7z'],
+    'document' : ['txt' , 'log' , 'pdf' , 'html' , 'xls' , 'xlsx' , 'odt' , 'PPT' , 'PPTX']
+}
+
+
 class FileForm(FlaskForm):
     name = StringField('Name File' , validators=[DataRequired()])
     discription = StringField('Discription File' , validators=[])
@@ -18,7 +28,10 @@ class FileForm(FlaskForm):
     file = FileField('File' , 
                         validators =[
                             FileRequired(),
-                            FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'webp' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='This file extension is not supported')
+                            FileAllowed(
+                                formats['image'] + formats['audio'] + formats['video'] + formats['exe'] + formats['compressed'] + formats['document'],
+                                message='This file extension is not supported'
+                                )
                             ])
     
     def validate_name(self , name):
@@ -41,7 +54,10 @@ class MadieForm(FlaskForm):
     madie = FileField('Madie',
                       validators=[
                           FileRequired(),
-                          FileAllowed(['jpg' , 'jpeg' , 'png' , 'webp' ,'gif'])
+                          FileAllowed(
+                              formats['audio'] + formats['image'] + formats['video'] ,
+                              message='This file extension is not supported'
+                          )
                       ]
     )
     _madie = None
