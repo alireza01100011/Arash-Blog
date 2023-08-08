@@ -143,3 +143,9 @@ class Madie(db.Model):
     title = Column(String(256) , nullable=True , unique=False)
     time = Column(DateTime , default=datetime.now)
     uploader_id = Column(Integer , ForeignKey('users.id'))
+
+    def __init__(self , filename : str , name : str , alt : str , title : str):
+        self.filename = filename
+        self.name = name 
+        self.alt = alt
+        self.title = title
