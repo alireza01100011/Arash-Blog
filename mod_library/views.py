@@ -3,7 +3,7 @@ from flask_login import current_user
 from mod_library import library
 from mod_library.forms import FileForm
 
-from mod_blog.models import File 
+from mod_blog.models import File , Madie
 from app import db 
 import uuid
 import os
@@ -124,3 +124,16 @@ def file_delete(file_id):
         flash('File deletion was not successful')
     
     return redirect(url_for('admin.library.file_show'))
+
+
+
+# Show Madie
+@library.route('madies/')
+def madie_show():
+    madie_type = request.args.get('type' , default='all' , type=str)
+    per_page = request.args.get('n' , default=30 , type=int)
+    page = request.args.get('p' , default=1 , type=int)
+
+    madies = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
+
+    return render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)

@@ -1,0 +1,93 @@
+{% extends "admin/base.html" %}
+
+{% block head_tag %}
+    <style>
+
+        .file-img{
+            margin: auto;
+            width: 170px;
+            height:170px ;
+            border-radius: 5px;
+        }
+        
+        .file-icon{
+            margin: auto;
+            width: 200px;
+            height:200px ;
+            border-radius: 5px;
+        }
+        .file-music{
+            margin: auto;
+            width: 100px;
+            height:100px ;
+            border-radius: 5px;
+        }
+
+        .div-card{
+            max-width: 180px;
+            min-height: 150px; 
+            margin:10px;
+            text-align: left;
+
+        }
+    </style>
+{% endblock head_tag%}
+
+{% block content %}
+    <div>
+        <h4 style="margin-left: 20px; display:inline;">{{title}}</h4>
+        <a href="#">
+            <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Madie </button> 
+         </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2" style="margin:0 10px; overflow-y:scroll ;max-height: 500px;">
+        
+        {% for madie in madies %}
+            <div class="card div-card">
+                
+                {% set format = madie.filename.split('.')[-1] %}
+                
+                {% if format in ['jpeg' , 'jpg' , 'png' , 'webp' , 'svg'] %}
+                    <img src="{{url_for('static' , filename='library/madies/' + madie.filename)}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
+                
+                {% elif format in ['mp3'] %}    
+                    <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-music" alt="{{file.alt}}" title="{{file.title}}">
+
+                    <audio controls style="width: 160px ; margin:auto">
+                        <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
+                    </audio>
+                
+                {% elif format in ['rar' , 'zip'] %}
+                    <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
+                
+                {% else %}
+                    <img src="{{url_for('static' , filename='images/file-icon/file-all.png')}}" class="card-img-top file-all" alt="{{file.alt}}" title="{{file.title}}">
+
+                {% endif %}
+                <div class="card-body">       
+                    <div style="margin: 0 12px;">
+                        <div class="dropdown" style="margin-bottom:10px;">
+                            <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                            <button style="width: 145px;width: 100px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> File Info </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2" style="padding: 5px;">
+                                <h5 class="card-title mdi mdi-file">{{file.name}}</h5>
+                            
+                            <p class="text-dark">Alt : <br>{{file.alt}}</p>
+                            <p class="text-dark">Discription : <br>{{file.discription}}</p>
+                            <p class="text-dark">Upload Time : <br>{{file.time.strftime('%b-%d-%Y')}}</p>
+                            <p class="text-dark">Uploader : <br>{{file.uploader.full_name or 'None'}}</p>
+                            <p class="text-dark">File Type : <span style="text-transform: uppercase;">{{format}}</span></p>
+        
+                            </div>
+
+                        </div>
+                        <a href="#" class="btn btn-info" style="width: 100px;">Edit</a>
+                        <a href="#" target="_blank" class="btn btn-info" style="width: 100px;margin-top:5px;">Open</a>
+                        <a href="#" class="btn btn-danger" style="width: 100px;margin-top:5px;">Delete</a>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+
+    </div>
+{% endblock %}
