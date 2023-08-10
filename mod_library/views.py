@@ -128,7 +128,16 @@ def file_delete(file_id):
 
 # Madies
 
-# Show Madie
+# Get Madie
+@library_views.route('madies/<int:madie_id>')
+@library_admin.route('madies/<int:madie_id>')
+def madie_get(madie_id):
+    madie = Madie.query.get_or_404(int(madie_id))
+    return send_file(os.path.join('static/library/madies/' , madie.filename))
+
+
+
+# Show Madies
 @library_admin.route('madies/')
 def madie_show():
     madie_type = request.args.get('type' , default='all' , type=str)

@@ -80,12 +80,12 @@
                             <p class="text-dark">Upload Time : <br>{{madie.time.strftime('%b-%d-%Y')}}</p>
                             <p class="text-dark">Uploader : <br>{{madie.uploader.full_name or 'None'}}</p>
                             <p class="text-dark">File Type : <span style="text-transform: uppercase;">{{format}}</span></p>
-        
+                            
                             </div>
 
                         </div>
-                        <a href=" {{ url_for('library_views.madie_get' , madie_id = madie.id) }} " class="btn btn-info" style="width: 100px;">Edit</a>
-                        <a href=" {{ url_for('static' , filename= 'library/madies/' + madie.filename) }} " target="_blank" class="btn btn-info" style="width: 100px;margin-top:5px;">Open</a>
+                        <a href=" {{ url_for('admin.library_admin.madie_edit' , madie_id = madie.id) }} " class="btn btn-info" style="width: 100px;">Edit</a>
+                        <a href=" {{ url_for('admin.library_admin.madie_get' , madie_id = madie.id) }} " target="_blank" class="btn btn-info" style="width: 100px;margin-top:5px;">Open</a>
                         <a href=" {{ url_for('admin.library_admin.madie_delete' , madie_id = madie.id) }} " class="btn btn-danger" style="width: 100px;margin-top:5px;">Delete</a>
                     </div>
                 </div>
