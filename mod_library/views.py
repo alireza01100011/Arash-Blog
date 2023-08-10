@@ -1,7 +1,8 @@
 from flask import render_template ,  redirect ,  request ,flash , url_for
 from flask_login import current_user
+from flask_wtf.file import FileAllowed
 from mod_library import library
-from mod_library.forms import FileForm , MadieForm
+from mod_library.forms import FileForm , MadieForm , formats
 
 from mod_blog.models import File , Madie
 from app import db 
@@ -69,7 +70,6 @@ def file_upload():
 def file_edit(file_id):
     file = File.query.get_or_404(int(file_id))
     
-    from flask_wtf.file import FileAllowed
     form = FileForm()
     form._file = file
     form.file.validators = ([FileAllowed(['zip' , 'rar' , 'jpg' , 'jpeg' , 'png' , 'webp' , 'mp3' , 'mp4', 'exe' , 'apk' , 'txt'] , message='This file extension is not supported')])
@@ -175,6 +175,60 @@ def madie_upload():
     
     return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
 
+
+# Madie Edit
+@library.route('madies/edit/<int:madie_id>' , methods=['GET' , 'POST'])
+def madie_edit(madie_id):
+    madie = Madie.query.get_or_404(int(madie_id))
+
+    form = MadieForm()
+    form._madie = madie
+    form.madie.validators = (
+        [
+            FileAllowed(
+                formats['audio'] + formats['image'] + formats['video'] , 
+                message='This file extension is not supported' )
+        ]
+        )
+
+    if request.method == 'GET':
+        form.name.data = madie.name
+        form.alt.data = madie.alt
+        form.title.data = madie.title
+    
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
+    
+        madie.name = form.name.data
+        madie.alt = form.alt.data
+        madie.title = form.title.data
+        
+        file = request.files['madie']
+        if file :
+            filename = CreateFileName(file.filename)
+
+            if not filename :
+                flash("Error, please try again (Error creating file name)")
+                return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
+            
+            try :
+                os.remove(os.path.join('static/library/madies' , madie.filename))
+            except FileNotFoundError :
+                flash('The previous file was not found and we failed to delete it!' , 'warning')
+
+            file.save(os.path.join('static/library/madies/' , filename))
+            
+            madie.filename = filename
+        
+        try :
+            db.session.commit()
+            flash('Madie Update successfully')
+            return redirect(url_for('admin.library.madie_show'))
+        except :
+            db.session.rollback()
+            flash("Error, please try again")
+    return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
 
 # Madie DeLete
 @library.route('madies/delete/<int:madie_id>')
