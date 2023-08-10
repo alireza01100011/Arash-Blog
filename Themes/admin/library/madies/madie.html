@@ -84,7 +84,7 @@
                             </div>
 
                         </div>
-                        <a href="#" class="btn btn-info" style="width: 100px;">Edit</a>
+                        <a href=" {{ url_for('admin.library.madie_edit' , madie_id = madie.id) }} " class="btn btn-info" style="width: 100px;">Edit</a>
                         <a href=" {{ url_for('static' , filename= 'library/madies/' + madie.filename) }} " target="_blank" class="btn btn-info" style="width: 100px;margin-top:5px;">Open</a>
                         <a href=" {{ url_for('admin.library.madie_delete' , madie_id = madie.id) }} " class="btn btn-danger" style="width: 100px;margin-top:5px;">Delete</a>
                     </div>
