@@ -3,7 +3,7 @@
 {% block head_tag %}
     <style>
 
-        .file-img{
+        .file-img  , .file-video{
             margin: auto;
             width: 170px;
             height:170px ;
@@ -61,7 +61,7 @@
                     <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
                 
                 {% elif format in ['mp4' , 'wmv' , 'webm']  %} 
-                    <video style="width: 160px ; margin:auto" controls>
+                    <video class="file-video" controls>
                         <source src="{{url_for('static' , filename='library/files/' + file.filename)}}">
                     </video>
                 
