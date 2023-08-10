@@ -80,18 +80,27 @@
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#file" aria-expanded="false" aria-controls="user">
+        <a class="nav-link" data-toggle="collapse" href="#library" aria-expanded="false" aria-controls="user">
           <i class="mdi mdi-file-multiple menu-icon"></i>
-          <span class="menu-title">File</span>
+          <span class="menu-title">Library</span>
           <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="file">
+        <div class="collapse" id="library">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item  ">
               <a class="nav-link " href="{{ url_for('admin.library.file_show') }}">Manage Files</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('admin.library.file_upload') }}">Upload New File</a>
+            </li>
+            <li class="nav-item">
+              <hr>
+            </li>
+            <li class="nav-item  ">
+              <a class="nav-link " href="{{ url_for('admin.library.madie_show') }}">Manage Madies</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin.library.madie_upload') }}">Upload New Madie</a>
             </li>
           </ul>
         </div>
