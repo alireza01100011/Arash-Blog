@@ -19,6 +19,14 @@ def CreateFileName(filename):
         if not _ : return filename
         if _totla_test == 256 : return False
 
+# Get File
+@library_admin.route('files/<int:file_id>')
+@library_views.route('files/<int:file_id>')
+def file_get(file_id):
+    file = File.query.get_or_404(int(file_id))
+    return send_file(os.path.join('static/library/files/' , file.filename))
+
+
 # Show  File
 @library_admin.route('files/')
 def file_show():
