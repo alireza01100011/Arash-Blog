@@ -47,20 +47,20 @@
                 
                 {% set format = madie.filename.split('.')[-1] %}
                 
-                {% if format in ['jpeg' , 'jpg' , 'png' , 'webp' , 'svg'] %}
+                {% if format in ['jpg' , 'jpeg' , 'png' , 'webp' , 'gif' , 'svg'] %}
                     <img src="{{url_for('static' , filename='library/madies/' + madie.filename)}}" class="card-img-top file-img" alt="{{madie.alt}}" title="{{madie.title}}">
                 
-                {% elif format in ['mp3'] %}    
+                {% elif format in ['mp3' , 'oog'  , 'aac' , 'wav'] %}    
                     <img src="{{url_for('static' , filename='images/file-icon/file-music.png')}}" class="card-img-top file-music" alt="{{madie.alt}}" title="{{madie.title}}">
 
                     <audio controls style="width: 160px ; margin:auto">
                         <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
                     </audio>
-                {% elif format in ['mp4']  %} 
+                {% elif format in ['mp4' , 'wmv' , 'webm']  %} 
                     <video style="width: 160px ; margin:auto" controls>
                         <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
                     </video>
-                {% elif format in ['rar' , 'zip'] %}
+                {% elif format in ['zip' , 'rar' , 'gz' , 'tar' , '7z'] %}
                     <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{madie.alt}}" title="{{madie.title}}">
                 
                 {% else %}
