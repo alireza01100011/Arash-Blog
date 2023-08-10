@@ -60,6 +60,11 @@
                 {% elif format in ['rar' , 'zip'] %}
                     <img src="{{url_for('static' , filename='images/file-icon/file-zip.png')}}" class="card-img-top file-img" alt="{{file.alt}}" title="{{file.title}}">
                 
+                {% elif format in ['mp4']  %} 
+                    <video style="width: 160px ; margin:auto" controls>
+                        <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
+                    </video>
+                
                 {% else %}
                     <img src="{{url_for('static' , filename='images/file-icon/file-all.png')}}" class="card-img-top file-all" alt="{{file.alt}}" title="{{file.title}}">
 
