@@ -62,7 +62,7 @@
                 
                 {% elif format in ['mp4' , 'wmv' , 'webm']  %} 
                     <video style="width: 160px ; margin:auto" controls>
-                        <source src="{{url_for('static' , filename='library/madies/' + madie.filename)}}">
+                        <source src="{{url_for('static' , filename='library/files/' + file.filename)}}">
                     </video>
                 
                 {% else %}
