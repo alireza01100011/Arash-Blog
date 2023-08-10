@@ -1,7 +1,7 @@
-from flask import render_template ,  redirect ,  request ,flash , url_for
+from flask import render_template ,  redirect ,  request ,flash , url_for , send_file
 from flask_login import current_user
 from flask_wtf.file import FileAllowed
-from mod_library import library
+from mod_library import library_admin , library_views
 from mod_library.forms import FileForm , MadieForm , formats
 
 from mod_blog.models import File , Madie
@@ -20,7 +20,7 @@ def CreateFileName(filename):
         if _totla_test == 256 : return False
 
 # Show  File
-@library.route('files/')
+@library_admin.route('files/')
 def file_show():
     file_type = request.args.get('type' , default='all' , type=str)
     page = request.args.get('p' , default=1 , type=int)
@@ -32,7 +32,7 @@ def file_show():
 
 
 # Upload File
-@library.route('files/upload/' , methods=['GET' , 'POST'])
+@library_admin.route('files/upload/' , methods=['GET' , 'POST'])
 def file_upload():
     form = FileForm()
 
@@ -66,7 +66,7 @@ def file_upload():
     return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
 
 # File Edit
-@library.route('files/edit/<int:file_id>' , methods=['GET' , 'POST'])
+@library_admin.route('files/edit/<int:file_id>' , methods=['GET' , 'POST'])
 def file_edit(file_id):
     file = File.query.get_or_404(int(file_id))
     
@@ -110,7 +110,7 @@ def file_edit(file_id):
     return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
 
 # File Delete
-@library.route('files/delete/<int:file_id>')
+@library_admin.route('files/delete/<int:file_id>')
 def file_delete(file_id):
     file = File.query.get_or_404(int(file_id))
 
@@ -129,7 +129,7 @@ def file_delete(file_id):
 # Madies
 
 # Show Madie
-@library.route('madies/')
+@library_admin.route('madies/')
 def madie_show():
     madie_type = request.args.get('type' , default='all' , type=str)
     per_page = request.args.get('n' , default=30 , type=int)
@@ -141,7 +141,7 @@ def madie_show():
 
 
 # Upload Madie
-@library.route('madies/upload/' , methods=['GET' , 'POST'])
+@library_admin.route('madies/upload/' , methods=['GET' , 'POST'])
 def madie_upload():
     form = MadieForm()
     
@@ -177,7 +177,7 @@ def madie_upload():
 
 
 # Madie Edit
-@library.route('madies/edit/<int:madie_id>' , methods=['GET' , 'POST'])
+@library_admin.route('madies/edit/<int:madie_id>' , methods=['GET' , 'POST'])
 def madie_edit(madie_id):
     madie = Madie.query.get_or_404(int(madie_id))
 
@@ -231,7 +231,7 @@ def madie_edit(madie_id):
     return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
 
 # Madie DeLete
-@library.route('madies/delete/<int:madie_id>')
+@library_admin.route('madies/delete/<int:madie_id>')
 def madie_delete(madie_id):
     madie = Madie.query.get_or_404(int(madie_id))
     try :

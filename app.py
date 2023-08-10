@@ -24,8 +24,10 @@ from views import *
 from mod_admin import admin
 from mod_blog import blog
 from mod_user import user
+from mod_library import library_views
 
 app.register_blueprint(admin)
+app.register_blueprint(library_views)
 app.register_blueprint(blog)
 app.register_blueprint(user)
 

@@ -6,9 +6,9 @@
             <div class="card-body">
               <h4 class="card-title">{{title}}</h4>
               {% if title == 'Upload New Madie' %}
-                <form action="{{url_for('admin.library.madie_upload')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{url_for('admin.library_admin.madie_upload')}}" method="POST" enctype="multipart/form-data">
               {% else %}
-                <form action="{{url_for('admin.library.madie_edit' , madie_id = madie.id)}}" method="POST" enctype="multipart/form-data">
+                <form action="{{url_for('admin.library_admin.madie_edit' , madie_id = madie.id)}}" method="POST" enctype="multipart/form-data">
               {% endif %}
                 {{form.hidden_tag()}}
                 <div class="form-group">
@@ -36,7 +36,7 @@
                 {% else %}
                   <button type="submit" class="btn btn-primary mr-2"> Edit </button>
                 {% endif %}
-                <a href="{{ url_for('admin.library.madie_show') }}" class="btn btn-light">Cancel</a>
+                <a href="{{ url_for('admin.library_admin.madie_show') }}" class="btn btn-light">Cancel</a>
               </form>
             </div>
         </div>

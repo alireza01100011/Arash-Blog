@@ -36,7 +36,7 @@
 {% block content %}
     <div>
         <h4 style="margin-left: 20px; display:inline;">{{title}}</h4>
-        <a href="{{url_for('admin.library.file_upload')}}">
+        <a href="{{url_for('admin.library_admin.file_upload')}}">
             <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New File </button> 
          </a>
     </div>
@@ -86,9 +86,9 @@
                             </div>
 
                         </div>
-                        <a href=" {{ url_for('admin.library.file_edit' , file_id = file.id) }} " class="btn btn-info" style="width: 100px;">Edit</a>
+                        <a href=" {{ url_for('admin.library_admin.file_edit' , file_id = file.id) }} " class="btn btn-info" style="width: 100px;">Edit</a>
                         <a href="{{url_for('static' , filename='library/files/' + file.filename)}}" target="_blank" class="btn btn-info" style="width: 100px;margin-top:5px;">Open</a>
-                        <a href="{{url_for('admin.library.file_delete' , file_id = file.id)}}" class="btn btn-danger" style="width: 100px;margin-top:5px;">Delete</a>
+                        <a href="{{url_for('admin.library_admin.file_delete' , file_id = file.id)}}" class="btn btn-danger" style="width: 100px;margin-top:5px;">Delete</a>
                     </div>
                 </div>
             </div>
