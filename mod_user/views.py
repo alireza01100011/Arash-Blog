@@ -8,7 +8,11 @@ from mod_blog.models import User
 from app import db , becrypt 
 
 @user.route('/')
+def _index():
+    return redirect(url_for('user.index'))
+
 @user.route('profile/')
+@login_required
 def index():
     return render_template('user/index.html' , title='User')
 
