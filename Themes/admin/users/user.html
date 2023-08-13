@@ -12,6 +12,7 @@
         <thead>
           <tr>
             <th>#</th>
+            <th>Profile</th>
             <th>Full Name</th>
             <th>Email</th>
             <th>Role</th>
@@ -26,6 +27,11 @@
             {% for user in users.items %}
                 <tr>
                     <td>{{user.id}}</td>
+                    <td>
+                      {% if user.image == 0 or not user.image%}
+                        <img src="{{ url_for('static' , filename='images/default-profile-image.png') }}" alt="image">
+                      {% endif %}
+                    </td>
                     <td>{{user.full_name}}</td>
                     <td>{{user.email}}</td>
                     {% if user.role == 0 %}
