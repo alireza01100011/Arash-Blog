@@ -7,15 +7,24 @@
       <li class="nav-item nav-profile">
         <a href="#" class="nav-link">
           <div class="nav-profile-image">
-            <img src="{{ url_for('static' , filename='admin/assets/images/faces/face1.jpg') }}" alt="profile" />
+            {% if current_user.image == 0 or not current_user.image %}
+            <img style="background-color: #ffff;margin-top:-5px;" src="{{ url_for('static' , filename='images/default-profile.svg') }}" alt="image">
+              {% else %}
+              <p>User image display is not implemented</p>
+            {% endif %}
             <span class="login-status online"></span>
             <!--change to offline or busy as needed-->
           </div>
           <div class="nav-profile-text d-flex flex-column pr-3">
-            <span class="font-weight-medium mb-2">Henry Klein</span>
-            <span class="font-weight-normal">$8,753.00</span>
+            <span class="font-weight-medium mb-2">{{current_user.full_name}}</span>
           </div>
-          <span class="badge badge-danger text-white ml-3 rounded">3</span>
+          <span class="badge badge-danger text-white ml-3 rounded" style="margin-top: -4px;">
+            {% if current_user.role == 0 %}
+              User
+            {% else %}
+              Admin
+            {% endif %}
+          </span>
         </a>
       </li>
       <li class="nav-item">
