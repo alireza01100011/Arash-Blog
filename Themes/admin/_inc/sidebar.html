@@ -24,7 +24,13 @@
           <span class="menu-title">Dashboard</span>
         </a>
       </li>
-      
+
+      <br>
+      <li class="nav-item">
+        <span class="nav-link" href="#">
+          <span class="menu-title">Blog  Management</span>
+        </span>
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#post" aria-expanded="false" aria-controls="post">
           <i class="mdi mdi-border-color menu-icon"></i>
@@ -42,6 +48,7 @@
           </ul>
         </div>
       </li>
+
 
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#category" aria-expanded="false" aria-controls="category">
@@ -61,6 +68,55 @@
         </div>
       </li>
 
+      <br>
+      <li class="nav-item">
+        <span class="nav-link" href="#">
+          <span class="menu-title">Library Management</span>
+        </span>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#file" aria-expanded="false" aria-controls="user">
+          <i class="mdi mdi-file-multiple menu-icon"></i>
+          <span class="menu-title">Files</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="file">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item  ">
+              <a class="nav-link " href="{{ url_for('admin.library_admin.file_show') }}">Manage Files</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin.library_admin.file_upload') }}">Upload New File</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#madie" aria-expanded="false" aria-controls="user">
+          <i class="mdi mdi-filmstrip menu-icon"></i>
+          <span class="menu-title">Madie</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="madie">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item  ">
+              <a class="nav-link " href="{{ url_for('admin.library_admin.madie_show') }}">Manage Madies</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin.library_admin.madie_upload') }}">Upload New Madie</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <br>
+      <li class="nav-item">
+        <span class="nav-link" href="#">
+          <span class="menu-title">User Management</span>
+        </span>
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#user" aria-expanded="false" aria-controls="user">
           <i class="mdi mdi-account menu-icon"></i>
@@ -74,33 +130,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('admin.user_create') }}">Create New User</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-      
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#library" aria-expanded="false" aria-controls="user">
-          <i class="mdi mdi-file-multiple menu-icon"></i>
-          <span class="menu-title">Library</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="library">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item  ">
-              <a class="nav-link " href="{{ url_for('admin.library_admin.file_show') }}">Manage Files</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin.library_admin.file_upload') }}">Upload New File</a>
-            </li>
-            <li class="nav-item">
-              <hr>
-            </li>
-            <li class="nav-item  ">
-              <a class="nav-link " href="{{ url_for('admin.library_admin.madie_show') }}">Manage Madies</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin.library_admin.madie_upload') }}">Upload New Madie</a>
             </li>
           </ul>
         </div>
