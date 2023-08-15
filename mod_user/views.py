@@ -15,13 +15,14 @@ def _index():
 @login_required
 def profile():
     form = EditProfileForm()
+    tab = request.args.get('tab' , default='like' , type=str)
     user = current_user
     form.fullname.data = user.full_name
     form.email.data = user.email
     form.password.data = '*' * 8
     form.confirm_password.data = '*' * 8
     form.bio.data = ''
-    return render_template('user/index.html' , title='User' , user=user , form=form )
+    return render_template('user/index.html' , title='User' , user=user , form=form , tab=tab)
 
 
 
