@@ -54,9 +54,10 @@ class UserRoleForm(FlaskForm):
 class EditProfileForm(FlaskForm):
     fullname = StringField('Full Name' , validators=[DataRequired()])
     email = StringField('Email' , validators=[DataRequired() ])
-    password = StringField('Password' , validators=[DataRequired()])
+    old_password = StringField('Old Password' , validators=[])
+    password = StringField('Password' , validators=[])
     confirm_password = StringField('Confirm Password' , 
-                                   validators=[DataRequired() , EqualTo('password' , message='Password Must Match')])
+                                   validators=[ EqualTo('password' , message='Password Must Match')])
     bio = TextAreaField(label='Biography' , validators=[Length(10,256)])
     profile_image = FileField( label= 'Profile Image',
                               validators=[
@@ -70,7 +71,8 @@ class EditProfileForm(FlaskForm):
         if _ :
             raise ValidationError('This Email Already Exists')
     
-    def validate_password(self , password):        
+    def validate_password(self , password):
+        if password.data == '*' * 8 : return     
         if not len(password.data) >= 8 :
             raise ValidationError('The password is shorter than 8 characters')
              
