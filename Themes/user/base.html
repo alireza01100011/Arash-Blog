@@ -17,7 +17,7 @@
 
 <body class="profile-page">
     {% include 'user/_inc/navbar.html' %}
-    
+    {% include '_inc/flash-message.html' %}
     
     
     <div class="page-header header-filter" data-parallax="true" style="background-image:url('http://127.0.0.1:5000/library/files/3');"></div>
@@ -50,128 +50,25 @@
                 <div class="description text-center">
                     <p> {{user.bio}} </p>
                 </div>
-				<div class="row">
-					<div class="col-md-6 ml-auto mr-auto">
-                        <div class="profile-tabs">
-                          <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#liks" role="tab" data-toggle="tab">
-                                    <i class="material-symbols-outlined">
-                                        thumb_up
-                                    </i>
-                                  Liks
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#disliks" role="tab" data-toggle="tab">
-                                    <i class="material-symbols-outlined">thumb_down</i>
-                                    Disliks
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#favorite" role="tab" data-toggle="tab">
-                                  <i class="material-icons">favorite</i>
-                                    Favorite
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#comments" role="tab" data-toggle="tab">
-                                  <i class="material-icons">comment</i>
-                                    Comments
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#edit-profile" role="tab" data-toggle="tab">
-                                  <i class="material-icons">edit</i>
-                                    Edit Profile
-                                </a>
-                            </li>
-                          </ul>
-                        </div>
-    	    	</div>
-            </div>
+                
+                {% block content %}
+                
+                {% endblock content%}
         
-          <div class="tab-content tab-space">
-            <div class="tab-pane active text-center gallery" id="liks">
-  				<div class="row">
-  					<div class="col-md-3 ml-auto">
-  					    <img src="#" class="rounded">
-  						<img src="#" class="rounded">
-  					</div>
-  					<div class="col-md-3 mr-auto">
-  						<img src="#" class="rounded">
-  						<img src="#" class="rounded">
-  					</div>
-  				</div>
-  			</div>
-            <div class="tab-pane text-center gallery" id="disliks">
-      			<div class="row">
-      				<div class="col-md-3 ml-auto">
-                      <img src="#" class="rounded">
-  					  <img src="#" class="rounded"> 
-  					  <img src="#" class="rounded">
-                    </div>
-      				<div class="col-md-3 mr-auto">
-                      <img src="#" class="rounded">
-                      <img src="#" class="rounded">
-      				</div>
-      			</div>
-  			</div>
-            <div class="tab-pane text-center gallery" id="favorite">
-      			<div class="row">
-      				<div class="col-md-3 ml-auto">
-      				  <img src="#" class="rounded">
-                      <img src="#" class="rounded">
-      				</div>
-      				<div class="col-md-3 mr-auto">
-      				  <img src="#" class="rounded">  					
-      				  <img src="#" class="rounded">
-  					  <img src="#" class="rounded">
-      			    </div>
-      			</div>
-      		</div>
-              <div class="tab-pane text-center gallery" id="comments">
-                <div class="row">
-                    <div class="col-md-3 ml-auto">
-                        <img src="#" class="rounded">
-                        <img src="#" class="rounded">
-                    </div>
-                    <div class="col-md-3 mr-auto">
-                      <img src="#" class="rounded">  					
-                      <img src="#" class="rounded">
-                      <img src="#" class="rounded">
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane text-center gallery" id="edit-profile">
-                <div class="row">
-                    <div class="col-md-3 ml-auto">
-                        <img src="#" class="rounded">
-                        <img src="#" class="rounded">
-                    </div>
-                    <div class="col-md-3 mr-auto">
-                      <img src="#" class="rounded">  					
-                      <img src="#" class="rounded">
-                      <img src="#" class="rounded">
-                    </div>
-                </div>
-            </div>
-          </div>
+
 
         
             </div>
         </div>
 	</div>
 	
-	<footer class="footer text-center ">
-    </footer>
- 
+    {% include 'user/_inc/footer.html' %}
     <script src="{{ url_for('static' , filename='assets/jquery/jquery.min.js') }}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
    
 
 </body>
-    {% include '_inc/flash-message.html' %}
-    {% block content %}{% endblock content %}
+    
+    
 {% endblock body %}
