@@ -1,10 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField , TextAreaField
 from wtforms.validators import DataRequired ,Length , ValidationError
-from utils.forms import MultipleCheckboxField
+from utils.forms import MultipleCheckboxField , _get_fields
 
 from mod_blog.models import Post , Category
-from mod_user.froms import _get_fields
 
 class PostForm(FlaskForm):
     title = StringField( label='Title' , validators=[DataRequired()])
