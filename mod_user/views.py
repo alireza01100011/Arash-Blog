@@ -9,11 +9,11 @@ from app import db , becrypt
 
 @user.route('/')
 def _index():
-    return redirect(url_for('user.index'))
+    return redirect(url_for('user.profile'))
 
 @user.route('profile/')
 @login_required
-def index():
+def profile():
     user = current_user
     return render_template('user/index.html' , title='User' , user=user)
 
