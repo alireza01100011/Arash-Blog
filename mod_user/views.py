@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
 from mod_user.utils import refute_only_view , refute_only_view_except_admin
-from mod_user.froms import RegisterForm , LoginForm
+from mod_user.froms import RegisterForm , LoginForm , EditProfileForm
 from mod_blog.models import User
 from app import db , becrypt 
 
@@ -14,8 +14,14 @@ def _index():
 @user.route('profile/')
 @login_required
 def profile():
+    form = EditProfileForm()
     user = current_user
-    return render_template('user/index.html' , title='User' , user=user)
+    form.fullname.data = user.full_name
+    form.email.data = user.email
+    form.password.data = '*' * 8
+    form.confirm_password.data = '*' * 8
+    form.bio.data = ''
+    return render_template('user/index.html' , title='User' , user=user , form=form )
 
 
 
