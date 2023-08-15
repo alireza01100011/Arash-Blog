@@ -3,19 +3,12 @@ from flask_wtf.file import FileAllowed , FileRequired
 from wtforms import StringField , FileField
 from wtforms.validators import DataRequired , ValidationError
 
-from mod_blog.forms  import _get_fields
+from utils.forms  import _get_fields , formats
 
 from mod_blog.models import File
 from mod_blog.models import Madie
 
-formats = {
-    'image' : ['jpg' , 'jpeg' , 'png' , 'webp' , 'gif' , 'svg'],
-    'audio' : ['mp3' , 'oog'  , 'aac' , 'wav'] ,
-    'video' : ['mp4' , 'wmv' , 'webm'],
-    'exe' : ['exe' , 'apk' , 'bash'],
-    'compressed' : ['zip' , 'rar' , 'gz' , 'tar' , '7z'],
-    'document' : ['txt' , 'log' , 'pdf' , 'html' , 'xls' , 'xlsx' , 'odt' , 'PPT' , 'PPTX']
-}
+
 
 
 class FileForm(FlaskForm):
