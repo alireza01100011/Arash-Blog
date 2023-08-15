@@ -21,7 +21,7 @@ def profile():
     form.email.data = user.email
     form.password.data = '*' * 8
     form.confirm_password.data = '*' * 8
-    form.bio.data = ''
+    form.bio.data = user.bio or ''
     return render_template('user/index.html' , title='User' , user=user , form=form , tab=tab)
 
 

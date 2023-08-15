@@ -92,6 +92,7 @@ class User(db.Model , UserMixin):
     full_name = Column(String(128) , nullable=False , unique=False)
     email = Column(String(128) , nullable=False , unique=True)
     password = Column(String(128) , nullable=False , unique=False)
+    bio = Column(String(256) , nullable=True , unique=False)
     role = Column(Integer , nullable=False , unique=False)
     image_id = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
     posts = db.relationship('Post' , backref='author')
