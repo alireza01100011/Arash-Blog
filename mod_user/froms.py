@@ -58,15 +58,17 @@ class EditProfileForm(FlaskForm):
     password = StringField('Password' , validators=[])
     confirm_password = StringField('Confirm Password' , 
                                    validators=[ EqualTo('password' , message='Password Must Match')])
-    bio = TextAreaField(label='Biography' , validators=[Length(10,256)])
+    bio = TextAreaField(label='Biography' , validators=[Length(0,256)])
     profile_image = FileField( label= 'Profile Image',
                               validators=[
                                   FileAllowed(formats['image'] , message='This file extension is not supported')
                               ]
     )
     
-
+    _user = None
     def validate_email(self , email):
+        if self._user != None and email.data == self._user.email :
+            return
         _ = User.query.filter(User.email.ilike(f'{email.data}')).first()
         if _ :
             raise ValidationError('This Email Already Exists')
