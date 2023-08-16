@@ -104,7 +104,7 @@ def login():
         user = User.query.filter(User.email.ilike(f'{form.email.data}')).first()
         login_user(user , remember=form.remember.data)
         flash('You have successfully logged in' , 'info')
-        return redirect(url_for('user.index'))
+        return redirect(url_for('user.profile' , tab='edit-profile'))
 
     return render_template('user/login.html' , title='Login' , form=form)
 
