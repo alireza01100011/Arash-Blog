@@ -64,19 +64,20 @@ def edit_profile():
         image_profile = request.files['profile_image']
         if image_profile :
             filename = CreateFileName(form.profile_image.data.filename)
-            NewProfileImage = ImageProfile()
-            NewProfileImage.filename = filename
+
+            if not user.image == 0 :
+                image_profile = ImageProfile.query.get(int(user.image.id))
+                os.remove(os.path.join('static/img_profile' , image_profile.filename ))
+                image_profile.filename  = filename
+
+            if user.image == 0 :
+                image_profile = ImageProfile()
+                image_profile.filename = filename
+                db.session.add(image_profile)
+
+            user.image = image_profile
             
-
-            if user.image != 0 :
-                _ = ImageProfile.query.get(int(user.image.id))
-                os.remove(os.path.join('static/img_profile' , _.filename ))
-                db.session.delete(_)
-                db.session.commit()
-
-            user.image = NewProfileImage
-            db.session.add(NewProfileImage)
-            db.session.commit()
+            
             image_profile.save(os.path.join('static/img_profile' , filename))
             flash('File uploaded successfully')
         
