@@ -120,17 +120,21 @@ def register():
         NewUser = User(
             form.fullname.data , form.email.data ,
             becrypt.generate_password_hash(form.password.data) ,
-            ImageProfile.query.get(1)
+            0
 
             )
-        
+        NewUser.image = ImageProfile.query.get(1)
+
         try :
             db.session.add(NewUser)
             db.session.commit()
             flash('Your account has been created successfully')
             # To create a new user by admin
-            if current_user.role == 1 : 
-                return redirect(url_for('admin.user_edit' , user_id = NewUser.id ))
+            try :
+                if current_user.role == 1 : 
+                    return redirect(url_for('admin.user_edit' , user_id = NewUser.id ))
+            except AttributeError :
+                pass
             return redirect(url_for('user.login'))
         except IntegrityError:
             db.session.rollback()
