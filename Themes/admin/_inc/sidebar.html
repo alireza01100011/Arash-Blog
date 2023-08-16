@@ -7,11 +7,8 @@
       <li class="nav-item nav-profile">
         <a href="#" class="nav-link">
           <div class="nav-profile-image">
-            {% if current_user.image == 0 or not current_user.image %}
-            <img style="background-color: #ffff;margin-top:-5px;" src="{{ url_for('static' , filename='images/default-profile.svg') }}" alt="image">
-              {% else %}
-              <p>User image display is not implemented</p>
-            {% endif %}
+            <img style="background-color: #ffff;margin-top:-5px;" src="{{ url_for('static' , filename='img_profile/' + current_user.image.filename) }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+
             <span class="login-status online"></span>
             <!--change to offline or busy as needed-->
           </div>
