@@ -8,22 +8,55 @@ from mod_blog.models import User
 from app import db , becrypt 
 
 @user.route('/')
-def _index():
+def index():
     return redirect(url_for('user.profile'))
 
-@user.route('profile/')
+@user.route('profile/' )
 @login_required
 def profile():
     form = EditProfileForm()
     tab = request.args.get('tab' , default='like' , type=str)
-    user = current_user
-    form.fullname.data = user.full_name
-    form.email.data = user.email
-    form.password.data = '*' * 8
-    form.confirm_password.data = '*' * 8
-    form.bio.data = user.bio or ''
-    return render_template('user/index.html' , title='User' , user=user , form=form , tab=tab)
+    user =  User.query.get(current_user.id)
 
+    return render_template('user/profile.html' , title='User' , user=user , form=form , tab=tab)
+
+@user.route('profile/edit-profile' , methods=['GET' , 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    user = User.query.get(current_user.id)
+    form._user = user
+    if request.method == 'GET':
+        form.fullname.data = user.full_name
+        form.email.data = user.email
+        form.old_password.data = '*' * 8
+        form.password.data = '*' * 8
+        form.confirm_password.data = '*' * 8
+        form.bio.data = user.bio or ''
+    if request.method == 'POST':
+        if not form.validate_on_submit() :
+            flash('Validation failed' , 'danger')    
+            render_template('user/_edit-profile.html' , form=form)
+        
+        user.full_name = form.fullname.data
+        user.email = form.email.data
+        user.bio = form.bio.data
+        print(form.fullname.data)
+        if form.old_password.data != '*' * 8 and form.password.data != '*' * 8 and  form.confirm_password.data != '*' * 8:
+            if not becrypt.check_password_hash(user.password , form.old_password.data):
+                flash('The password is not valid' , 'danger')
+                render_template('user/_edit-profile.html' , form=form)
+            
+        user.password = becrypt.generate_password_hash(form.password.data)
+        
+        try :
+            db.session.commit()
+            flash('Your profile information has been successfully edited' , 'success')
+        except :
+            db.session.rollback()
+            flash('The operation failed. Please try again later' , 'danger')
+    
+    return render_template('user/_edit-profile.html' , form=form)
 
 
 @user.route('login/' , methods=['GET' , 'POST'])

@@ -1,4 +1,4 @@
-{% extends "user/base.html" %}
+{% extends "user/base-profile.html" %}
 
 {% block content %}
 <div class="row">
@@ -75,46 +75,10 @@
     <div class="tab-pane {{ 'active' if tab == 'edit-profile' }} gallery" id="edit-profile">
           <div class="card">
                   <div class="card-body">
+                    
                     <h4 class="card-title">Profile </h4>
                     <p class="card-description">Edit Profile</p>
-                    <form class="forms-sample">
-                      {% include '_inc/form_error_msg.html' %}
-                      {{form.hidden_tag()}}
-
-                      <div class="form-group">
-                        {{ form.fullname.label }}
-                        {{ form.fullname(class='form-control') }}
-                      </div>
-                      <div class="form-group">
-                        {{ form.email.label }}
-                        {{ form.email(class='form-control') }}
-                      </div>
-                      <div class="form-group">
-                        {{ form.old_password.label }}
-                        {{ form.old_password(class='form-control') }}
-                      </div>
-                      <div class="form-group">
-                        {{ form.password.label }}
-                        {{ form.password(class='form-control') }}
-                      </div>
-                      <div class="form-group">
-                        {{ form.confirm_password.label }}
-                        {{ form.confirm_password(class='form-control') }}
-                      </div>
-                      <div class="form-group">
-                        {{ form.bio.label }}
-                        {{ form.bio(class='form-control') }}
-                      </div>
-                      <div class="form-group">
-                        {{ form.profile_image.label }}
-                        <div class="custom-file">
-                          {{ form.profile_image(class="custom-file-input" )}} 
-                          <label class="custom-file-label" for="inputGroupFile01" style="margin-top:2px;">{{ form.profile_image.label.text }}</label>
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-primary mr-2"> Submit </button>
-                      <a  href="{{ url_for('user.profile') }}" class="btn btn-light">Cancel</a>
-                    </form>
+                    <iframe src="{{url_for('user.edit_profile')}}" frameborder="0" width="100%" height="1000px"></iframe>
                   </div>
                 </div>
         
