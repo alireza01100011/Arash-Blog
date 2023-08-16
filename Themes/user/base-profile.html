@@ -29,11 +29,7 @@
 	                <div class="col-md-6 ml-auto mr-auto">
         	           <div class="profile">
 	                        <div class="avatar">
-                                {% if current_user.image == 0 or not current_user.image %}
-	                                <img style="background-color: rgb(255, 255, 255);" src="{{ url_for('static' , filename='images/default-profile.svg') }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
-                                {% else %}
-                                    <img style="background-color: rgb(255, 255, 255);" src="{{ url_for('static' , filename='img_profile/' + current_user.image.filename) }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
-                                {% endif %}
+                                <img style="background-color: rgb(255, 255, 255);" src="{{ url_for('static' , filename='img_profile/' + current_user.image.filename) }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
                             </div>
 	                        <div class="name">
 	                            <h3 class="title">{{user.full_name}}</h3>

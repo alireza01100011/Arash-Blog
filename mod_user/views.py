@@ -120,7 +120,8 @@ def register():
         NewUser = User(
             form.fullname.data , form.email.data ,
             becrypt.generate_password_hash(form.password.data) ,
-            0
+            ImageProfile.query.get(1)
+
             )
         
         try :
