@@ -4,8 +4,20 @@ from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
 from mod_user.utils import refute_only_view , refute_only_view_except_admin
 from mod_user.froms import RegisterForm , LoginForm , EditProfileForm
-from mod_blog.models import User
+from mod_blog.models import User , ImageProfile
 from app import db , becrypt 
+
+import os
+import uuid
+
+def CreateFileName(filename):
+    _totla_test = 0
+    while True :
+        _totla_test += 1
+        filename = f'{uuid.uuid1()}_{filename}'
+        _ = ImageProfile.query.filter(ImageProfile.filename.ilike(f'{filename}')).first()
+        if not _ : return filename
+        if _totla_test == 256 : return False
 
 @user.route('/')
 def index():
@@ -41,7 +53,7 @@ def edit_profile():
         user.full_name = form.fullname.data
         user.email = form.email.data
         user.bio = form.bio.data
-        print(form.fullname.data)
+        
         if form.old_password.data != '*' * 8 and form.password.data != '*' * 8 and  form.confirm_password.data != '*' * 8:
             if not becrypt.check_password_hash(user.password , form.old_password.data):
                 flash('The password is not valid' , 'danger')
@@ -49,6 +61,26 @@ def edit_profile():
             
         user.password = becrypt.generate_password_hash(form.password.data)
         
+        image_profile = request.files['profile_image']
+        if image_profile :
+            filename = CreateFileName(form.profile_image.data.filename)
+            NewProfileImage = ImageProfile()
+            NewProfileImage.filename = filename
+            
+
+            if user.image != 0 :
+                _ = ImageProfile.query.get(int(user.image.id))
+                os.remove(os.path.join('static/img_profile' , _.filename ))
+                db.session.delete(_)
+                db.session.commit()
+
+            user.image = NewProfileImage
+            db.session.add(NewProfileImage)
+            db.session.commit()
+            image_profile.save(os.path.join('static/img_profile' , filename))
+            flash('File uploaded successfully')
+        
+
         try :
             db.session.commit()
             flash('Your profile information has been successfully edited' , 'success')
