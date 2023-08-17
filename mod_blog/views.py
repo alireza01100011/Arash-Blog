@@ -6,6 +6,10 @@ def index():
     return render_template('blog/index.html')
 
 
-@blog.route('/author')
+@blog.route('author/')
 def author():
     return render_template('blog/author.html')
+
+@blog.route('post/')
+def post():
+    return render_template('blog/post.html')
