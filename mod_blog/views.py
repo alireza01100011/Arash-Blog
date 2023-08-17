@@ -4,3 +4,8 @@ from mod_blog import blog
 @blog.route('/')
 def index():
     return render_template('blog/index.html')
+
+
+@blog.route('/author')
+def author():
+    return render_template('blog/author.html')
