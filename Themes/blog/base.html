@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static' , filename='blog/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static' , filename='blog/assets/css/mediumish.css') }}" rel="stylesheet">
+{% endblock head %}
+
+
+{% block body %}
+    {% include 'blog/_inc/navbar.html' %}
+
+    {% block content %} {% endblock content%}
+
+    {% include 'blog/_inc/footer.html' %}
+
+    <script src="{{ url_for('static' , filename='blog/assets/js/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static' , filename='blog/assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static' , filename='blog/assets/js/ie10-viewport-bug-workaround.js') }}"></script>
+{% endblock body %}
