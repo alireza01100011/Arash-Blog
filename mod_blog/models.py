@@ -33,7 +33,7 @@ class Post(db.Model):
     summary = Column(String(256) , nullable=True , unique=True)
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
-    
+    read_time = Column(Integer , nullable=True , unique=False)
     views = Column(Integer , nullable=False , unique=False , default=0)
     total_liks = Column(Integer , default=0 , unique=False , nullable=True)
     total_disliks = Column(Integer , default=0 , unique=False , nullable=True)
