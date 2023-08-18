@@ -65,7 +65,7 @@ def edit_profile():
         if request_image_profile :
             filename = CreateFileName(form.profile_image.data.filename)
 
-            if not user.image == 0 :
+            if not user.image.id == 1 :
                 image_profile = ImageProfile.query.get(int(user.image.id))
                 try : 
                     os.remove(os.path.join('static/img_profile' , image_profile.filename ))
@@ -73,7 +73,7 @@ def edit_profile():
                     pass
                 image_profile.filename  = filename
 
-            if user.image == 0 :
+            if user.image.id == 1 :
                 image_profile = ImageProfile()
                 image_profile.filename = filename
                 db.session.add(image_profile)
@@ -82,9 +82,7 @@ def edit_profile():
             
             
             request_image_profile.save(os.path.join('static/img_profile' , filename))
-            flash('File uploaded successfully')
-        
-
+    
         try :
             db.session.commit()
             flash('Your profile information has been successfully edited' , 'success')
