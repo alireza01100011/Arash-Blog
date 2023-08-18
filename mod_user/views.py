@@ -61,13 +61,16 @@ def edit_profile():
             
         user.password = becrypt.generate_password_hash(form.password.data)
         
-        image_profile = request.files['profile_image']
-        if image_profile :
+        request_image_profile = request.files['profile_image']
+        if request_image_profile :
             filename = CreateFileName(form.profile_image.data.filename)
 
             if not user.image == 0 :
                 image_profile = ImageProfile.query.get(int(user.image.id))
-                os.remove(os.path.join('static/img_profile' , image_profile.filename ))
+                try : 
+                    os.remove(os.path.join('static/img_profile' , image_profile.filename ))
+                except FileNotFoundError :
+                    pass
                 image_profile.filename  = filename
 
             if user.image == 0 :
@@ -78,7 +81,7 @@ def edit_profile():
             user.image = image_profile
             
             
-            image_profile.save(os.path.join('static/img_profile' , filename))
+            request_image_profile.save(os.path.join('static/img_profile' , filename))
             flash('File uploaded successfully')
         
 
