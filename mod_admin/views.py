@@ -29,7 +29,10 @@ def post_create():
     
     categories = Category.query.order_by(Category.id.asc()).all()
     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
-
+    
+    if request.method == 'GET':
+        form.read_time.data = 0
+    
     if request.method == 'POST':
         if not form.validate_on_submit():
             return render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
@@ -41,7 +44,7 @@ def post_create():
             slug=form.slug.data,
             image=1 # -> temporarily until the completion of the blueprint (media)
         )
-        
+        NewPost.read_time = int(form.read_time.data)
         NewPost.author = current_user
         NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
 

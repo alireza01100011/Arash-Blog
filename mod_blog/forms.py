@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField , TextAreaField
+from wtforms import StringField , TextAreaField , IntegerField
 from wtforms.validators import DataRequired ,Length , ValidationError
 from utils.forms import MultipleCheckboxField , _get_fields
 
@@ -10,6 +10,7 @@ class PostForm(FlaskForm):
     content = TextAreaField(label='Content' , validators=[DataRequired()])
     summary = StringField(label='Summary' , validators=[])
     slug = StringField('Slug' , validators=[DataRequired()])
+    read_time = IntegerField('Read Time /M')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
     
     _post = None 
