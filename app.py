@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_ckeditor import CKEditor
 from config import config
+
 
 app = Flask(__name__ , template_folder='Themes')
 app.config.from_object(config)
@@ -18,6 +20,8 @@ login_manager.login_message = 'first Login'
 login_manager.login_message_category = 'info'
 
 becrypt = Bcrypt(app)
+
+ckeditor = CKEditor(app)
 
 from views import *
 
