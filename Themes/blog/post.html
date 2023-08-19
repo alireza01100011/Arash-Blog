@@ -53,7 +53,7 @@
 							<a href="author.html"><img class="author-thumb" src="{{ url_for('static' , filename = 'img_profile/' + post.author.image.filename) }}" alt="Sal"></a>
 						</div>
 						<div class="col-md-10">
-							<a class="link-dark" href="author.html">Sal</a><a href="#" class="btn follow">Follow</a>
+							<a class="link-dark" href="author.html">{{ post.author.full_name }}</a><a href="#" class="btn follow">Follow</a>
 							<br>
 							<span class="author-description">{{post.summary}}</span>
 							<br>
