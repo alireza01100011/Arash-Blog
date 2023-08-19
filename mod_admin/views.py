@@ -45,7 +45,10 @@ def post_create():
             slug=form.slug.data,
             image=1 # -> temporarily until the completion of the blueprint (media)
         )
-        NewPost.read_time = int(form.read_time.data)
+        if form.read_time.data == 0 :
+            NewPost.read_time = readin_time(str(form.content.data))
+        else :
+            NewPost.read_time = int(form.read_time.data)
         NewPost.author = current_user
         NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
 
@@ -87,7 +90,10 @@ def post_edit(post_id):
         post.content = form.content.data
         post.slug = form.slug.data
         post.summary = form.summary.data
-        post.read_time = form.read_time.data
+        if form.read_time.data == 0 :
+            post.read_time = readin_time(str(form.content.data))
+        else :
+            post.read_time = int(form.read_time.data)
         post.categories = [Category.query.get(_) for _ in form.categories.data]
 
         try :

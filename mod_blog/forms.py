@@ -10,7 +10,7 @@ class PostForm(FlaskForm):
     content = TextAreaField(label='Content' , validators=[DataRequired()])
     summary = StringField(label='Summary' , validators=[])
     slug = StringField('Slug' , validators=[DataRequired()])
-    read_time = IntegerField('Read Time /M')
+    read_time = IntegerField('Read Time /M ( If the value is 0, it is calculated automatically )')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
     
     _post = None 
