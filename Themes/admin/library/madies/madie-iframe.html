@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static' , filename='static/assets/bootstrap/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static' , filename='admin/assets/css/style.css') }}" />
+    <style>
+        .img-file{
+            margin: 0 0 10px 40px;
+            width: 150px;
+            height:150px ;
+            border-radius: 5px;
+        }
+        .copy-link{
+            display: inline;
+            margin-left: 60px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    {% for madie in madies %}
+        {% set format = madie.filename.split('.')[-1] %}
+        {% if format in ['jpg' , 'jpeg' , 'png' , 'webp' , 'gif' , 'svg'] %}
+            <div class="col-sm-3" style="margin-bottom: 10px;">
+                <div class="card" >
+                <div class="card-body" style="padding: 0;">
+                    <img src="{{url_for('static' , filename='library/madies/' + madie.filename)}}" class="img-file" alt="{{madie.alt}}" title="{{madie.title}}">
+                    <br>
+                    <a onclick="myFunction()"  class="btn btn-primary copy-link" >Copy Link</a>
+
+                    <input type="text" hidden disabled value="{{url_for('static' , filename='library/madies/' + madie.filename , _external=True)}}" id="myInput">
+
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+<script>
+    function myFunction() {
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+      }
+</script>
+{% endblock body %}

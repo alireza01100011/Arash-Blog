@@ -144,17 +144,20 @@ def madie_get(madie_id):
     return send_file(os.path.join('static/library/madies/' , madie.filename))
 
 
-
 # Show Madies
 @library_admin.route('madies/')
 def madie_show():
     madie_type = request.args.get('type' , default='all' , type=str)
     per_page = request.args.get('n' , default=30 , type=int)
+    return_type = request.args.get('iframe' , default='false' , type=str)
     page = request.args.get('p' , default=1 , type=int)
 
     madies = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
-    return render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)
+    if return_type == 'false' :
+        return render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)
+    else : 
+        return render_template('admin/library/madies/madie-iframe.html' , madies = madies)
 
 
 # Upload Madie
@@ -185,7 +188,7 @@ def madie_upload():
             db.session.commit()
             file.save(os.path.join('static/library/madies' , filename))
             flash('Media upload was successful')
-            return redirect(url_for('admin.library.madie_show'))
+            return redirect(url_for('admin.library_admin.madie_show'))
         except :
             db.session.rollback()
             flash('Media upload failed' , 'danger')
