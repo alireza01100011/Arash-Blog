@@ -5,6 +5,7 @@ from mod_admin import admin
 from mod_blog.models import Post , Category , User , File
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
+from utils.calculation import readin_time
 from app import db 
 
 @admin.route('/')
@@ -75,6 +76,7 @@ def post_edit(post_id):
         form.content.data = post.content
         form.slug.data = post.slug
         form.summary.data = post.summary
+        form.read_time.data = post.read_time
         form.categories.data = [category.id for category in post.categories]
 
     if request.method == 'POST':
@@ -85,6 +87,7 @@ def post_edit(post_id):
         post.content = form.content.data
         post.slug = form.slug.data
         post.summary = form.summary.data
+        post.read_time = form.read_time.data
         post.categories = [Category.query.get(_) for _ in form.categories.data]
 
         try :
