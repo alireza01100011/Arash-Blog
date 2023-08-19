@@ -1,16 +1,17 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField , TextAreaField , IntegerField
+from wtforms import StringField , TextAreaField , FloatField
 from wtforms.validators import DataRequired ,Length , ValidationError
+from flask_ckeditor import CKEditorField
 from utils.forms import MultipleCheckboxField , _get_fields
 
 from mod_blog.models import Post , Category
 
 class PostForm(FlaskForm):
     title = StringField( label='Title' , validators=[DataRequired()])
-    content = TextAreaField(label='Content' , validators=[DataRequired()])
+    content = CKEditorField(label='Content' , validators=[DataRequired()])
     summary = StringField(label='Summary' , validators=[])
     slug = StringField('Slug' , validators=[DataRequired()])
-    read_time = IntegerField('Read Time /M ( If the value is 0, it is calculated automatically )')
+    read_time = FloatField('Read Time /M ( If the value is 0, it is calculated automatically )')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
     
     _post = None 
