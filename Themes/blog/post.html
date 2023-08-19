@@ -79,10 +79,9 @@
 				<!-- Begin Tags -->
 				<div class="after-post-tags">
 					<ul class="tags">
-						<li><a href="#">Design</a></li>
-						<li><a href="#">Growth Mindset</a></li>
-						<li><a href="#">Productivity</a></li>
-						<li><a href="#">Personal Growth</a></li>
+						{% for category in post.categories %}
+							<li><a href="#">{{category.name}}</a></li>
+						{% endfor %}
 					</ul>
 				</div>
 				<!-- End Tags -->
