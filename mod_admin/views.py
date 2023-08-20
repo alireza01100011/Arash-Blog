@@ -75,9 +75,16 @@ def post_edit(post_id):
     form = PostForm()
     
     post = Post.query.get_or_404(int(post_id))
+    page =  request.args.get('page-image' , default=1 , type=int)
+    _imag_madie = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page = 30 , error_out = False )
+    imag_madie = [ img for img in _imag_madie.items if img.filename.split('.')[-1] in (formats['image']) ]
+
     form._post = post
     categories = Category.query.order_by(Category.id.asc()).all()
     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
+    form.image.choices = [(img.id , img ) for img in imag_madie]
+
+    img = Madie.query.get(int(post.image)).filename
 
     if request.method == 'GET' :
         form.title.data = post.title
@@ -86,15 +93,18 @@ def post_edit(post_id):
         form.summary.data = post.summary
         form.read_time.data = post.read_time
         form.categories.data = [category.id for category in post.categories]
+        form.image.data = [post.image]
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post)
+            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post , img=img)
         
         post.title = form.title.data
         post.content = form.content.data
         post.slug = form.slug.data
         post.summary = form.summary.data
+        post.image = int(form.image.data)
+
         if form.read_time.data == 0 :
             post.read_time = readin_time(str(form.content.data))
         else :
@@ -109,7 +119,7 @@ def post_edit(post_id):
             db.session.rollback()
             flash('Post could not be edit successfully')
 
-    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post)
+    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post , img=img)
 
 
 
