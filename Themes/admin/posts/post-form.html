@@ -65,16 +65,16 @@
             </div>
 
             
-            {{form.featured.label}}
+            {{form.special.label}}
             <div class="card" style="width: 100%;">
                 <div class="card-body form-inline">
                     <div class="col-md-13">
                         <div class="form-group">
-                            {% for featured in form.featured.choices %}
+                            {% for special in form.special.choices %}
 
                                 <div class="form-check form-check-primary" style="margin: 20px;">
-                                    <label class="form-check-label" for="featured-{{featured[0] - 1}}">
-                                    <input id="featured-{{featured[0] - 1}}" value="{{featured[0]}}" name="featured" type="radio" class="form-check-input" {% if form.featured.data %}{% if featured[0] == form.featured.data %} checked {% endif %}{% endif %}> {{featured[1]}} <i class="input-helper"></i></label>
+                                    <label class="form-check-label" for="special-{{special[0] - 1}}">
+                                    <input id="special-{{special[0] - 1}}" value="{{special[0]}}" name="special" type="radio" class="form-check-input" {% if form.special.data %}{% if special[0] == form.special.data %} checked {% endif %}{% endif %}> {{special[1]}} <i class="input-helper"></i></label>
                                 </div>
                                 <br>
                             {% endfor %}

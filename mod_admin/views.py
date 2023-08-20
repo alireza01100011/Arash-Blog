@@ -37,7 +37,7 @@ def post_create():
     
     if request.method == 'GET':
         form.read_time.data = 0
-        form.featured.data = 1
+        form.special.data = 1
         
     
     if request.method == 'POST':
@@ -50,7 +50,7 @@ def post_create():
             summary=form.summary.data,
             slug=form.slug.data,
             image= int(form.image.data),
-            featured = int(form.featured.data)
+            special = int(form.special.data)
         )
 
         if form.read_time.data == 0 :
@@ -96,7 +96,7 @@ def post_edit(post_id):
         form.read_time.data = post.read_time
         form.categories.data = [category.id for category in post.categories]
         form.image.data = [post.image]
-        form.featured.data = post.featured
+        form.special.data = post.special
 
     if request.method == 'POST':
         if not form.validate_on_submit():
@@ -107,7 +107,7 @@ def post_edit(post_id):
         post.slug = form.slug.data
         post.summary = form.summary.data
         post.image = int(form.image.data)
-        post.featured = form.featured.data
+        post.special = form.special.data
         if form.read_time.data == 0 and form.read_time.data == 0.0 :
             post.read_time = readin_time(str(form.content.data))
         else :

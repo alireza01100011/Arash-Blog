@@ -34,7 +34,7 @@ class Post(db.Model):
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
     read_time = Column(Float , nullable=True , unique=False)
-    featured = Column(Integer , default=0 , unique=False)
+    special = Column(Integer , default=0 , unique=False)
     views = Column(Integer , nullable=False , unique=False , default=0)
     total_liks = Column(Integer , default=0 , unique=False , nullable=True)
     total_disliks = Column(Integer , default=0 , unique=False , nullable=True)
@@ -50,13 +50,13 @@ class Post(db.Model):
     def __repr__(self):
         return f'{self.__class__.__name__} < {self.id} - {self.title[:24]} - {self.slug}> '
     
-    def __init__(self , title : str , content : str , summary : str , slug : str , image : int , featured : int ):
+    def __init__(self , title : str , content : str , summary : str , slug : str , image : int , special : int ):
         self.title = title
         self.content = content
         self.summary = summary
         self.slug = slug
         self.image = image
-        self.featured = featured
+        self.special = special
 
 
 

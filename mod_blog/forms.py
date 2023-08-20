@@ -13,8 +13,8 @@ class PostForm(FlaskForm):
     slug = StringField('Slug' , validators=[DataRequired()])
     read_time = FloatField('Read Time /M ( If the value is 0, it is calculated automatically )')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
-    featured = RadioField('Post Featured ' , choices= [(1 , 'NO') , (2 , 'YES')] , 
-                          validators=[DataRequired('Post type cannot be empty ( Post Featured )')])
+    special = RadioField('Post special ' , choices= [(1 , 'NO') , (2 , 'YES')] , 
+                          validators=[DataRequired('Post type cannot be empty ( Post special )')])
     image = RadioField('Index Image' , validators=[DataRequired('Post Image cannot be empty ( Index Photo )')])
     _post = None 
     
