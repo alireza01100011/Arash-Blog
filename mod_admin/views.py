@@ -51,7 +51,7 @@ def post_create():
             summary=form.summary.data,
             slug=form.slug.data,
             image= int(form.image.data),
-            special = int(form.special.data)
+            special = int(form.special.data) - 1
         )
 
         if form.read_time.data == 0 :
@@ -108,7 +108,7 @@ def post_edit(post_id):
         post.slug = form.slug.data
         post.summary = form.summary.data
         post.image = int(form.image.data)
-        post.special = form.special.data
+        post.special = int(form.special.data) - 1
         post.time = datetime.now()
         if form.read_time.data == 0 and form.read_time.data == 0.0 :
             post.read_time = readin_time(str(form.content.data))
