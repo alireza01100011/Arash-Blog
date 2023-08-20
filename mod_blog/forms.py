@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField , TextAreaField , FloatField , SelectField , RadioField
+from wtforms import StringField , TextAreaField , FloatField  , RadioField
 from wtforms.validators import DataRequired ,Length , ValidationError
 from flask_ckeditor import CKEditorField
 from utils.forms import MultipleCheckboxField , _get_fields
@@ -13,8 +13,8 @@ class PostForm(FlaskForm):
     slug = StringField('Slug' , validators=[DataRequired()])
     read_time = FloatField('Read Time /M ( If the value is 0, it is calculated automatically )')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
-    featured = RadioField('Post Featured ' , choices=[(0 , 'NO') , (1 , 'YES')] , validators=[DataRequired('Post type cannot be empty ( Post Featured )')])
-    image = SelectField('Featured Image')
+    featured = RadioField('Post Featured ' , choices= [(1 , 'NO') , (2 , 'YES')] , validators=[DataRequired('Post type cannot be empty ( Post Featured )')])
+    image = RadioField('Featured Image')
     _post = None 
     
     def validate_title(self , title):
