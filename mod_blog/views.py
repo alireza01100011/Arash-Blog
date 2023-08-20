@@ -4,7 +4,9 @@ from mod_blog.models import Post , Madie , User
 
 @blog.route('/')
 def index():
-    return render_template('blog/index.html')
+    special_posts = Post.query.filter(Post.special.like(1)).order_by(Post.time.desc()).limit(4).all()
+    posts = Post.query.filter(Post.special.like(0)).order_by(Post.time.desc()).limit(6).all()
+    return render_template('blog/index.html' , title='Blog' , s_post = special_posts , posts=posts)
 
 @blog.route('authors/')
 def author_archive():
