@@ -108,7 +108,7 @@ def post_edit(post_id):
         post.summary = form.summary.data
         post.image = int(form.image.data)
         post.featured = form.featured.data
-        if form.read_time.data == 0 :
+        if form.read_time.data == 0 and form.read_time.data == 0.0 :
             post.read_time = readin_time(str(form.content.data))
         else :
             post.read_time = int(form.read_time.data)
