@@ -57,9 +57,11 @@
                 {{form.read_time(class='form-control' , placeholder=form.read_time.label.text)}}
             </div>
 
-            
+            <img class="rounded float-right" src="{{ url_for('static' , filename='library/madies/' + img) }}" width="80px" height="80px">
+            <br>
             {{form.image.label}}
-            <div class="card">
+
+            <div class="card" style="width: 100%;">
                 <div class="card-body form-inline">
                     <div class="col-md-13">
                         <div class="form-group">
