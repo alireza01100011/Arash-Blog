@@ -84,8 +84,6 @@ def post_edit(post_id):
     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
     form.image.choices = [(img.id , img ) for img in imag_madie]
 
-    img = Madie.query.get(int(post.image)).filename
-
     if request.method == 'GET' :
         form.title.data = post.title
         form.content.data = post.content
@@ -97,7 +95,7 @@ def post_edit(post_id):
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post , img=img)
+            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post )
         
         post.title = form.title.data
         post.content = form.content.data
@@ -119,7 +117,7 @@ def post_edit(post_id):
             db.session.rollback()
             flash('Post could not be edit successfully')
 
-    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post , img=img)
+    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post )
 
 
 

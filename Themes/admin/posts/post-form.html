@@ -56,8 +56,9 @@
                 {{form.read_time.label}}
                 {{form.read_time(class='form-control' , placeholder=form.read_time.label.text)}}
             </div>
-
-            <img class="rounded float-right" src="{{ url_for('static' , filename='library/madies/' + img) }}" width="80px" height="80px">
+            {% if not title == 'Create New Post' %}
+                <img class="rounded float-right" src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" width="80px" height="80px">
+            {% endif %}
             <br>
             {{form.image.label}}
 
