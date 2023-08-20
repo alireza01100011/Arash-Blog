@@ -64,6 +64,23 @@
                 {{form.read_time(class='form-control' , placeholder=form.read_time.label.text)}}
             </div>
 
+            {{form.featured.label}}
+            <div class="card" style="width: 100%;">
+                <div class="card-body form-inline">
+                    <div class="col-md-13">
+                        <div class="form-group">
+                            {% for featured in form.featured.choices %}
+                                <div class="form-check form-check-primary" style="margin: 20px;">
+                                    <label class="form-check-label" for="featured-{{featured[0] - 1}}">
+                                    <input id="featured-{{featured[0] - 1}}" value="{{featured[0]}}" name="featured" type="radio" class="form-check-input" {% if form.featured.data %}{% if featured[0] == form.featured.data %} checked {% endif %}{% endif %}> {{featured[1]}} <i class="input-helper"></i></label>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+
             <a href=" {{url_for('admin.library_admin.madie_upload')}} " target="_blank">
                 <button type="button"  class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Image </button> 
              </a>
@@ -81,7 +98,7 @@
                                 <div class="form-check form-check-primary" style="margin: 20px;">
                                     <label class="form-check-label" for="image-{{img[0] - 1}}">
                                     <img class="rounded " src="{{ url_for('static' , filename= 'library/madies/' + img[1].filename) }}" width="80px" height="80px"><br>
-                                    <input id="image-{{img[0] - 1}}" value="{{img[0]}}" name="image" type="radio" class="form-check-input" {% if form.image.data %}{% if img[0] in form.image.data %} checked {% endif %}{% endif %}> {{img[1].name}} <i class="input-helper"></i></label>
+                                    <input id="image-{{img[0] - 1}}" value="{{img[0]}}" name="image" type="radio" class="form-check-input" {% if form.image.data %}{% if img[0] == form.image.data %} checked {% endif %}{% endif %}> {{img[1].name}} <i class="input-helper"></i></label>
                                 </div>
                                 <br>
                             {% endfor %}
