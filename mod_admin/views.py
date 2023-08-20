@@ -9,6 +9,7 @@ from utils.calculation import readin_time
 from utils.forms import formats
 from app import db 
 
+from datetime import datetime
 @admin.route('/')
 def index():
     return render_template('admin/index.html' , title='Dashboard')
@@ -108,6 +109,7 @@ def post_edit(post_id):
         post.summary = form.summary.data
         post.image = int(form.image.data)
         post.special = form.special.data
+        post.time = datetime.now()
         if form.read_time.data == 0 and form.read_time.data == 0.0 :
             post.read_time = readin_time(str(form.content.data))
         else :
