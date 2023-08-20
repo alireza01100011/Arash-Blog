@@ -1,5 +1,11 @@
 {% extends "admin/base.html" %}
 
+
+{% block style %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{% endblock %}
+
 {% block content %}
 <div class="card">
     <div class="card-body">
@@ -51,6 +57,25 @@
                 {{form.read_time(class='form-control' , placeholder=form.read_time.label.text)}}
             </div>
 
+            
+            {{form.image.label}}
+            <div class="card">
+                <div class="card-body form-inline">
+                    <div class="col-md-13">
+                        <div class="form-group">
+                            {% for img in form.image.choices %}
+                                <div class="form-check form-check-primary" style="margin: 20px;">
+                                    <label class="form-check-label" for="image-{{img[0] - 1}}">
+                                    <img class="rounded " src="{{ url_for('static' , filename= 'library/madies/' + img[1].filename) }}" width="80px" height="80px"><br>
+                                    <input id="image-{{img[0] - 1}}" value="{{img[0]}}" name="image" type="radio" class="form-check-input" {% if form.image.data %}{% if img[0] in form.image.data %} checked {% endif %}{% endif %}> {{img[1].name}} <i class="input-helper"></i></label>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+
             {{form.categories.label}}
             <div class="card">
                 <div class="card-body form-inline">
@@ -79,4 +104,5 @@
         {{ ckeditor.config(name='content') }}
     </div>
 </div>
+
 {% endblock %}

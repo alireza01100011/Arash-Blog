@@ -2,10 +2,11 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_blog.models import Post , Category , User , File
+from mod_blog.models import Post , Category , User , Madie
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
 from utils.calculation import readin_time
+from utils.forms import formats
 from app import db 
 
 @admin.route('/')
@@ -27,12 +28,16 @@ def post_show():
 @admin.route('posts/create/' , methods=['GET' , 'POST'])
 def post_create():
     form = PostForm()
-    
+    page =  request.args.get('page-image' , default=1 , type=int)
+    _imag_madie = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page = 30 , error_out = False )
+    imag_madie = [ img for img in _imag_madie.items if img.filename.split('.')[-1] in (formats['image']) ]
     categories = Category.query.order_by(Category.id.asc()).all()
     form.categories.choices = [(cat.id , cat.name) for cat in categories] 
+    form.image.choices = [(img.id , img ) for img in imag_madie]
     
     if request.method == 'GET':
         form.read_time.data = 0
+        
     
     if request.method == 'POST':
         if not form.validate_on_submit():
@@ -51,7 +56,7 @@ def post_create():
             NewPost.read_time = int(form.read_time.data)
         NewPost.author = current_user
         NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
-
+        NewPost.image = int(form.image.data)
         try :
             db.session.add(NewPost)
             db.session.commit()
