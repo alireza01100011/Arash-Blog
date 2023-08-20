@@ -37,6 +37,7 @@ def post_create():
     
     if request.method == 'GET':
         form.read_time.data = 0
+        form.featured.data = 1
         
     
     if request.method == 'POST':
@@ -48,15 +49,18 @@ def post_create():
             content=form.content.data,
             summary=form.summary.data,
             slug=form.slug.data,
-            image=1 # -> temporarily until the completion of the blueprint (media)
+            image= int(form.image.data),
+            featured = int(form.featured.data)
         )
+
         if form.read_time.data == 0 :
             NewPost.read_time = readin_time(str(form.content.data))
         else :
             NewPost.read_time = int(form.read_time.data)
+        
         NewPost.author = current_user
         NewPost.categories = [Category.query.get(_) for _ in form.categories.data]
-        NewPost.image = int(form.image.data)
+
         try :
             db.session.add(NewPost)
             db.session.commit()
@@ -92,6 +96,7 @@ def post_edit(post_id):
         form.read_time.data = post.read_time
         form.categories.data = [category.id for category in post.categories]
         form.image.data = [post.image]
+        form.featured.data = post.featured
 
     if request.method == 'POST':
         if not form.validate_on_submit():
@@ -102,7 +107,7 @@ def post_edit(post_id):
         post.slug = form.slug.data
         post.summary = form.summary.data
         post.image = int(form.image.data)
-
+        post.featured = form.featured.data
         if form.read_time.data == 0 :
             post.read_time = readin_time(str(form.content.data))
         else :
