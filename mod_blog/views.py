@@ -15,6 +15,5 @@ def author():
 @blog.route('post/<string:slug>')
 def post(slug):
     post = Post.query.filter(Post.slug == slug).first()
-    img =  Madie.query.get(post.image).filename
 
-    return render_template('blog/post.html' , post=post , title=post.title , img=img)
+    return render_template('blog/post.html' , post=post , title=post.title )

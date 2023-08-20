@@ -71,7 +71,7 @@
 				</div>
 
 				<!-- Begin Featured Image -->
-				<img class="featured-image img-fluid" src="{{ url_for('static' , filename= 'library/madies/' + img) }}" alt="">
+				<img class="featured-image img-fluid" src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" alt="">
 				<!-- End Featured Image -->
 
 				<!-- Begin Post Content -->
