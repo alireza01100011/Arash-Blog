@@ -50,12 +50,13 @@ class Post(db.Model):
     def __repr__(self):
         return f'{self.__class__.__name__} < {self.id} - {self.title[:24]} - {self.slug}> '
     
-    def __init__(self , title : str , content : str , summary : str , slug : str , image : int ):
+    def __init__(self , title : str , content : str , summary : str , slug : str , image : int , featured : int ):
         self.title = title
         self.content = content
         self.summary = summary
         self.slug = slug
         self.image = image
+        self.featured = featured
 
 
 
