@@ -34,6 +34,7 @@ class Post(db.Model):
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
     read_time = Column(Float , nullable=True , unique=False)
+    featured = Column(Integer , default=0 , unique=False)
     views = Column(Integer , nullable=False , unique=False , default=0)
     total_liks = Column(Integer , default=0 , unique=False , nullable=True)
     total_disliks = Column(Integer , default=0 , unique=False , nullable=True)
