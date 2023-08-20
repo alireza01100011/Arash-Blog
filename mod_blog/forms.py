@@ -13,7 +13,7 @@ class PostForm(FlaskForm):
     slug = StringField('Slug' , validators=[DataRequired()])
     read_time = FloatField('Read Time /M ( If the value is 0, it is calculated automatically )')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
-    image = SelectField('Post Image')
+    image = SelectField('Featured Image')
     _post = None 
     
     def validate_title(self , title):
