@@ -13,8 +13,9 @@ class PostForm(FlaskForm):
     slug = StringField('Slug' , validators=[DataRequired()])
     read_time = FloatField('Read Time /M ( If the value is 0, it is calculated automatically )')
     categories = MultipleCheckboxField(label='Categories' , coerce=int)
-    featured = RadioField('Post Featured ' , choices= [(1 , 'NO') , (2 , 'YES')] , validators=[DataRequired('Post type cannot be empty ( Post Featured )')])
-    image = RadioField('Featured Image')
+    featured = RadioField('Post Featured ' , choices= [(1 , 'NO') , (2 , 'YES')] , 
+                          validators=[DataRequired('Post type cannot be empty ( Post Featured )')])
+    image = RadioField('Index Image' , validators=[DataRequired('Post Image cannot be empty ( Index Photo )')])
     _post = None 
     
     def validate_title(self , title):
