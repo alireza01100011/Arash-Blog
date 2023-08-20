@@ -82,14 +82,15 @@
                     </div>
                 </div>
             </div><br>
-
-            <a href=" {{url_for('admin.library_admin.madie_upload')}} " target="_blank">
-                <button type="button"  class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Image </button> 
-             </a>
             {% if not title == 'Create New Post' %}
                 <img class="rounded float-right" src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" width="80px" height="80px">
             {% endif %}
             <br>
+            
+            <a href=" {{url_for('admin.library_admin.madie_upload')}} " target="_blank">
+                <button type="button"  class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Image </button> 
+             </a>
+
             {{form.image.label}}
 
             <div class="card" style="width: 100%;">
