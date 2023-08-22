@@ -1,4 +1,4 @@
-from flask import render_template ,  redirect ,  request , abort
+from flask import render_template ,  redirect ,  request , abort ,url_for
 from mod_blog import blog
 from mod_blog.models import Post , Madie , User
 
@@ -25,7 +25,12 @@ def post_archive():
     page = request.args.get('page' , default=1 , type=int)
     posts = Post.query.order_by(Post.time.desc()).paginate(page=page , per_page=18 , error_out=False)
     return render_template('blog/archive.html' , title='Posts' , posts=posts , page=page)
-    return f'Archive of posts'
+
+@blog.route('p/<int:post_id>')
+def post_short_link(post_id):
+    post = Post.query.get_or_404(int(post_id))
+    return redirect(url_for('blog.post' , slug=post.slug))
+
 
 
 @blog.route('posts/<string:slug>')
