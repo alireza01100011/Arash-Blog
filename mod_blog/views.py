@@ -53,11 +53,15 @@ def like(post_id):
     post = Post.query.get(int(post_id))
     user = current_user
     if post in user.posts_disliked:
+        post.total_disliks -= 1
         user.posts_disliked.remove(post)
+    
     if not post in user.posts_liked :
+        post.total_liks += 1
         user.posts_liked.append(post)
     else :
         result = 1
+        post.total_liks -= 1
         user.posts_liked.remove(post)
     
     try :
@@ -80,12 +84,15 @@ def dislike(post_id):
     post = Post.query.get(int(post_id))
     user = current_user
     if post in user.posts_liked :
+        post.total_liks -= 1
         user.posts_liked.remove(post)
     
     if not post in user.posts_disliked :
+        post.total_disliks += 1
         user.posts_disliked.append(post)
     else : 
         result = 1
+        post.total_disliks -= 1
         user.posts_disliked.remove(post)
     
     try :
