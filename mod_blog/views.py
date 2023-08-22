@@ -64,7 +64,25 @@ def like(post_id):
     if request.method == 'POST':
         return f'{failed}'
 
+@blog.route('posts/dislike/<int:post_id>' , methods=['GET' , 'POST'])
+@login_required
+def dislike(post_id):
+    failed = 0
+    post = Post.query.get(int(post_id))
+    user = current_user
+    user.posts_disliked.append(post)
+    try :
+        db.session.commit()
+    except :
+        failed = 1
 
+    if request.method == 'GET':
+        if failed :
+            flash("This post was not disliked successfully" , 'danger')
+        return redirect(url_for('blog.post' , slug=post.slug))
+    if request.method == 'POST':
+        return f'{failed}'
+    
 @blog.route('posts/like/test')
 def likes():
     return render_template('blog/test-pys.html')
