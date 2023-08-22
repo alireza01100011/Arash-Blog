@@ -51,7 +51,13 @@ def like(post_id):
     failed = 0
     post = Post.query.get(int(post_id))
     user = current_user
-    user.posts_liked.append(post)
+    if post in user.posts_disliked:
+        user.posts_disliked.remove(post)
+    if not post in user.posts_liked :
+        user.posts_liked.append(post)
+    else :
+        user.posts_liked.remove(post)
+    
     try :
         db.session.commit()
     except :
@@ -70,7 +76,14 @@ def dislike(post_id):
     failed = 0
     post = Post.query.get(int(post_id))
     user = current_user
-    user.posts_disliked.append(post)
+    if post in user.posts_liked :
+        user.posts_liked.remove(post)
+    
+    if not post in user.posts_disliked :
+        user.posts_disliked.append(post)
+    else : 
+        user.posts_disliked.remove(post)
+    
     try :
         db.session.commit()
     except :
