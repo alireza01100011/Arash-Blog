@@ -1,6 +1,9 @@
-from flask import render_template ,  redirect ,  request , abort ,url_for
+from flask import render_template ,  redirect ,  request , abort ,url_for , flash
+from flask_login import login_required , current_user
 from mod_blog import blog
 from mod_blog.models import Post , Madie , User
+
+from app import db
 
 @blog.route('/')
 def index():
@@ -39,3 +42,29 @@ def post(slug):
 
     return render_template('blog/post.html' , post=post , title=post.title )
 
+
+# Like
+
+@blog.route('posts/like/<int:post_id>' , methods=['GET' , 'POST'])
+@login_required
+def like(post_id):
+    failed = 0
+    post = Post.query.get(int(post_id))
+    user = current_user
+    user.posts_liked.append(post)
+    try :
+        db.session.commit()
+    except :
+        failed = 1
+
+    if request.method == 'GET':
+        if failed :
+            flash("This post was not liked successfully" , 'danger')
+        return redirect(url_for('blog.post' , slug=post.slug))
+    if request.method == 'POST':
+        return f'{failed}'
+
+
+@blog.route('posts/like/test')
+def likes():
+    return render_template('blog/test-pys.html')

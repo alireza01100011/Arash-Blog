@@ -1,5 +1,17 @@
 {% extends "blog/base.html" %}
 
+{% block style %}
+	<style>
+		.style-buttons-actions{
+			margin:4px;padding:10px ;border:1px solid black; border-radius : 50%;
+		}
+		.style-buttons-actions:hover{
+			transition: background-color ease-in 250ms;
+			background-color: rgba(145, 139, 139, 0.616);
+		}
+	</style>
+{% endblock %}
+
 {% block content %}
 
 
@@ -89,12 +101,51 @@
 					</ul>
 				</div>
 				<!-- End Tags -->
+				<div style="text-align: center;">
 
+					{% if current_user.is_authenticated  %}
+						{% set like_color_i = "rgb(255,255,255)" %}
+						{% set like_color_a = "rgb(0 , 0 , 0)"%}
+						{%if post in current_user.posts_liked%}
+							{% set like_color_i = 'rgb(0 , 0 , 0)'%}
+							{% set like_color_a = 'rgb(255,255,255)'%}
+							like
+						{% endif %}
+						
+
+						<a href="{{ url_for('blog.like' , post_id = post.id) }}" id="like" style="color: {{like_color_a}};">
+							<i class="material-symbols-outlined style-buttons-actions" style="background-color: {{like_color_i}};">thumb_up</i>
+						</a>
+
+						{% set dislike_color_i = "rgb(255,255,255)" %}
+						{% set dislike_color_a = "rgb(0 , 0 , 0)"%}
+						{%if post in current_user.posts_disliked%}
+							{% set dislike_color_a = 'rgb(0 , 0 , 0)'%}
+							{% set dislike_color_i = 'rgb(255,255,255)'%}
+						{% endif %}
+						<a  href="#" id="dislike"   style="color: {{dislike_color_a}};">
+							<i class="material-symbols-outlined style-buttons-actions" style="background-color: {{dislike_color_i}};">thumb_down</i>
+						</a>
+
+					{% else %}
+						<a href="{{ url_for('blog.like' , post_id = post.id) }}" id="like" style="color: black;">
+							<i class="material-symbols-outlined style-buttons-actions" >thumb_up</i>
+						</a>
+						<a  href="#" id="dislike" style="color: black;">
+							<i class="material-symbols-outlined style-buttons-actions">thumb_down</i>
+						</a>
+					{% endif %}
+					<br><br><br>
+				</div>
 			</div>
 			<!-- End Post -->
 
 		</div>
+
 	</div>
+
+
+
 	<!-- End Article
 	================================================== -->
 
