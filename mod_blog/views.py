@@ -20,8 +20,11 @@ def author(user_id):
         return abort(404)
     return render_template('blog/author.html' , title= author.full_name , author = author)
 
-@blog.route('posts')
+@blog.route('posts/')
 def post_archive():
+    page = request.args.get('page' , default=1 , type=int)
+    posts = Post.query.order_by(Post.time.desc()).paginate(page=page , per_page=18 , error_out=False)
+    return render_template('blog/archive.html' , title='Posts' , posts=posts , page=page)
     return f'Archive of posts'
 
 
@@ -30,3 +33,4 @@ def post(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
 
     return render_template('blog/post.html' , post=post , title=post.title )
+
