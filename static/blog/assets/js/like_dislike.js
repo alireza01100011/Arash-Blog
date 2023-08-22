@@ -14,6 +14,14 @@ function color_dislike(){
     document.getElementById("dislike-i").style.backgroundColor = 'black';
 }
 
+function color_defult(){
+    document.getElementById("like-a").style.color = 'black';
+    document.getElementById("like-i").style.backgroundColor = '#ffff';
+
+    document.getElementById("dislike-a").style.color = 'black';
+    document.getElementById("dislike-i").style.backgroundColor = '#ffff';
+}
+
 function like(){
     const xhr = new XMLHttpRequest();
     var post_id = document.getElementById('like-a').getAttribute('value')
@@ -23,9 +31,15 @@ function like(){
     xhr.onload = () => {
       if (xhr.readyState == 4 && xhr.status == 200) {
         const data = xhr.response;
-        console.log('The post has been successfully liked');
-        Swal.fire("" , 'The post has been successfully liked');
-        color_like()
+        if (data == 0 ){
+          Swal.fire("" , 'The post has been successfully liked');
+          color_like();
+        }
+        else{
+          Swal.fire("" , 'The like has been successfully removed from this post');
+          color_defult();
+        }
+
       } else {
         console.log(`Error: ${xhr.status}`);
         Swal.fire("" , 'The post was not liked successfully');
@@ -42,9 +56,15 @@ function dislike(){
     xhr.onload = () => {
       if (xhr.readyState == 4 && xhr.status == 200) {
         const data = xhr.response;
-        console.log('The post has been successfully disliked');
-        Swal.fire("" , 'The post has been successfully disliked');
-        color_dislike()
+        if (data == 0){
+          Swal.fire("" , 'The post has been successfully disliked');
+          color_dislike();
+        }
+        else{
+          Swal.fire("" , 'Dislike has been successfully removed from this post');
+          color_defult();
+        }
+
       } else {
         console.log(`Error: ${xhr.status}`);
         Swal.fire("" , 'The post was not liked successfully');

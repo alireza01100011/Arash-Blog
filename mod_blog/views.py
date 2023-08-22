@@ -49,6 +49,7 @@ def post(slug):
 @login_required
 def like(post_id):
     failed = 0
+    result = 0
     post = Post.query.get(int(post_id))
     user = current_user
     if post in user.posts_disliked:
@@ -56,6 +57,7 @@ def like(post_id):
     if not post in user.posts_liked :
         user.posts_liked.append(post)
     else :
+        result = 1
         user.posts_liked.remove(post)
     
     try :
@@ -68,12 +70,13 @@ def like(post_id):
             flash("This post was not liked successfully" , 'danger')
         return redirect(url_for('blog.post' , slug=post.slug))
     if request.method == 'POST':
-        return f'{failed}'
+        return f'{result}'
 
 @blog.route('posts/dislike/<int:post_id>' , methods=['GET' , 'POST'])
 @login_required
 def dislike(post_id):
     failed = 0
+    result = 0
     post = Post.query.get(int(post_id))
     user = current_user
     if post in user.posts_liked :
@@ -82,6 +85,7 @@ def dislike(post_id):
     if not post in user.posts_disliked :
         user.posts_disliked.append(post)
     else : 
+        result = 1
         user.posts_disliked.remove(post)
     
     try :
@@ -94,7 +98,7 @@ def dislike(post_id):
             flash("This post was not disliked successfully" , 'danger')
         return redirect(url_for('blog.post' , slug=post.slug))
     if request.method == 'POST':
-        return f'{failed}'
+        return f'{result}'
     
 @blog.route('posts/like/test')
 def likes():
