@@ -10,6 +10,8 @@
 			background-color: rgba(145, 139, 139, 0.616);
 		}
 	</style>
+	<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src= "https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -113,7 +115,7 @@
 						{% endif %}
 						
 
-						<a href="{{ url_for('blog.like' , post_id = post.id) }}" id="like" style="color: {{like_color_a}};">
+						<a onclick="like({{post.id}})" id="like" style="color: {{like_color_a}};">
 							<i class="material-symbols-outlined style-buttons-actions" style="background-color: {{like_color_i}};">thumb_up</i>
 						</a>
 
@@ -123,7 +125,7 @@
 							{% set dislike_color_a = 'rgb(0 , 0 , 0)'%}
 							{% set dislike_color_i = 'rgb(255,255,255)'%}
 						{% endif %}
-						<a  href="#" id="dislike"   style="color: {{dislike_color_a}};">
+						<a  onclick="dislike({{post.id}})" id="dislike"   style="color: {{dislike_color_a}};">
 							<i class="material-symbols-outlined style-buttons-actions" style="background-color: {{dislike_color_i}};">thumb_down</i>
 						</a>
 
@@ -255,5 +257,38 @@
 	</div>
 	<!-- End AlertBar
 	================================================== -->
-
+	<script>
+		function like(post_id){
+			const xhr = new XMLHttpRequest();
+			xhr.open("POST", "http://127.0.0.1:5000/blog/posts/like/" + post_id);
+			xhr.send();
+			xhr.responseType = "json";
+			xhr.onload = () => {
+			  if (xhr.readyState == 4 && xhr.status == 200) {
+				const data = xhr.response;
+				console.log('The post has been successfully liked');
+				Swal.fire("" , 'The post has been successfully liked');
+			  } else {
+				console.log(`Error: ${xhr.status}`);
+				Swal.fire("" , 'The post was not liked successfully');
+			  }
+			};
+		}
+		function dislike(post_id){
+			const xhr = new XMLHttpRequest();
+			xhr.open("POST", "http://127.0.0.1:5000/blog/posts/dislike/" + post_id);
+			xhr.send();
+			xhr.responseType = "json";
+			xhr.onload = () => {
+			  if (xhr.readyState == 4 && xhr.status == 200) {
+				const data = xhr.response;
+				console.log('The post has been successfully liked');
+				Swal.fire("" , 'The post has been successfully liked');
+			  } else {
+				console.log(`Error: ${xhr.status}`);
+				Swal.fire("" , 'The post was not liked successfully');
+			  }
+			};
+		}
+	</script>
 {% endblock content %}
