@@ -9,7 +9,7 @@ def load_user(user_id):
 
 
 liks = Table('liks' , db.metadata ,
-    Column('user_id' , Integer , ForeignKey('users.id' , ondelete='cascade')),
+    Column('user_id' , Integer , ForeignKey('users.id' )),
     Column('post_id' , Integer , ForeignKey('posts.id' , ondelete='cascade')),
     Column('time' , DateTime , default=datetime.now)
 )
