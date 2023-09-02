@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static' , filename='blog/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static' , filename='blog/assets/css/mediumish.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />    {% block style %}{% endblock style%}
+
+    <style>
+        .margin-bottom-posts{
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row listrecent listrelated" style="max-width: 1000px; margin:0 auto">
+
+        {% for post in posts %}
+                <!-- begin post -->
+                <div class="col-md-4 margin-bottom-posts">
+                    <div class="card">
+                        <a href="post.html">
+                        <img class="img-fluid img-thumb" src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" alt="">
+                        </a>
+                        <div class="card-block">
+                            <h2 class="card-title"><a href="{{ url_for('blog.post' , slug=post.slug) }}">{{ post.title }}</a></h2>
+                            <div class="metafooter">
+                                <div class="wrapfooter">
+                                    <span class="meta-footer-thumb">
+                                    <a href="/blog/authors/1"><img class="author-thumb" src="{{ url_for('static' , filename = 'img_profile/' + post.author.image.filename) }}" alt="{{post.author.full_name}}"></a>
+                                    </span>
+                                    <span class="author-meta">
+                                    <span class="post-name"><a href="/blog/authors/1">{{ post.author.full_name }}</a></span><br>
+                                    <span class="post-date">{{ post.time.strftime('%d %B %Y') }}</span><span class="dot"></span><span class="post-read">{{ post.read_time }} min read</span>
+                                    </span>
+                                    <span class="post-read-more"><a href="post.html" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewBox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end post -->
+        {% endfor %}
+
+    </div>
+{% endblock body %}

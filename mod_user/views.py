@@ -1,4 +1,4 @@
-from flask import render_template ,  redirect ,  request , url_for , flash
+from flask import render_template ,  redirect ,  request , url_for , flash ,abort
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user , current_user , logout_user , login_required
 from mod_user import user
@@ -150,3 +150,14 @@ def logout():
     logout_user()
     flash('You have successfully logged out')
     return redirect(url_for('user.index'))
+
+
+
+
+@user.route('profile/iframe/posts/<string:q>')
+@login_required
+def _show_posts(q):
+    if q == 'like': posts = current_user.posts_liked
+    elif q == 'dislike' : posts = current_user.posts_disliked
+    else : abort(403)
+    return render_template('user/_posts.html' , posts = posts)
