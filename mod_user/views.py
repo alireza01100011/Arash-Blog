@@ -159,5 +159,6 @@ def logout():
 def _show_posts(q):
     if q == 'like': posts = current_user.posts_liked
     elif q == 'dislike' : posts = current_user.posts_disliked
+    elif q == 'saved' : posts = current_user.posts_saved
     else : abort(403)
     return render_template('user/_posts.html' , posts = posts)
