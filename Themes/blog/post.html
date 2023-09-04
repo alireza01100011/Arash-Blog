@@ -52,8 +52,8 @@
 					<ul>
 						{% if current_user.is_authenticated  %}
 							<li>
-								<a onclick="seve()" value="{{post.id}}" id="seve-a">
-									<i class="material-symbols-outlined style-buttons-actions" id="seve-i">bookmark</i>
+								<a onclick="save()" value="{{post.id}}" id="save-a">
+									<i class="material-symbols-outlined style-buttons-actions" id="save-i">bookmark</i>
 								</a>
 							</li>
 
@@ -79,15 +79,16 @@
 
 						{% if post in current_user.posts_liked %}
 							<script>color_like()</script>
-						
 						{% elif post in current_user.posts_disliked %}
 							<script>color_dislike()</script>
-
 						{% endif %}
 						
+						{% if post in current_user.posts_saved %}
+							<script>color_save('active')</script>
+						{% endif %}
 						{% else %}
 							<li>
-								<a  href="{{ url_for('blog.seve' , post_id = post.id) }}" id="seve" style="color: black;">
+								<a  href="{{ url_for('blog.save' , post_id = post.id) }}" id="save" style="color: black;">
 									<i class="material-symbols-outlined style-buttons-actions">bookmark</i>
 								</a>
 							</li>
