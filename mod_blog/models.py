@@ -21,7 +21,7 @@ disliks = Table('disliks' , db.metadata ,
 
 )
 
-posts_seves = Table('posts_seves' , db.metadata ,
+posts_saves = Table('posts_saves' , db.metadata ,
                     Column('user_id' , Integer , ForeignKey('users.id' )) ,
                     Column('post_id' , Integer , ForeignKey('posts.id' , ondelete='cascade')),
                     Column('time' , DateTime , default=datetime.now)
@@ -52,7 +52,7 @@ class Post(db.Model):
     categories = db.relationship('Category' , secondary=posts_categories , back_populates='posts')
     users_liks = db.relationship('User' ,viewonly=True,  secondary=liks , back_populates='posts_liked')
     users_disliks = db.relationship('User' , viewonly=True, secondary=disliks , back_populates='posts_disliked')
-    users_seves = db.relationship('User' , viewonly=True , secondary=posts_seves , back_populates='posts_seved')
+    users_saves = db.relationship('User' , viewonly=True , secondary=posts_saves , back_populates='posts_saved')
 
     def __repr__(self):
         return f'{self.__class__.__name__} < {self.id} - {self.title[:24]} - {self.slug}> '
@@ -110,7 +110,7 @@ class User(db.Model , UserMixin):
     comments = db.relationship('Comment' , backref='user')
     posts_liked = db.relationship('Post' , secondary=liks , back_populates='users_liks')
     posts_disliked = db.relationship('Post' , secondary=disliks , back_populates='users_disliks')
-    posts_seved = db.relationship('Post' , secondary=posts_seves , back_populates='users_seves')
+    posts_saved = db.relationship('Post' , secondary=posts_saves , back_populates='users_saves')
     def __repr__(self):
         return f'{self.__class__.__name__} < {self.id} - {self.email}> '
     

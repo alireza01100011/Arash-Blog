@@ -109,11 +109,11 @@ def dislike(post_id):
     
 
 
-# Seve Post
+# save Post
 
-@blog.route('posts/seve/<int:post_id>' , methods=['GET' , 'POST'])
+@blog.route('posts/save/<int:post_id>' , methods=['GET' , 'POST'])
 @login_required
-def seve(post_id):
+def save(post_id):
     failed = 0
 
     post = Post.query.get(int(post_id))
@@ -122,10 +122,10 @@ def seve(post_id):
     if not post :
         failed = 1
         
-    if post in user.posts_seved:
-        user.posts_seved.remove(post)
+    if post in user.posts_saved:
+        user.posts_saved.remove(post)
     else :
-        user.posts_seved.append(post)
+        user.posts_saved.append(post)
 
     if not failed :
         try :
