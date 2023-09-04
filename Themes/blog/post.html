@@ -169,38 +169,7 @@
 					</ul>
 				</div>
 				<!-- End Tags -->
-				<div style="text-align: center;">
 
-					{% if current_user.is_authenticated  %}
-
-						<span style='margin-bottm:5px;' te>  {{ post.total_liks }}</span>
-						<a onclick="like()" value="{{post.id}}" id="like-a">
-							<i class="material-symbols-outlined style-buttons-actions" id="like-i">thumb_up</i>
-						</a>
-						
-						
-						<a  onclick="dislike()" value="{{post.id}}" id="dislike-a">
-							<i class="material-symbols-outlined style-buttons-actions" id="dislike-i">thumb_down</i>
-						</a>
-						<span>{{ post.total_disliks }}</span>
-
-						{% if post in current_user.posts_liked %}
-							<script>color_like()</script>
-						{% elif post in current_user.posts_disliked %}
-							<script>color_dislike()</script>
-						{% endif %}
-					{% else %}
-						<span>  {{ post.total_liks }}</span>
-						<a href="{{ url_for('blog.like' , post_id = post.id) }}" id="like" style="color: black;">
-							<i class="material-symbols-outlined style-buttons-actions" >thumb_up</i>
-						</a>
-						<a  href="{{ url_for('blog.dislike' , post_id = post.id) }}" id="dislike" style="color: black;">
-							<i class="material-symbols-outlined style-buttons-actions">thumb_down</i>
-						</a>
-						<span>{{ post.total_disliks }}</span>
-					{% endif %}
-					<br><br>
-				</div>
 			</div>
 			<!-- End Post -->
 
@@ -300,24 +269,6 @@
 		</div>
 	</div>
 	<!-- End Related Posts
-	================================================== -->
-
-	<!-- Begin Twitter Timeline
-	================================================== -->
-	<div class="container margtop3rem">
-	<a class="twitter-grid" href="https://twitter.com/TwitterDev/timelines/539487832448843776">WowThemesNet Tweets</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-	</div>
-	<!-- End Twitter Timeline
-	================================================== -->
-
-	<!-- Begin AlertBar
-	================================================== -->
-	<div class="alertbar">
-		<div class="container text-center">
-			<img src="assets/img/logo.png" alt=""> &nbsp; Never miss a <b>story</b> from us, get weekly updates in your inbox. <a href="#" class="btn subscribe">Get Updates</a>
-		</div>
-	</div>
-	<!-- End AlertBar
 	================================================== -->
 
 {% endblock content %}
