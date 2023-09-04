@@ -107,8 +107,35 @@ def dislike(post_id):
     if request.method == 'POST':
         return f'{result}'
     
-@blog.route('posts/like/test')
-def likes():
-    return render_template('blog/test-pys.html')
 
 
+# Seve Post
+
+@blog.route('posts/seve/<int:post_id>' , methods=['GET' , 'POST'])
+@login_required
+def seve(post_id):
+    failed = 0
+
+    post = Post.query.get(int(post_id))
+    user = current_user
+    
+    if not post :
+        failed = 1
+        
+    if post in user.posts_seved:
+        user.posts_seved.remove(post)
+    else :
+        user.posts_seved.append(post)
+
+    if not failed :
+        try :
+            db.session.commit()
+        except :
+            failed = 1
+
+    if request.method == 'GET':
+        if failed :
+            flash("This post was not saved successfully" , 'danger')
+        return redirect(url_for('blog.post' , slug=post.slug))
+    if request.method == 'POST':
+        return f'{failed}'
