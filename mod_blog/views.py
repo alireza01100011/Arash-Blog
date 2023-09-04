@@ -114,16 +114,15 @@ def dislike(post_id):
 @blog.route('posts/save/<int:post_id>' , methods=['GET' , 'POST'])
 @login_required
 def save(post_id):
+    data = 0
     failed = 0
-
-    post = Post.query.get(int(post_id))
+    post = Post.query.get_or_404(int(post_id))
     user = current_user
     
-    if not post :
-        failed = 1
-        
+
     if post in user.posts_saved:
         user.posts_saved.remove(post)
+        data = 1
     else :
         user.posts_saved.append(post)
 
@@ -138,4 +137,4 @@ def save(post_id):
             flash("This post was not saved successfully" , 'danger')
         return redirect(url_for('blog.post' , slug=post.slug))
     if request.method == 'POST':
-        return f'{failed}'
+        return f'{data}'
