@@ -1,16 +1,18 @@
-function color_save(x){
+function color_save(x , id='save'){
     if (x == 'active') {
       
-      document.getElementById("save-a").style.color = '#ffff';
-      document.getElementById("save-i").style.backgroundColor = 'black';
+      document.getElementById( id + "-a").style.color = '#ffff';
+      document.getElementById( id + "-i").style.backgroundColor = 'black';
 
     }
     else {
-      document.getElementById("save-a").style.color = 'black';
-      document.getElementById("save-i").style.backgroundColor = '#ffff';
+      document.getElementById( id + "-a").style.color = 'black';
+      document.getElementById( id + "-i").style.backgroundColor = '#ffff';
     };
 
 }
+
+
 
 function save(){
     const xhr = new XMLHttpRequest();
