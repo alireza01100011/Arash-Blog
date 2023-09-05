@@ -135,6 +135,16 @@ def save(post_id):
     if request.method == 'GET':
         if failed :
             flash("This post was not saved successfully" , 'danger')
+        
+        try :
+            data = request.args.get('data').split(',') or None
+            if data[0] == 'profile' :
+                return redirect(data[1])
+            elif data :
+                return redirect(data[0])
+        except AttributeError :
+            pass
+    
         return redirect(url_for('blog.post' , slug=post.slug))
     if request.method == 'POST':
         return f'{data}'
