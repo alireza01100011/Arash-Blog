@@ -40,26 +40,25 @@ def post_short_link(post_id):
 def post(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
     
-    suggestion = [] # -> Max Len == 8
+    suggestion = set() # -> Max Len == 6
     # Add posts with related categories
     if len(post.categories) >= 1 :
         for cat in post.categories:
-            if len(suggestion) == 4 : break
+            if len(suggestion) == 3 : break
             _post = Post.query.order_by(Post.time.desc()).filter(Post.categories.any(name=cat.name)).first()
-            suggestion.append(_post)
+            suggestion.add(_post)
     
     # Add co-authored posts
     _posts = Post.query.order_by(Post.time.desc()).filter(Post.author.has(id=post.author.id)).limit(4).all()
     for _post in _posts :
-        if len(suggestion) == 6 : break
-        suggestion.append(_post)
+        if len(suggestion) == 4 : break
+        suggestion.add(_post)
 
-    # Add the latest posts
-    _limit = 8 - len(suggestion) 
-    _posts = Post.query.order_by(Post.time.desc()).limit(_limit).all()
+    # Add the latest posts 
+    _posts = Post.query.order_by(Post.time.desc()).limit(12).all()
     for _post in _posts :
-        if len(suggestion) == 8 : break
-        suggestion.append(_post)
+        if len(suggestion) == 6 : break
+        suggestion.add(_post)
 
     return render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title )
 
