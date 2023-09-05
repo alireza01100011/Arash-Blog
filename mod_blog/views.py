@@ -39,31 +39,29 @@ def post_short_link(post_id):
 @blog.route('posts/<string:slug>')
 def post(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
-    suggestion = []
     
-    if len(post.categories) >= 4 :
+    suggestion = [] # -> Max Len == 8
+    # Add posts with related categories
+    if len(post.categories) >= 1 :
         for cat in post.categories:
             if len(suggestion) == 4 : break
             _post = Post.query.order_by(Post.time.desc()).filter(Post.categories.any(name=cat.name)).first()
             suggestion.append(_post)
-    else :
-        _posts = Post.query.order_by(Post.time.desc()).filter(Post.author.has(id=post.author.id)).limit(4).all()
-        for _post in _posts :
-            suggestion.append(_post)
     
-    if len(suggestion) < 4 :
-        _limit = 4 - len(suggestion)
-        _posts = Post.query.order_by(Post.time.desc()).limit(_limit).all()
-        for _post in _posts :
-            suggestion.append(_post)
+    # Add co-authored posts
+    _posts = Post.query.order_by(Post.time.desc()).filter(Post.author.has(id=post.author.id)).limit(4).all()
+    for _post in _posts :
+        if len(suggestion) == 6 : break
+        suggestion.append(_post)
 
-    
-    # try :
-    #     suggestion = Post.query.order_by(Post.time.desc()).filter(Post.categories.any(name=post.categories[0].name)).limit(4).all()
-    # except IndexError :
-    #     pass
-    return f'{suggestion}'
-    return render_template('blog/post.html' , post=post , title=post.title )
+    # Add the latest posts
+    _limit = 8 - len(suggestion) 
+    _posts = Post.query.order_by(Post.time.desc()).limit(_limit).all()
+    for _post in _posts :
+        if len(suggestion) == 8 : break
+        suggestion.append(_post)
+
+    return render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title )
 
 
 # Like
