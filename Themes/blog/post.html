@@ -1,20 +1,9 @@
 {% extends "blog/base.html" %}
 
 {% block style %}
-	<style>
-		.style-buttons-actions{
-			margin:2px;padding:4px ;
-			border:0px solid black; border-radius : 50%;
-		}
-		.style-buttons-actions:hover{
-			transition: background-color ease-in 250ms;
-			background-color: rgba(145, 139, 139, 0.616);
-		}
-	</style>
 	<script src="{{ url_for('static' , filename='blog/assets/js/like_dislike.js') }}"></script>
-	<script src="{{ url_for('static' , filename='blog/assets/js/save.js') }}"></script>
 	<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src= "https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+	<script src= "https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 {% endblock %}
 
 {% block content %}
