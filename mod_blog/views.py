@@ -1,7 +1,7 @@
 from flask import render_template ,  redirect ,  request , abort ,url_for , flash
 from flask_login import login_required , current_user
 from mod_blog import blog
-from mod_blog.models import Post , Madie , User
+from mod_blog.models import Post , Madie , User , Category
 
 from app import db
 
@@ -39,7 +39,30 @@ def post_short_link(post_id):
 @blog.route('posts/<string:slug>')
 def post(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
+    suggestion = []
+    
+    if len(post.categories) >= 4 :
+        for cat in post.categories:
+            if len(suggestion) == 4 : break
+            _post = Post.query.order_by(Post.time.desc()).filter(Post.categories.any(name=cat.name)).first()
+            suggestion.append(_post)
+    else :
+        _posts = Post.query.order_by(Post.time.desc()).filter(Post.author.has(id=post.author.id)).limit(4).all()
+        for _post in _posts :
+            suggestion.append(_post)
+    
+    if len(suggestion) < 4 :
+        _limit = 4 - len(suggestion)
+        _posts = Post.query.order_by(Post.time.desc()).limit(_limit).all()
+        for _post in _posts :
+            suggestion.append(_post)
 
+    
+    # try :
+    #     suggestion = Post.query.order_by(Post.time.desc()).filter(Post.categories.any(name=post.categories[0].name)).limit(4).all()
+    # except IndexError :
+    #     pass
+    return f'{suggestion}'
     return render_template('blog/post.html' , post=post , title=post.title )
 
 
