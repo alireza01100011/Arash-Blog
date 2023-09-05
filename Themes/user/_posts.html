@@ -30,6 +30,11 @@
 
 
 {% block body %}
+    {% if posts|length == 0 %}
+        <div style="text-align: center;">
+            <h3 >This section is empty</h3>
+        </div>
+    {% endif %}
     <div class="row listrecent listrelated" style="max-width: 1000px; margin:0 auto">
 
         {% for post in posts %}
