@@ -14,9 +14,9 @@ function color_save(x , id='save'){
 
 
 
-function save(){
+function save(id='save'){
     const xhr = new XMLHttpRequest();
-    var post_id = document.getElementById('save-a').getAttribute('value')
+    var post_id = document.getElementById(id + '-a').getAttribute('value')
     xhr.open("POST", "http://127.0.0.1:5000/blog/posts/save/" + post_id);
     xhr.send();
     xhr.responseType = "json";
@@ -25,11 +25,11 @@ function save(){
         const data = xhr.response;
         if (data == 0){
           Swal.fire("" , 'The post has been successfully saved');
-          color_save('active');
+          color_save('active' , id );
         }
         else{
           Swal.fire("" , 'Removed from saved posts');
-          color_save('diactive');
+          color_save('diactive' ,  id);
         }
   
       } else {
