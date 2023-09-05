@@ -13,8 +13,20 @@
     <link href="{{ url_for('static' , filename='blog/assets/css/mediumish.css') }}" rel="stylesheet">
         
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0" />    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static' , filename='blog/assets/js/save.js') }}"></script>
     
-    
+
+    <style>
+        .style-buttons-actions{
+            margin:5px 0 0 0;padding:4px ;
+            border:0px solid black; border-radius : 50%;
+        }
+        .style-buttons-actions:hover{
+            transition: background-color ease-in 250ms;
+            background-color: rgba(145, 139, 139, 0.616);
+        }
+    </style>
     
     {% block style %}{% endblock style%}
 
