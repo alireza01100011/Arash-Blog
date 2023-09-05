@@ -20,9 +20,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ 'active' if tab == 'favorite' }}" href="#favorite" role="tab" data-toggle="tab">
+          <a class="nav-link {{ 'active' if tab in 'save' }}" href="#save" role="tab" data-toggle="tab">
             <i class="material-icons">bookmark</i>
-            Favorite
+            Saves
           </a>
         </li>
         <li class="nav-item">
@@ -58,7 +58,7 @@
   <div class="tab-pane {{ 'active' if tab == 'disliks' }} text-center gallery" id="disliks">
     <iframe src="{{ url_for('user._show_posts' , q='dislike') }}" frameborder="0" style="width: 100%;min-height:720px;"></iframe>
   </div>
-  <div class="tab-pane{{ 'active' if tab == 'favorite' }}  text-center gallery" id="favorite">
+  <div class="tab-pane{{ 'active' if tab == 'save' }}  text-center gallery" id="save">
     <div class="row">
       <iframe src="{{ url_for('user._show_posts' , q='saved') }}" frameborder="0" style="width: 100%;min-height:720px;"></iframe>
     </div>
