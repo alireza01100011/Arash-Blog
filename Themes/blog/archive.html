@@ -56,25 +56,50 @@
         <!-- End List Posts
         ================================================== -->
 
-        <div style="text-align: center;">
-            {% set pages = [] %}
-            {% set start = page - 1 %}
+		{% if type == 'archive' %}
+			<div style="text-align: center;">
+				{% set pages = [] %}
+				{% set start = page - 1 %}
 
-            {% if start < 1 %}
-                {% set start = 1 %}
-            {% endif %}
+				{% if start < 1 %}
+					{% set start = 1 %}
+				{% endif %}
 
-            {% for _ in range( start  , start + 3) %}
-                {% if  not _ > posts.pages %}
-                    {{ pages.append(_) or  ''}}
-                {% endif %}    
-            {% endfor %}
-            
-            {% for _ in pages%}
-                <a href="{{ url_for('blog.post_archive' , page=_) }}" class="btn btn-primary {% if _ == page %} active {% endif %}" ><span>{{_}}</span></a>
-            {% endfor %}
-            <br>
-            <span style="font-size: small;">Total Page : {{posts.pages}}</span>
-        </div>
+				{% for _ in range( start  , start + 3) %}
+					{% if  not _ > posts.pages %}
+						{{ pages.append(_) or  ''}}
+					{% endif %}    
+				{% endfor %}
+				
+				{% for _ in pages%}
+					<a href="{{ url_for('blog.post_archive' , page=_) }}" class="btn btn-primary {% if _ == page %} active {% endif %}" ><span>{{_}}</span></a>
+				{% endfor %}
+				<br>
+				<span style="font-size: small;">Total Page : {{posts.pages}}</span>
+			</div>
+		{% elif type == 'search' %}
+			<div style="text-align: center;">
+				{% set pages = [] %}
+				{% set start = page - 1 %}
+
+				{% if start < 1 %}
+					{% set start = 1 %}
+				{% endif %}
+
+				{% for _ in range( start  , start + 3) %}
+					{% if  not _ > posts.pages %}
+						{{ pages.append(_) or  ''}}
+					{% endif %}    
+				{% endfor %}
+				
+				{% for _ in pages%}
+					<a href="{{ url_for('blog.search' , page=_ , q=q) }}" class="btn btn-primary {% if _ == page %} active {% endif %}" ><span>{{_}}</span></a>
+				{% endfor %}
+				<br>
+				<span style="font-size: small;">Total Page : {{posts.pages}}</span>
+			</div>
+		{% endif %}
+		
+		
 </div>
 {% endblock content %}
