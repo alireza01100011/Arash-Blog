@@ -13,7 +13,9 @@ def index():
 
 @blog.route('authors/')
 def author_archive():
-    return f'Archive of authors'
+    # It will be added in the next update
+    # This section requires the implementation of several types of access levels
+    return f'<h2 style="text-align: center;">Archive of authors <br> It will be added in the next update <br> </h2>'
 
 
 @blog.route('authors/<int:user_id>')
