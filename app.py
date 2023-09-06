@@ -4,8 +4,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_ckeditor import CKEditor
-from config import config
+from config import config , site
 
+site = site.JSON_DATA
 
 app = Flask(__name__ , template_folder='Themes')
 app.config.from_object(config)
