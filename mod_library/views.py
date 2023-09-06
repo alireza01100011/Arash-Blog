@@ -6,8 +6,12 @@ from mod_library.forms import FileForm , MadieForm , formats
 
 from mod_blog.models import File , Madie
 from app import db 
+
+from utils.flask import custom_render_template
+
 import uuid
 import os
+
 ### File ###
 
 def CreateFileName(filename):
@@ -36,7 +40,7 @@ def file_show():
 
     files = File.query.order_by(File.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
-    return render_template('admin/library/files/file.html' , title='Show Files' , files=files)
+    return custom_render_template('admin/library/files/file.html' , title='Show Files' , files=files)
 
 
 # Upload File
@@ -46,12 +50,12 @@ def file_upload():
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
+            return custom_render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
         
         filename = CreateFileName(form.file.data.filename)
         if not filename :
             flash('Error, please try again')
-            return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )        
+            return custom_render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )        
         
         NewFile = File(
             filename=filename,
@@ -71,7 +75,7 @@ def file_upload():
         except :
             db.session.rollback()
             flash("Error, please try again")
-    return render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
+    return custom_render_template('admin/library/files/file-form.html' , title='Upload New File' , form=form )
 
 # File Edit
 @library_admin.route('files/edit/<int:file_id>' , methods=['GET' , 'POST'])
@@ -89,7 +93,7 @@ def file_edit(file_id):
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)    
+            return custom_render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)    
 
         file.name = form.name.data
         file.discription = form.discription.data
@@ -101,7 +105,7 @@ def file_edit(file_id):
             
             if not filename :
                 flash("Error, please try again (Error creating file name)")
-                return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
+                return custom_render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
 
             file.filename = filename
             request.files['file'].save(os.path.join('static/library/files' , filename))
@@ -115,7 +119,7 @@ def file_edit(file_id):
             flash("Error, please try again")
 
         
-    return render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
+    return custom_render_template('admin/library/files/file-form.html' , title=f'Update File {file.name}' , form=form , file=file)
 
 # File Delete
 @library_admin.route('files/delete/<int:file_id>')
@@ -155,9 +159,9 @@ def madie_show():
     madies = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
     if return_type == 'false' :
-        return render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)
+        return custom_render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)
     else : 
-        return render_template('admin/library/madies/madie-iframe.html' , madies = madies)
+        return custom_render_template('admin/library/madies/madie-iframe.html' , madies = madies)
 
 
 # Upload Madie
@@ -167,14 +171,14 @@ def madie_upload():
     
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
+            return custom_render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
         
         file = request.files['madie']
         filename = CreateFileName(form.madie.data.filename)
         
         if not filename :
             flash("Error, please try again (Error creating file name)")
-            return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
+            return custom_render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
         
         NewMadie = Madie(
             filename=filename , 
@@ -193,7 +197,7 @@ def madie_upload():
             db.session.rollback()
             flash('Media upload failed' , 'danger')
     
-    return render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
+    return custom_render_template('admin/library/madies/madie-form.html' , title='Upload New Madie' , form=form)
 
 
 # Madie Edit
@@ -218,7 +222,7 @@ def madie_edit(madie_id):
     
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
+            return custom_render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
     
         madie.name = form.name.data
         madie.alt = form.alt.data
@@ -230,7 +234,7 @@ def madie_edit(madie_id):
 
             if not filename :
                 flash("Error, please try again (Error creating file name)")
-                return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
+                return custom_render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
             
             try :
                 os.remove(os.path.join('static/library/madies' , madie.filename))
@@ -248,7 +252,7 @@ def madie_edit(madie_id):
         except :
             db.session.rollback()
             flash("Error, please try again")
-    return render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
+    return custom_render_template('admin/library/madies/madie-form.html' , title=f'Edit {madie.name}' , form = form , madie=madie)
 
 # Madie DeLete
 @library_admin.route('madies/delete/<int:madie_id>')

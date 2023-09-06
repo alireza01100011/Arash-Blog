@@ -8,11 +8,12 @@ from mod_user.froms import UserRoleForm
 from utils.calculation import readin_time
 from utils.forms import formats
 from app import db 
+from utils.flask import custom_render_template 
 
 from datetime import datetime
 @admin.route('/')
 def index():
-    return render_template('admin/index.html' , title='Dashboard')
+    return custom_render_template('admin/index.html' , title='Dashboard')
 
 
 #### Post ####
@@ -23,7 +24,7 @@ def post_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('n' , default=10 , type=int)
     posts = Post.query.paginate(page=page , per_page=per_page , error_out=False)
-    return render_template('admin/posts/post.html' , title='Show Posts' , posts=posts)
+    return custom_render_template('admin/posts/post.html' , title='Show Posts' , posts=posts)
 
 # Create Post
 @admin.route('posts/create/' , methods=['GET' , 'POST'])
@@ -43,7 +44,7 @@ def post_create():
     
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
+            return custom_render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
         
         NewPost = Post(
             title=form.title.data,
@@ -71,7 +72,7 @@ def post_create():
             db.session.rollback()
             flash('Post could not be created successfully')
 
-    return render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
+    return custom_render_template('admin/posts/post-form.html' , title=f'Create New Post' , form=form)
 
 
 # Edite Post
@@ -101,7 +102,7 @@ def post_edit(post_id):
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post )
+            return custom_render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post=post )
         
         post.title = form.title.data
         post.content = form.content.data
@@ -124,7 +125,7 @@ def post_edit(post_id):
             db.session.rollback()
             flash('Post could not be edit successfully')
 
-    return render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post )
+    return custom_render_template('admin/posts/post-form.html' , title=f'Edite {post.title}' , form=form , post = post )
 
 
 
@@ -147,7 +148,7 @@ def category_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('n' , default=10 , type=int)
     categories = Category.query.paginate(page=page , per_page=per_page , error_out=False)
-    return render_template('admin/categories/category.html' , categories=categories , title='Show Categories')
+    return custom_render_template('admin/categories/category.html' , categories=categories , title='Show Categories')
 
 # Create Category
 @admin.route('categories/create' , methods=['GET' , 'POST'])
@@ -156,7 +157,7 @@ def category_create():
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/categories/category_form.html' , form=form , title='Create Category')
+            return custom_render_template('admin/categories/category_form.html' , form=form , title='Create Category')
         
         NewCategory = Category(
             name = form.name.data ,
@@ -173,7 +174,7 @@ def category_create():
             db.session.rollback()
             flash('There was a problem creating a new category, please try again!')
 
-    return render_template('admin/categories/category-form.html' , form=form , title='Create Category')
+    return custom_render_template('admin/categories/category-form.html' , form=form , title='Create Category')
 
 # Edit Category
 @admin.route('categories/edit/<int:category_id>' , methods=['GET' , 'POST'])
@@ -189,7 +190,7 @@ def category_edit(category_id):
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
+            return custom_render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
 
         category.name = form.name.data
         category.description = form.description.data
@@ -203,7 +204,7 @@ def category_edit(category_id):
             db.session.rollback()
             flash('There was a problem edit category , please try again!')
 
-    return render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
+    return custom_render_template('admin/categories/category-form.html' , title=f'Edite Categoty {category.name}' , form=form , category=category)
         
 # Delete Category
 @admin.route('categories/delete/<int:category_id>')
@@ -229,7 +230,7 @@ def user_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('p' , default=10 , type=int)
     users = User.query.paginate(page=page , per_page=per_page , error_out=False)
-    return render_template('admin/users/user.html' , title='Show User' , users=users)
+    return custom_render_template('admin/users/user.html' , title='Show User' , users=users)
 
 # Create User 
 @admin.route('users/create')
@@ -249,7 +250,7 @@ def user_edit(user_id):
     
     if request.method == 'POST':
         if form.validate_on_submit():
-            return render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)        
+            return custom_render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)        
         user.role = form.role.data
         try :
             db.session.commit()
@@ -258,7 +259,7 @@ def user_edit(user_id):
         except :
             db.session.rollback()
             flash('Failed. Please try again')
-    return render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)
+    return custom_render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)
 
 # Delete User
 @admin.route('users/delete/<int:user_id>')
