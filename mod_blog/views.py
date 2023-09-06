@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request , abort ,url_for , flas
 from flask_login import login_required , current_user
 from mod_blog import blog
 from mod_blog.models import Post , Madie , User , Category
-
+from sqlalchemy import or_
 from app import db
 
 @blog.route('/')
@@ -27,7 +27,7 @@ def author(user_id):
 def post_archive():
     page = request.args.get('page' , default=1 , type=int)
     posts = Post.query.order_by(Post.time.desc()).paginate(page=page , per_page=18 , error_out=False)
-    return render_template('blog/archive.html' , title='Posts' , posts=posts , page=page)
+    return render_template('blog/archive.html' , title='Posts' , posts=posts , page=page , type='archive')
 
 @blog.route('p/<int:post_id>')
 def post_short_link(post_id):
@@ -60,8 +60,25 @@ def post(slug):
         if len(suggestion) == 6 : break
         suggestion.add(_post)
 
-    return render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title )
+    return render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title)
 
+# Search
+
+@blog.route('posts/search/')
+def search():
+    query = request.args.get(key='q' , default=' ' , type=str)
+    page = request.args.get(key='page' , default=1 , type=int)
+    title_cont = Post.title.ilike(f'%{query}%')
+    content_cont = Post.content.ilike(f'%{query}%')
+    summary_cont = Post.summary.ilike(f'%{query}%')
+
+    posts = Post.query.filter(or_(
+        title_cont , 
+        content_cont ,
+        summary_cont
+    )).paginate(page=page , per_page=2 , error_out=False)
+
+    return render_template('blog/archive.html' , title=f'Search For {query}' , posts=posts , page=page , q=query , type='search')
 
 # Like
 
