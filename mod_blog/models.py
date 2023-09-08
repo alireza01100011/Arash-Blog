@@ -32,6 +32,16 @@ posts_categories = Table( 'posts_categories' , db.metadata ,
     Column('categories_id' , Integer , ForeignKey('categories.id' , ondelete='cascade'))
 )
 
+
+
+class SITE(db.Model):
+    __tablename__ = 'site'
+    id = Column(Integer , primary_key=True , default=0)
+    name_site =  Column(String(128) , nullable=False , default='Blog with Flask')
+    title_home =  Column(String(128) , nullable=False , default='Blog with Flask')
+    h1_home =  Column(String(128) , nullable=False , default='Blog') 
+    description =  Column(String(128) , nullable=False , default='A simple blog with Python')
+    footer =  Column(Text , nullable=False , default='footer')
 class Post(db.Model):
     __tablename__ = 'posts'
     id = Column(Integer() , primary_key=True , unique=True , nullable=False)
