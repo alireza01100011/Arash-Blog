@@ -31,6 +31,9 @@
           <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
             <a class="dropdown-item" href="{{ url_for('user.logout') }}">
               <i class="mdi mdi-logout mr-2 text-primary"></i> Signout </a>
+            
+            <a class="dropdown-item" href="{{ url_for('user.index') }}">
+              <i class="mdi mdi-account mr-2 text-primary"></i> Profile </a>
           </div>
         </li>
       </ul>
