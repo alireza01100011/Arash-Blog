@@ -1,15 +1,17 @@
 from flask import render_template ,  redirect ,  request , abort ,url_for , flash
 from flask_login import login_required , current_user
 from mod_blog import blog
-from mod_blog.models import Post , Madie , User , Category
+from mod_blog.models import Post , Madie , User , Category , SITE
 from sqlalchemy import or_
+from utils.flask import custom_render_template
 from app import db
 
 @blog.route('/')
 def index():
     special_posts = Post.query.filter(Post.special.like(1)).order_by(Post.time.desc()).limit(4).all()
     posts = Post.query.filter(Post.special.like(0)).order_by(Post.time.desc()).limit(6).all()
-    return render_template('blog/index.html' , title='Blog' , s_post = special_posts , posts=posts)
+    title = SITE.query.get(0)
+    return custom_render_template('blog/index.html' , title=title.title_home , s_post = special_posts , posts=posts)
 
 @blog.route('authors/')
 def author_archive():
@@ -23,13 +25,13 @@ def author(user_id):
     author = User.query.get_or_404(int(user_id))
     if author.role == 0 :
         return abort(404)
-    return render_template('blog/author.html' , title= author.full_name , author = author)
+    return custom_render_template('blog/author.html' , title= author.full_name , author = author)
 
 @blog.route('posts/')
 def post_archive():
     page = request.args.get('page' , default=1 , type=int)
     posts = Post.query.order_by(Post.time.desc()).paginate(page=page , per_page=18 , error_out=False)
-    return render_template('blog/archive.html' , title='Posts' , posts=posts , page=page , type='archive')
+    return custom_render_template('blog/archive.html' , title='Posts' , posts=posts , page=page , type='archive')
 
 @blog.route('p/<int:post_id>')
 def post_short_link(post_id):
@@ -62,7 +64,7 @@ def post(slug):
         if len(suggestion) == 6 : break
         suggestion.add(_post)
 
-    return render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title)
+    return custom_render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title)
 
 # Search
 
@@ -80,7 +82,7 @@ def search():
         summary_cont
     )).paginate(page=page , per_page=2 , error_out=False)
 
-    return render_template('blog/archive.html' , title=f'Search For {query}' , posts=posts , page=page , q=query , type='search')
+    return custom_render_template('blog/archive.html' , title=f'Search For {query}' , posts=posts , page=page , q=query , type='search')
 
 # Like
 
