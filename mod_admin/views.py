@@ -98,7 +98,7 @@ def post_edit(post_id):
         form.read_time.data = post.read_time
         form.categories.data = [category.id for category in post.categories]
         form.image.data = [post.image]
-        form.special.data = post.special
+        form.special.data = post.special + 1
 
     if request.method == 'POST':
         if not form.validate_on_submit():
