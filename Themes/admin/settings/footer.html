@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+
+
+{% block style %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">{{title}}</h4>
+
+
+            <form action="{{ url_for('admin.setting_footer') }}" method="POST" class="forms-sample">
+            {% include '_inc/form_error_msg.html' %}
+            {{form.hidden_tag()}}
+
+
+            <div class="form-group">
+                {{form.footer.label}}
+                {{form.footer(class='form-control' , placeholder=form.footer.label.text)}}
+            </div>
+            
+
+            <button type="submit" class="btn btn-primary mr-2"> Save </button>
+       
+            <button class="btn btn-light">Cancel</button>
+        </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='footer') }}
+    </div>
+</div>
+
+{% endblock %}

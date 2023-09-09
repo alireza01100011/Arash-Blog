@@ -2,7 +2,7 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_admin.froms import SiteSettingsForm , IndexPageSettingsForm
+from mod_admin.froms import SiteSettingsForm , IndexPageSettingsForm , FooterContentSettingsForm
 from mod_blog.models import Post , Category , User , Madie , SITE , INDEXPAGE
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
@@ -336,4 +336,26 @@ def setting_index_page():
         except :
             flash('Failed to save settings')
     return custom_render_template('admin/settings/home-page.html' , form=form , title='Site Settings')
+
+@admin.route('setting/footer/' , methods=['GET' , 'POST'])
+def setting_footer():
+    form = FooterContentSettingsForm()
+    settings = SITE.query.get(0)
+    
+    if request.method == 'GET':
+        form.footer.data = settings.footer
+
+
+    if request.method == 'POST':
+        if not form.validate_on_submit() :
+            return custom_render_template('admin/settings/footer.html' , form=form , title='Site Settings')
+
+        settings.footer = form.footer.data
+
+        try :
+            db.session.commit()
+            flash('Saving settings was successful')
+        except :
+            flash('Failed to save settings')
+    return custom_render_template('admin/settings/footer.html' , form=form , title='Site Settings')
 
