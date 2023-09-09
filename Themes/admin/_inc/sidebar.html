@@ -145,6 +145,26 @@
         </div>
       </li>
 
+      <br>
+      <li class="nav-item">
+        <span class="nav-link" href="#">
+          <span class="menu-title">Settings</span>
+        </span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#settings" aria-expanded="false" aria-controls="settings">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">Settings</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="settings">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item  ">
+              <a class="nav-link " href="{{ url_for('admin.setting_site') }}">Site Settings</a>
+            </li>
+          </ul>
+        </div>
+      </li>
       <li class="nav-item sidebar-actions">
         <div class="nav-link">
           <div class="mt-4">
