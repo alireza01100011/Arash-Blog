@@ -11,8 +11,9 @@ from utils.forms import formats
 from utils.flask import custom_render_template
 from app import db 
 from utils.flask import custom_render_template 
-
+import uuid
 from datetime import datetime
+import os
 @admin.route('/')
 def index():
     return custom_render_template('admin/index.html' , title='Dashboard')
@@ -295,13 +296,23 @@ def setting_site():
     if request.method == 'POST':
         if not form.validate_on_submit() :
             return custom_render_template('admin/settings/site.html' , form=form , title='Site Settings')
-
         settings.name_site = form.name_site.data
-        settings.logo_site = form.logo_site.data
         settings.search_placeholder = form.search_placeholder.data
+        if form.logo_site.data.filename :
+            filename = f'{uuid.uuid1()}_{form.logo_site.data.filename}'
+            settings.logo_site = filename
 
+            
         try :
             db.session.commit()
+            if form.logo_site.data.filename :
+                try : os.remove(f'static/images/{settings.logo_site}')
+                except FileNotFoundError : 
+                    flash('The previous logo was not found and we were not successful in deleting it' ,'danger')
+                except PermissionError :
+                    flash('We did not have access to delete the previous logo and we were not successful in deleting it' ,'danger')
+                file = request.files['logo_site']
+                file.save(f'static/images/{filename}')
             flash('Saving settings was successful')
         except :
             flash('Failed to save settings')
