@@ -6,7 +6,7 @@ from mod_user.utils import refute_only_view , refute_only_view_except_admin
 from mod_user.froms import RegisterForm , LoginForm , EditProfileForm
 from mod_blog.models import User , ImageProfile
 from app import db , becrypt 
-
+from utils.flask import custom_render_template
 import os
 import uuid
 
@@ -30,7 +30,7 @@ def profile():
     tab = request.args.get('tab' , default='like' , type=str)
     user =  User.query.get(current_user.id)
 
-    return render_template('user/profile.html' , title='User' , user=user , form=form , tab=tab)
+    return custom_render_template('user/profile.html' , title='User' , user=user , form=form , tab=tab)
 
 @user.route('profile/edit-profile' , methods=['GET' , 'POST'])
 @login_required
@@ -48,7 +48,7 @@ def edit_profile():
     if request.method == 'POST':
         if not form.validate_on_submit() :
             flash('Validation failed' , 'danger')    
-            render_template('user/_edit-profile.html' , form=form)
+            custom_render_template('user/_edit-profile.html' , form=form)
         
         user.full_name = form.fullname.data
         user.email = form.email.data
@@ -57,7 +57,7 @@ def edit_profile():
         if form.old_password.data != '*' * 8 and form.password.data != '*' * 8 and  form.confirm_password.data != '*' * 8:
             if not becrypt.check_password_hash(user.password , form.old_password.data):
                 flash('The password is not valid' , 'danger')
-                render_template('user/_edit-profile.html' , form=form)
+                custom_render_template('user/_edit-profile.html' , form=form)
             
         user.password = becrypt.generate_password_hash(form.password.data)
         
@@ -90,7 +90,7 @@ def edit_profile():
             db.session.rollback()
             flash('The operation failed. Please try again later' , 'danger')
     
-    return render_template('user/_edit-profile.html' , form=form)
+    return custom_render_template('user/_edit-profile.html' , form=form)
 
 
 @user.route('login/' , methods=['GET' , 'POST'])
@@ -100,14 +100,14 @@ def login():
 
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('user/login.html' , title='Login' , form=form)
+            return custom_render_template('user/login.html' , title='Login' , form=form)
         
         user = User.query.filter(User.email.ilike(f'{form.email.data}')).first()
         login_user(user , remember=form.remember.data)
         flash('You have successfully logged in' , 'info')
         return redirect(url_for('user.profile' , tab='edit-profile'))
 
-    return render_template('user/login.html' , title='Login' , form=form)
+    return custom_render_template('user/login.html' , title='Login' , form=form)
 
 
 @user.route('register/' , methods=['GET' , 'POST'])
@@ -116,7 +116,7 @@ def register():
     form = RegisterForm()
     if request.method == 'POST':
         if not form.validate_on_submit():
-            return render_template('user/register.html' , title='Register' , form=form)
+            return custom_render_template('user/register.html' , title='Register' , form=form)
         
         NewUser = User(
             form.fullname.data , form.email.data ,
@@ -140,9 +140,9 @@ def register():
         except IntegrityError:
             db.session.rollback()
             flash('Error, try again')
-            return render_template('user/register.html' , title='Register' , form=form)
+            return custom_render_template('user/register.html' , title='Register' , form=form)
     
-    return render_template('user/register.html' , title='Register' , form=form)
+    return custom_render_template('user/register.html' , title='Register' , form=form)
 
 @user.route('logout/')
 @login_required
@@ -161,4 +161,4 @@ def _show_posts(q):
     elif q == 'dislike' : posts = current_user.posts_disliked
     elif q == 'saved' : posts = current_user.posts_saved
     else : abort(403)
-    return render_template('user/_posts.html' , posts = posts)
+    return custom_render_template('user/_posts.html' , posts = posts)

@@ -5,7 +5,7 @@
     <div class="container">
         <!-- Begin Logo -->
         <a class="navbar-brand" href="{{ url_for('blog.index') }}">
-        <img src="{{ url_for('static' , filename='images/logo.svg') }}" alt="logo">
+        <img src="{{ url_for('static' , filename='images/' + site['name-logo']) }}" alt="Logo" title="Logo - {{site['name-site']}}">
         </a>
         <!-- End Logo -->
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">

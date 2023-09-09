@@ -16,6 +16,7 @@
                         <i class="material-icons">logoute</i> logute
                     </a>
                 </li>
+<<<<<<< HEAD
                 {% if current_user.role == 1 %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin.index') }}">
@@ -28,7 +29,21 @@
                           <i class="material-icons">home</i> Blog
                       </a>
                   </li>
+=======
+>>>>>>> 4a7c4fef053b657b246d6f989e6d93e2e515bca3
 
+                  <li class="nav-item">
+                    {% if current_user.role == 1 %}
+                        <a class="nav-link" href="{{ url_for('admin.index') }}">
+                            <i class="material-icons">dashboard</i> Admin Panle
+                        </a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('blog.index') }}">
+                        <i class="material-icons">home</i> Blog
+                    </a>
+                </li>
 
             </ul>
         </div>

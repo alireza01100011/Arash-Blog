@@ -9,6 +9,7 @@ from utils.calculation import readin_time
 from utils.forms import formats
 from utils.flask import custom_render_template
 from app import db 
+from utils.flask import custom_render_template 
 
 from datetime import datetime
 @admin.route('/')
