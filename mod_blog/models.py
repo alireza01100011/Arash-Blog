@@ -35,13 +35,30 @@ posts_categories = Table( 'posts_categories' , db.metadata ,
 
 
 class SITE(db.Model):
-    __tablename__ = 'site'
+    __tablename__ = '_site'
     id = Column(Integer , primary_key=True , default=0)
+    
+    # Site Settings
     name_site =  Column(String(128) , nullable=False , default='Blog with Flask')
-    title_home =  Column(String(128) , nullable=False , default='Blog with Flask')
-    h1_home =  Column(String(128) , nullable=False , default='Blog') 
-    description =  Column(String(128) , nullable=False , default='A simple blog with Python')
+    logo_site = Column(String(128) , nullable=False , default='logo.svg')
+    
+    # Navbar 
+    search_placeholder = Column(String(16) , default='Search')
+    
+    # Footer Content
     footer =  Column(Text , nullable=False , default='footer')
+
+
+class INDEXPAGE(db.Model):
+    __tablename__ = '_index_page'
+    # Index Page Settings
+    id = Column(Integer , primary_key=True , default=0)
+    title_home =  Column(String(128) , nullable=False , default='Blog with Flask')
+    site_title =  Column(Text() , nullable=False , default='Blog') 
+    description =  Column(String(128) , nullable=False , default='A simple blog with Python')
+    total_posts = Column(Integer , default=6)
+    total_special_posts = Column(Integer , default=4)
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = Column(Integer() , primary_key=True , unique=True , nullable=False)

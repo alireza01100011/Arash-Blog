@@ -1,7 +1,7 @@
 from flask import render_template ,  redirect ,  request , abort ,url_for , flash
 from flask_login import login_required , current_user
 from mod_blog import blog
-from mod_blog.models import Post , Madie , User , Category , SITE
+from mod_blog.models import Post , Madie , User , Category , SITE , INDEXPAGE
 from sqlalchemy import or_
 from utils.flask import custom_render_template
 from app import db
@@ -10,8 +10,9 @@ from app import db
 def index():
     special_posts = Post.query.filter(Post.special.like(1)).order_by(Post.time.desc()).limit(4).all()
     posts = Post.query.filter(Post.special.like(0)).order_by(Post.time.desc()).limit(6).all()
-    title = SITE.query.get(0)
-    return custom_render_template('blog/index.html' , title=title.title_home , s_post = special_posts , posts=posts)
+
+    home_page = INDEXPAGE.query.get(0)
+    return custom_render_template('blog/index.html' , title=home_page.title_home , s_post = special_posts , posts=posts , home_page=home_page)
 
 @blog.route('authors/')
 def author_archive():

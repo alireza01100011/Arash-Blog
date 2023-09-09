@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+
+
+{% block style %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">{{title}}</h4>
+
+
+            <form action="{{ url_for('admin.setting_index_page') }}" method="POST" class="forms-sample">
+            {% include '_inc/form_error_msg.html' %}
+            {{form.hidden_tag()}}
+
+
+            <div class="form-group">
+                {{form.title_home.label}}
+                {{form.title_home(class='form-control' , placeholder=form.title_home.label.text)}}
+            </div>
+            
+            <div class="form-group">
+                {{form.site_title.label}}
+                {{form.site_title(class='form-control' , placeholder=form.site_title.label.text)}}
+            </div>
+
+            <div class="form-group">
+                {{form.description.label}}
+                {{form.description(class='form-control' , placeholder=form.description.label.text)}}
+            </div>
+
+            <div class="form-group">
+                {{form.total_posts.label}}
+                {{form.total_posts(class='form-control' , placeholder=form.total_posts.label.text)}}
+            </div>
+            
+            <div class="form-group">
+                {{form.total_special_posts.label}}
+                {{form.total_special_posts(class='form-control' , placeholder=form.total_special_posts.label.text)}}
+            </div>
+
+            
+            <button type="submit" class="btn btn-primary mr-2"> Save </button>
+       
+            <button class="btn btn-light">Cancel</button>
+        </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='footer') }}
+    </div>
+</div>
+
+{% endblock %}

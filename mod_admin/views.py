@@ -2,8 +2,8 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_admin.froms import SiteSettingsForm
-from mod_blog.models import Post , Category , User , Madie , SITE
+from mod_admin.froms import SiteSettingsForm , IndexPageSettingsForm
+from mod_blog.models import Post , Category , User , Madie , SITE , INDEXPAGE
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
 from utils.calculation import readin_time
@@ -289,20 +289,16 @@ def setting_site():
     settings = SITE.query.get(0)
     if request.method == 'GET':
         form.name_site.data = settings.name_site
-        form.title_home.data = settings.title_home
-        form.h1_home.data = settings.h1_home
-        form.description.data = settings.description
-        form.footer.data = settings.footer
+        form.logo_site.data = settings.logo_site
+        form.search_placeholder.data = settings.search_placeholder
     
     if request.method == 'POST':
         if not form.validate_on_submit() :
             return custom_render_template('admin/settings/site.html' , form=form , title='Site Settings')
 
         settings.name_site = form.name_site.data
-        settings.title_home = form.title_home.data
-        settings.h1_home = form.h1_home.data
-        settings.description = form.description.data
-        settings.footer = form.footer.data
+        settings.logo_site = form.logo_site.data
+        settings.search_placeholder = form.search_placeholder.data
 
         try :
             db.session.commit()
@@ -310,4 +306,34 @@ def setting_site():
         except :
             flash('Failed to save settings')
     return custom_render_template('admin/settings/site.html' , form=form , title='Site Settings')
+
+@admin.route('setting/index-page/' , methods=['GET' , 'POST'])
+def setting_index_page():
+    form = IndexPageSettingsForm()
+    settings = INDEXPAGE.query.get(0)
+    
+    if request.method == 'GET':
+        form.title_home.data = settings.title_home
+        form.site_title.data = settings.site_title
+        form.description.data = settings.description
+        form.total_posts.data = settings.total_posts
+        form.total_special_posts.data = settings.total_special_posts
+
+    if request.method == 'POST':
+        if not form.validate_on_submit() :
+            return custom_render_template('admin/settings/home-page.html' , form=form , title='Site Settings')
+
+        settings.title_home = form.title_home.data
+        settings.site_title = form.site_title.data
+        settings.description = form.description.data
+        settings.description = form.description.data
+        settings.total_posts = form.total_posts.data
+        settings.total_special_posts = form.total_special_posts.data
+
+        try :
+            db.session.commit()
+            flash('Saving settings was successful')
+        except :
+            flash('Failed to save settings')
+    return custom_render_template('admin/settings/home-page.html' , form=form , title='Site Settings')
 
