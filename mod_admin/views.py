@@ -2,7 +2,8 @@ from flask import render_template ,  redirect ,  request , flash , url_for
 from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
-from mod_blog.models import Post , Category , User , Madie
+from mod_admin.froms import SiteSettingsForm
+from mod_blog.models import Post , Category , User , Madie , SITE
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
 from utils.calculation import readin_time
@@ -280,4 +281,33 @@ def user_delete(user_id):
     
     return redirect(url_for('admin.user_show'))
 
+
+# Site Setting 
+@admin.route('setting/site/' , methods=['GET' , 'POST'])
+def setting_site():
+    form = SiteSettingsForm()
+    settings = SITE.query.get(0)
+    if request.method == 'GET':
+        form.name_site.data = settings.name_site
+        form.title_home.data = settings.title_home
+        form.h1_home.data = settings.h1_home
+        form.description.data = settings.description
+        form.footer.data = settings.footer
+    
+    if request.method == 'POST':
+        if not form.validate_on_submit() :
+            return custom_render_template('admin/settings/site.html' , form=form , title='Site Settings')
+
+        settings.name_site = form.name_site.data
+        settings.title_home = form.title_home.data
+        settings.h1_home = form.h1_home.data
+        settings.description = form.description.data
+        settings.footer = form.footer.data
+
+        try :
+            db.session.commit()
+            flash('Saving settings was successful')
+        except :
+            flash('Failed to save settings')
+    return custom_render_template('admin/settings/site.html' , form=form , title='Site Settings')
 
