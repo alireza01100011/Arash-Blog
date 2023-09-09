@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField , FileField , IntegerField
+from wtforms import StringField , FileField , IntegerField , TextAreaField
 from wtforms.validators import DataRequired , Length
 from flask_wtf.file import FileAllowed 
 from flask_ckeditor import CKEditorField
@@ -25,7 +25,7 @@ class SiteSettingsForm(FlaskForm):
 class IndexPageSettingsForm(FlaskForm):
     title_home = StringField(label="Home Description" , validators=[DataRequired() , Length(1 , 128)])
     site_title = CKEditorField(label='Site Title' , validators=[DataRequired()])
-    description = CKEditorField(label="Home Description" , validators=[DataRequired() , Length(1 , 128)])
+    description = TextAreaField(label="Home Description" , validators=[DataRequired() , Length(1 , 360)])
     total_posts = IntegerField(label="How many posts are displayed on the home page" , validators=[DataRequired()]) 
     total_special_posts = IntegerField(label="How many special posts are displayed on the home page" , validators=[DataRequired()]) 
 
