@@ -12,7 +12,7 @@ def index():
     posts = Post.query.filter(Post.special.like(0)).order_by(Post.time.desc()).limit(6).all()
 
     home_page = INDEXPAGE.query.get(0)
-    return custom_render_template('blog/index.html' , title=home_page.title_home , s_post = special_posts , posts=posts , home_page=home_page)
+    return custom_render_template('blog/index.html' , title=home_page.title_home , s_post = special_posts , posts=posts , home_page=home_page )
 
 @blog.route('authors/')
 def author_archive():
@@ -65,7 +65,7 @@ def post(slug):
         if len(suggestion) == 6 : break
         suggestion.add(_post)
 
-    return custom_render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title)
+    return custom_render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title , description=post.summary)
 
 # Search
 
