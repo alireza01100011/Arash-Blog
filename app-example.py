@@ -39,10 +39,8 @@ app.register_blueprint(user)
 # Delete this line and file (SETUP.PY) after launching the site
 # This line is commented by default after launching the website
 # # # # # # # # # # #
-# from SETUP import *
+from SETUP import *
 # # # # # # # # # # #
-# ^ The above line is automatically commented (By SETUP.PY)
-
 #
 #
 # The blueprint of the library is registered in __init__.py Blueprint Admin because it is accessible only to the admin
