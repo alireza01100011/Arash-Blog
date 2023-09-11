@@ -36,6 +36,8 @@ app.register_blueprint(library_views)
 app.register_blueprint(blog)
 app.register_blueprint(user)
 
+
+from SETUP import *
 #
 #
 # The blueprint of the library is registered in __init__.py Blueprint Admin because it is accessible only to the admin
