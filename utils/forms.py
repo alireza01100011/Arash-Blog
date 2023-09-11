@@ -3,6 +3,7 @@ from wtforms.widgets import ListWidget , CheckboxInput
 
 formats = {
     'image' : ['jpg' , 'jpeg' , 'png' , 'webp' , 'gif' , 'svg'],
+    'icon' : ['jpg' , 'jpeg' , 'png' , 'svg'],
     'audio' : ['mp3' , 'oog'  , 'aac' , 'wav'] ,
     'video' : ['mp4' , 'wmv' , 'webm'],
     'exe' : ['exe' , 'apk' , 'bash'],
