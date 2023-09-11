@@ -41,7 +41,7 @@ class SITE(db.Model):
     # Site Settings
     name_site =  Column(String(128) , nullable=False , default='Blog with Flask')
     logo_site = Column(String(128) , nullable=False , default='logo.svg')
-    
+    default_description =  Column(String(256) , nullable=False , default='Default description for all pages - Blog with Flask')
     # Navbar 
     search_placeholder = Column(String(16) , default='Search')
     
