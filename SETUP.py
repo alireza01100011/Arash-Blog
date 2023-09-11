@@ -8,16 +8,12 @@ import os
 
 @app.route('/setup' , methods=['GET' , 'POST'])
 def setupsite():
-    site = SITE()
-    indxpage = INDEXPAGE()
-    imageprofile = ImageProfile()
-    imageprofile.filename = "default-profile.svg"
+    models = [ImageProfile() , SITE() , INDEXPAGE()]
+    models[0].filename = "default-profile.svg"
+    for _ in models:
+        db.session.add(_)
+        db.session.commit()
 
-    db.session.add(imageprofile)
-    db.session.add(site)
-    db.session.add(indxpage)
-    
-    db.session.commit()
     NewUser = User(
         full_name= "Admin" ,
         email="admin@admin.com" ,
@@ -28,4 +24,16 @@ def setupsite():
 
     db.session.add(NewUser)
     db.session.commit()
-    return "Account created successfully"
+
+    # Comment line 42 in the app file
+    with open('app.py' , 'r+') as re :
+        lines = re.readlines()
+
+        lines[41] = f"# {lines[41]}"
+        lines.insert(43 , f'# ^ The above line is automatically commented (By SETUP.PY)\n\n')
+
+        text = "".join(lines)
+        
+        with open('app.py' , 'w') as wr :  wr.write(text)
+    
+    return f"The site is ready, please login... <br> Email : admin@admin.com <br><br> Paassword : admin <br> <a href='{ url_for('user.login') }'> Login Page <a>"
