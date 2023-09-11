@@ -11,7 +11,7 @@ class SiteSettingsForm(FlaskForm):
                       validators=[
                           
                           FileAllowed(
-                              formats['image'] ,
+                              formats['icon'] ,
                               message='This file extension is not supported'
                           )
                       ]
