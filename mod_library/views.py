@@ -116,7 +116,7 @@ def file_edit(file_id):
         try :
             db.session.commit()
             flash('File Update successfully')
-            return redirect(url_for('admin.library.file_show'))
+            return redirect(url_for('admin.library_admin.file_show'))
         except :
             db.session.rollback()
             flash("Error, please try again")
@@ -138,7 +138,7 @@ def file_delete(file_id):
         db.session.rollback()
         flash('File deletion was not successful')
     
-    return redirect(url_for('admin.library.file_show'))
+    return redirect(url_for('admin.library_admin.file_show'))
 
 
 # Madies
@@ -257,7 +257,7 @@ def madie_edit(madie_id):
         try :
             db.session.commit()
             flash('Madie Update successfully')
-            return redirect(url_for('admin.library.madie_show'))
+            return redirect(url_for('admin.library_admin.madie_show'))
         except :
             db.session.rollback()
             flash("Error, please try again")
@@ -276,4 +276,4 @@ def madie_delete(madie_id):
         db.session.rollback()
         flash('The media was not successfully deleted')
     
-    return redirect(url_for('admin.library.madie_show'))
+    return redirect(url_for('admin.library_admin.madie_show'))
