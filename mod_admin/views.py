@@ -234,9 +234,12 @@ def category_delete(category_id):
 @admin.route('users/')
 def user_show():
     page = request.args.get('p' , default=1 , type=int)
-    per_page = request.args.get('p' , default=10 , type=int)
+    per_page = request.args.get('n' , default=10 , type=int)
     users = User.query.paginate(page=page , per_page=per_page , error_out=False)
-    return custom_render_template('admin/users/user.html' , title='Show User' , users=users)
+    return custom_render_template('admin/users/user.html' ,
+                                  title='Show User' , users=users ,
+                                  per_page = per_page , page = page
+                                  )
 
 # Create User 
 @admin.route('users/create')
