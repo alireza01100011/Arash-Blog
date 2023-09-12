@@ -45,6 +45,10 @@ def post_short_link(post_id):
 def post(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
     
+    # Total views
+    post.views = Post.views + 1
+    db.session.commit()
+
     suggestion = set() # -> Max Len == 6
     # Add posts with related categories
     if len(post.categories) >= 1 :
