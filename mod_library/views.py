@@ -40,7 +40,10 @@ def file_show():
 
     files = File.query.order_by(File.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
-    return custom_render_template('admin/library/files/file.html' , title='Show Files' , files=files)
+    return custom_render_template('admin/library/files/file.html' ,
+                                  title='Show Files' , files=files ,
+                                  per_page=per_page , page = page
+                                  )
 
 
 # Upload File
@@ -71,7 +74,7 @@ def file_upload():
             file = request.files['file']
             file.save(f'static/library/files/{filename}')
             flash('File uploaded successfully')
-            return redirect(url_for('admin.library.file_show'))
+            return redirect(url_for('admin.library_admin.file_show'))
         except :
             db.session.rollback()
             flash("Error, please try again")
