@@ -159,9 +159,15 @@ def madie_show():
     madies = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page=per_page , error_out=False)
 
     if return_type == 'false' :
-        return custom_render_template('admin/library/madies/madie.html' , title = 'Show Madies' , madies = madies)
+        return custom_render_template('admin/library/madies/madie.html' ,
+                                      title = 'Show Madies' , madies = madies ,
+                                      per_page = per_page , page = page
+
+                                      )
     else : 
-        return custom_render_template('admin/library/madies/madie-iframe.html' , madies = madies)
+        return custom_render_template('admin/library/madies/madie-iframe.html' , 
+                                      madies = madies 
+                                    )
 
 
 # Upload Madie

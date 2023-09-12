@@ -40,6 +40,10 @@
             <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Madie </button> 
          </a>
     </div>
+    <form action="{{url_for('admin.library_admin.madie_show')}}" method="get"  style="margin:25px 0 10px 25px;">
+        <input type="number" name="n" id="n" placeholder="Number of shows" value="{{per_page}}">
+    </form>
+
     <div class="row row-cols-1 row-cols-md-2" style="margin:0 10px; overflow-y:scroll ;max-height: 500px;">
         
         {% for madie in madies %}
@@ -91,5 +95,27 @@
             </div>
     {% endfor %}
 
+
+    </div>
+    <br><br>
+    <div style="text-align: center;">
+      {% set pages = [] %}
+      {% set start = page - 1 %}
+
+      {% if start < 1 %}
+        {% set start = 1 %}
+      {% endif %}
+
+      {% for _ in range( start  , start + 3) %}
+        {% if  not _ > madies.pages %}
+          {{ pages.append(_) or  ''}}
+        {% endif %}    
+      {% endfor %}
+      
+      {% for _ in pages%}
+        <a href="{{ url_for('admin.library_admin.madie_show' , p=_ , n=per_page) }}" class="btn btn-primary {% if _ == page %} active {% endif %}" ><span>{{_}}</span></a>
+      {% endfor %}
+      <br>
+      <span style="font-size: small;">Total Page : {{madies.pages}}</span>
     </div>
 {% endblock %}
