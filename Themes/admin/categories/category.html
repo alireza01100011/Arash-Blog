@@ -6,8 +6,12 @@
     <a href="{{url_for('admin.category_create')}}">
         <button type="button" class="btn btn-primary btn-fw" style="float: right; margin:10px"> Create Category </button> 
     </a>
+
+    <form action="{{url_for('admin.category_show')}}" method="get"  style="margin-top:25px">
+      <input type="number" name="n" id="n" placeholder="Number of shows">
+     </form>
+
     <div class="table-responsive">
-      
       <table class="table table-dark">
         <thead>
           <tr>
@@ -35,6 +39,26 @@
             {% endfor %}
         </tbody>
       </table>
+    </div>
+    <div style="text-align: center;">
+      {% set pages = [] %}
+      {% set start = page - 1 %}
+
+      {% if start < 1 %}
+        {% set start = 1 %}
+      {% endif %}
+
+      {% for _ in range( start  , start + 3) %}
+        {% if  not _ > categories.pages %}
+          {{ pages.append(_) or  ''}}
+        {% endif %}    
+      {% endfor %}
+      
+      {% for _ in pages%}
+        <a href="{{ url_for('admin.category_show' , p=_ , n=per_page) }}" class="btn btn-primary {% if _ == page %} active {% endif %}" ><span>{{_}}</span></a>
+      {% endfor %}
+      <br>
+      <span style="font-size: small;">Total Page : {{categories.pages}}</span>
     </div>
   </div>
 {% endblock %}

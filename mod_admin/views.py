@@ -151,7 +151,10 @@ def category_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('n' , default=10 , type=int)
     categories = Category.query.paginate(page=page , per_page=per_page , error_out=False)
-    return custom_render_template('admin/categories/category.html' , categories=categories , title='Show Categories')
+    return custom_render_template('admin/categories/category.html' ,
+                                  categories=categories , title='Show Categories',
+                                  per_page=per_page , page=page
+                                    )
 
 # Create Category
 @admin.route('categories/create' , methods=['GET' , 'POST'])
