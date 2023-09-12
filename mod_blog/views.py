@@ -67,6 +67,13 @@ def post(slug):
 
     return custom_render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title , description=post.summary)
 
+
+# Category
+@blog.route('categories/<string:slug>/')
+def category(slug):
+    cate = Category.query.filter(Category.slug == slug).first()
+    return custom_render_template('blog/archive.html' , posts=cate.posts , title = f'Category - {cate.name}')
+
 # Search
 
 @blog.route('posts/search/')
