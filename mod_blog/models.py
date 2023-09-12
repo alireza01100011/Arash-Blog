@@ -46,7 +46,8 @@ class SITE(db.Model):
     search_placeholder = Column(String(16) , default='Search')
     
     # Footer Content
-    footer =  Column(Text , nullable=False , default='footer')
+    default_footer = """<h4>Flask Blog</h4><h4>Developer : <a href="https://github.com/alireza01100011/Blog-With-Falsk">GITHUB</a></h4>"""
+    footer =  Column(Text , nullable=False , default=default_footer)
 
 
 class INDEXPAGE(db.Model):
