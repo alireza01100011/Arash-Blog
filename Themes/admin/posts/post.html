@@ -29,7 +29,7 @@
             {% for post in posts.items %}
                 <tr>
                     <td>{{post.id}}</td>
-                    <td>{{post.title}}</td>
+                    <td><a href="{{ url_for('blog.post' , slug=post.slug) }}" target="_blank">{{ post.title }}</a></td>
                     <td><span class="mdi mdi-account" style="margin:0 5px;"></span><a href="">{{post.author.full_name}}</a></td>
                     <td>
                       {% for catgory_even in post.categories[::2] %}
