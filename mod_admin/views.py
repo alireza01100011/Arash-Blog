@@ -27,7 +27,7 @@ def post_show():
     page = request.args.get('p' , default=1 , type=int)
     per_page = request.args.get('n' , default=10 , type=int)
     posts = Post.query.paginate(page=page , per_page=per_page , error_out=False)
-    return custom_render_template('admin/posts/post.html' , title='Show Posts' , posts=posts)
+    return custom_render_template('admin/posts/post.html' , title='Show Posts' , posts=posts , page=page , per_page=per_page)
 
 # Create Post
 @admin.route('posts/create/' , methods=['GET' , 'POST'])
