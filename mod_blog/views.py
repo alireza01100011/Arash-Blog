@@ -74,6 +74,16 @@ def category(slug):
     cate = Category.query.filter(Category.slug == slug).first()
     return custom_render_template('blog/archive.html' , posts=cate.posts , title = f'Category - {cate.name}')
 
+
+# Show Categories
+@blog.route('categories/')
+def categories():
+    page = request.args.get('page' , default=1 , type=int)
+    categories = Category.query.order_by(Category.time.desc()).paginate(page=page , per_page=18 , error_out=False)
+    return custom_render_template('blog/archive-categories.html' ,
+                                  title='Categories' , categories=categories , page=page
+                                  )
+
 # Search
 
 @blog.route('posts/search/')

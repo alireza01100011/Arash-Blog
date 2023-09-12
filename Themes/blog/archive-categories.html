@@ -1,0 +1,62 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="container">
+	<!-- Begin List Posts
+	================================================== -->
+	<section class="recent-posts">
+        <div class="section-title">
+            <h2><span>{{ title }}</span></h2>
+        </div>
+        <div class="row listrecent listrelated">
+            
+            {% for category in categories %}
+    
+                <!-- begin post -->
+					<div class="col-md-4 margin-bottom-posts" style="margin-bottom: 20px;">
+						<div class="card">
+							<a href="{{ url_for('blog.category' , slug=category.slug) }}">
+							<img class="img-fluid img-thumb" src="{{ url_for('library_views.madie_get' , madie_id= category.image) }}" alt="">
+							</a>
+							<div class="card-block">
+								<h2 class="card-title"><a href="{{ url_for('blog.category' , slug=category.slug) }}">{{ category.name }}</a></h2>
+								<div class="metafooter">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- end post -->
+            {% endfor %}
+        </div>
+        </section>
+        <!-- End List Posts
+        ================================================== -->
+
+
+        <div style="text-align: center;">
+            {% set pages = [] %}
+            {% set start = page - 1 %}
+
+            {% if start < 1 %}
+                {% set start = 1 %}
+            {% endif %}
+
+            {% for _ in range( start  , start + 3) %}
+                {% if  not _ > categories.pages %}
+                    {{ pages.append(_) or  ''}}
+                {% endif %}    
+            {% endfor %}
+            
+            {% for _ in pages%}
+                <a href="{{ url_for('blog.categories' , page=_) }}" class="btn btn-primary {% if _ == page %} active {% endif %}" ><span>{{_}}</span></a>
+            {% endfor %}
+            <br>
+            <span style="font-size: small;">Total Page : {{categories.pages}}</span>
+        </div>
+
+		
+		
+</div>
+{% endblock content %}
