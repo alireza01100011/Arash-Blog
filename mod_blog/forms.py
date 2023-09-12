@@ -58,7 +58,7 @@ class CategoryForm(FlaskForm):
     name = StringField('Name' , validators=[DataRequired() , Length(1 , 128)])
     description = TextAreaField('Description' , validators=[DataRequired() , Length(1 , 256)])
     slug = StringField('Slug' , validators=[DataRequired() , Length(1 , 128)])
-
+    image = RadioField('Index Image' , validators=[DataRequired('Post Image cannot be empty ( Index Photo )')])
     _category = None
     def validate_name(self , name):
         # To avoid "This name already exists" error during update

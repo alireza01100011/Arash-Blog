@@ -110,6 +110,7 @@ class Category(db.Model):
     __tablename__ = 'categories'
     id = Column(Integer() , primary_key=True , unique=True , nullable=False)
     name = Column(String(128) , nullable=False , unique=True)
+    image = Column(Integer , nullable=True , unique=False )
     description = Column(String(256) , nullable=True , unique=True)
     slug = Column(String(128) , nullable=False , unique=True)
     time = Column(DateTime , default=datetime.now)
@@ -118,11 +119,12 @@ class Category(db.Model):
     def __repr__(self):
         return f'{self.__class__.__name__} <{self.id} - {self.name} - {self.slug}>'
     
-    def __init__(self , name : str , description : str , slug : str ):
+    def __init__(self , name : str , description : str , slug : str , image : int ):
         self.name = name 
         self.description = description
         self.slug = slug
-
+        self.image = image
+        
 class User(db.Model , UserMixin):
     __tablename__ = 'users'
     id = Column(Integer , primary_key=True)

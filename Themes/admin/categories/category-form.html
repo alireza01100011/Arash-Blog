@@ -27,8 +27,33 @@
                 {{form.slug.label}}
                 {{form.slug(class='form-control' , placeholder=form.slug.label.text)}}
             </div>
-
+            <br>
+            {% if not title == 'Create Category' %}
+                <img class="rounded float-right" src="{{ url_for('library_views.madie_get' , madie_id= category.image) }}" width="80px" height="80px">
+            {% endif %}
+            <br>
+            <a href=" {{url_for('admin.library_admin.madie_upload')}} " target="_blank">
+                <button type="button"  class="btn btn-primary btn-fw" style="float: right; margin:0 20px 0 0"> Upload New Image </button> 
+            </a>
             
+            {{form.image.label}}
+
+            <div class="card" style="width: 100%;">
+                <div class="card-body form-inline">
+                    <div class="col-md-13">
+                        <div class="form-group">
+                            {% for img in form.image.choices %}
+                                <div class="form-check form-check-primary" style="margin: 20px;">
+                                    <label class="form-check-label" for="image-{{img[0] - 1}}">
+                                    <img class="rounded " src="{{ url_for('static' , filename= 'library/madies/' + img[1].filename) }}" width="80px" height="80px"><br>
+                                    <input id="image-{{img[0] - 1}}" value="{{img[0]}}" name="image" type="radio" class="form-check-input" {% if form.image.data %}{% if img[0] in form.image.data %} checked {% endif %}{% endif %}> {{img[1].name}} <i class="input-helper"></i></label>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div><br>
             <br>
             {% if title == 'Create Category' %}
             <button type="submit" class="btn btn-primary mr-2"> Publish </button>

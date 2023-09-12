@@ -160,7 +160,11 @@ def category_show():
 @admin.route('categories/create' , methods=['GET' , 'POST'])
 def category_create():
     form = CategoryForm()
-
+    
+    page =  request.args.get('page-image' , default=1 , type=int)
+    _imag_madie = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page = 30 , error_out = False )
+    imag_madie = [ img for img in _imag_madie.items if img.filename.split('.')[-1] in (formats['image']) ]
+    form.image.choices = [(img.id , img ) for img in imag_madie]
     if request.method == 'POST':
         if not form.validate_on_submit():
             return custom_render_template('admin/categories/category_form.html' , form=form , title='Create Category')
@@ -168,7 +172,8 @@ def category_create():
         NewCategory = Category(
             name = form.name.data ,
             description = form.description.data ,
-            slug = form.slug.data
+            slug = form.slug.data,
+            image= int(form.image.data)
         )
 
         try :
@@ -189,10 +194,16 @@ def category_edit(category_id):
     category = Category.query.get_or_404(category_id)
     form._category = category
 
+    page =  request.args.get('page-image' , default=1 , type=int)
+    _imag_madie = Madie.query.order_by(Madie.id.desc()).paginate(page=page , per_page = 30 , error_out = False )
+    imag_madie = [ img for img in _imag_madie.items if img.filename.split('.')[-1] in (formats['image']) ]
+    form.image.choices = [(img.id , img ) for img in imag_madie]
+
     if request.method == 'GET':
         form.name.data = category.name
         form.description.data = category.description
         form.slug.data = category.slug
+        form.image.data = [category.image]
 
     if request.method == 'POST':
         if not form.validate_on_submit():
@@ -201,6 +212,7 @@ def category_edit(category_id):
         category.name = form.name.data
         category.description = form.description.data
         category.slug = form.slug.data
+        category.image = form.image.data
 
         try :
             db.session.commit()
