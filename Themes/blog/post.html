@@ -159,7 +159,7 @@
 				<div class="after-post-tags">
 					<ul class="tags">
 						{% for category in post.categories %}
-							<li><a href="#">{{category.name}}</a></li>
+							<li><a href="{{ url_for('blog.category' , slug=category.slug) }}">{{category.name}}</a></li>
 						{% endfor %}
 					</ul>
 				</div>
