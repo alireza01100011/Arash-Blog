@@ -16,8 +16,8 @@ function color_save(x , id='save'){
 
 function save(id='save'){
     const xhr = new XMLHttpRequest();
-    var post_id = document.getElementById(id + '-a').getAttribute('value')
-    xhr.open("POST", "http://127.0.0.1:5000/posts/save/" + post_id);
+    var url = document.getElementById(id + '-a').getAttribute('value')
+    xhr.open("POST", url);
     xhr.send();
     xhr.responseType = "json";
     xhr.onload = () => {

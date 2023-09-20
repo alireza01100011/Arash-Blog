@@ -47,13 +47,13 @@
 					<ul>
 						{% if current_user.is_authenticated  %}
 							<li>
-								<a onclick="save()" value="{{post.id}}" id="save-a">
+								<a onclick="save()" value="{{ url_for('blog.save' , post_id = post.id) }}" id="save-a">
 									<i class="material-symbols-outlined style-buttons-actions" id="save-i">bookmark</i>
 								</a>
 							</li>
 
 							<li>
-								<a onclick="like()" value="{{post.id}}" id="like-a">
+								<a onclick="like()" value="{{ url_for('blog.like' , post_id = post.id) }}" id="like-a">
 									<i class="material-symbols-outlined style-buttons-actions" id="like-i">thumb_up</i>
 								</a>
 							</li>
@@ -63,7 +63,7 @@
 							</li>
 
 							<li>
-								<a  onclick="dislike()" value="{{post.id}}" id="dislike-a">
+								<a  onclick="dislike()" value="{{ url_for('blog.dislike' , post_id = post.id) }}" id="dislike-a">
 									<i class="material-symbols-outlined style-buttons-actions" id="dislike-i">thumb_down</i>
 								</a>
 							</li>

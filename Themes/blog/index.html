@@ -35,7 +35,7 @@
 					<div class="col-md-7">
 						<div class="card-block">
 							<h2 class="card-title"><a href="{{ url_for('blog.post' , slug=post.slug) }}">{{ post.title }}</a></h2>
-							<h4 class="card-text"> {{ post.summary }} </h4>
+							<h4 class="card-text"> {{ post.summary[:150]  }} ... </h4>
 							<div class="metafooter">
 								<div class="wrapfooter">
 									<span class="meta-footer-thumb">
