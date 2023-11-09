@@ -14,7 +14,7 @@ from utils.flask import custom_render_template
 import uuid
 from datetime import datetime
 import os
-
+import pickle
 @admin.route('/')
 def index():
     _time_now = datetime.now()
@@ -33,12 +33,69 @@ def index():
 
     top_posts = Post.query.order_by(Post.views.desc()).limit(5).all()
 
+    admin = Admin.query.filter(Admin.email==current_user.email).first()
+    if not admin.to_do:
+        admin.to_do = pickle.dumps(list())
+        db.session.commit()
+    to_do_list = pickle.loads(admin.to_do)
     return custom_render_template('admin/index.html', title='Dashboard',
                                   total_posts=total_posts, total_m_posts=total_m_posts,
                                   total_users=total_users, total_m_users=total_m_users,
                                   total_likes=total_likes, total_m_likes='null',
                                   total_views=total_views, total_m_views='null',
-                                  top_posts=top_posts)
+                                  top_posts=top_posts, to_do_list=to_do_list)
+
+@admin.route('to-do/<string:action>', methods=['GET'])
+def to_do(action):
+    admin:Admin = Admin.query.filter(Admin.email==current_user.email).first()
+    to_do:bytes = admin.to_do
+    if not to_do:
+        to_do:bytes = pickle.dumps(list())
+    to_do:list= pickle.loads(to_do)
+
+    if action == 'add':
+        name = request.args.get('name', default=None, type=str)
+        if (not name) :
+            flash('The value entered is invalid')
+            return redirect(url_for('admin.index'))
+        
+        if (not len(name) >= 1) :
+            return redirect(url_for('admin.index'))
+        
+        if (not len(name) < 64):
+            flash('The length is more than 64 characters')
+            return redirect(url_for('admin.index'))
+        
+        to_do.append({
+            'name':name,
+            'date':datetime.now(),
+            'is_done':False
+        })
+        
+    elif action == 'done':
+        name = request.args.get('name', default=None, type=str)
+        if not name :
+            return redirect(url_for('admin.index'))
+        for task in to_do:
+            if name == task.get('name'):
+                task['is_done'] = (not task['is_done'])
+        
+    elif action == 'delete':
+        name = request.args.get('name', default=None, type=str)
+        if not name :
+            return redirect(url_for('admin.index'))
+        for task in to_do:
+            if name == task.get('name'):
+                to_do.remove(task)
+
+    admin.to_do = pickle.dumps(to_do)
+    try :
+        db.session.commit()
+    except IntegrityError :
+        db.session.rollback()
+        flash('The operation was not performed, please try again')
+    return redirect(url_for('admin.index'))
+
 
 
 #### Post ####

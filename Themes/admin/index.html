@@ -67,323 +67,315 @@
         </div>
     </div>
 
+
     
-    <div class="row d-flex justify-content-between align-items-start" style="padding: 20px;">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title text-black">To do Task List</h4>
-                <p class="text-muted">Created by anonymous</p>
-                <div class="list-wrapper">
-                    <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                        <li>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox"> Meeting with Alisa <i
-                                        class="input-helper"></i></label>
-                                <span class="list-time">4 Hours Ago</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox"> Create invoice <i class="input-helper"></i></label>
-                                <span class="list-time">6 Hours Ago</span>
-                            </div>
-                        </li>
-                        <li class="completed">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox" checked=""> Prepare for presentation <i
-                                        class="input-helper"></i></label>
-                                <span class="list-time">2 Hours Ago</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox"> Pick up kids from school <i
-                                        class="input-helper"></i></label>
-                                <span class="list-time">8 Hours Ago</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="add-items d-flex flex-wrap flex-sm-nowrap">
-                    <input type="text" class="form-control todo-list-input flex-grow" placeholder="Add task name">
-                    <button class="add btn btn-primary font-weight-regular text-nowrap" id="add-task"> Add Task </button>
+    <div class="row">
+        <div class="col-xl-4 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-black">To do Task List</h4>
+                    <div class="list-wrapper">
+                        <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                            {% for to_do in to_do_list %}
+                                <li>
+                                    <div class="form-check">
+                                        <label class="form-check-label" >
+                                            <i class="input-helper">{{ to_do.get('name') }}</i>
+                                            {% if to_do.get('is_done')%}
+                                                <input class="checkbox" type="checkbox" checked>
+                                            {% else %}
+                                                <input class="checkbox" type="checkbox" > 
+                                            {% endif %}
+                                        </label>
+                                        <span class="list-time">{{ to_do.get('date').strftime('%d %b %y - %H:%M') }}</span>
+                                        <span class="list-time">
+                                            <a href="{{ url_for('admin.to_do', action='done', name=to_do.get('name')) }}">Done</a>
+                                            <samp> - </samp>
+                                            <a href="{{ url_for('admin.to_do', action='delete', name=to_do.get('name')) }}">Delete</a>
+                                        </span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+    
+                    <form action="{{ url_for('admin.to_do', action='add') }}" method="get" class="add-items d-flex flex-wrap flex-sm-nowrap">
+                        <input type="text" name="name" class="form-control todo-list-input flex-grow" placeholder="Add task name">
+    
+                        <button type="submit" class="add btn btn-primary font-weight-regular text-nowrap" id="add-task"> Add Task </button>
+                    </form>
+    
                 </div>
             </div>
-        
         </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div id="inline-datepicker" class="datepicker table-responsive">
-                    <div class="datepicker datepicker-inline">
-                        <div class="datepicker-days">
-                            <table class="table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th colspan="7" class="datepicker-title" style="display: none;"></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
-                                        <th colspan="5" class="datepicker-switch">November 2023</th>
-                                        <th class="next"><i class="mdi mdi-chevron-right"></i></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="dow">Su</th>
-                                        <th class="dow">Mo</th>
-                                        <th class="dow">Tu</th>
-                                        <th class="dow">We</th>
-                                        <th class="dow">Th</th>
-                                        <th class="dow">Fr</th>
-                                        <th class="dow">Sa</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="old day" data-date="1698537600000">29</td>
-                                        <td class="old day" data-date="1698624000000">30</td>
-                                        <td class="old day" data-date="1698710400000">31</td>
-                                        <td class="day" data-date="1698796800000">1</td>
-                                        <td class="day" data-date="1698883200000">2</td>
-                                        <td class="day" data-date="1698969600000">3</td>
-                                        <td class="day" data-date="1699056000000">4</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="day" data-date="1699142400000">5</td>
-                                        <td class="day" data-date="1699228800000">6</td>
-                                        <td class="day" data-date="1699315200000">7</td>
-                                        <td class="day" data-date="1699401600000">8</td>
-                                        <td class="today day" data-date="1699488000000">9</td>
-                                        <td class="day" data-date="1699574400000">10</td>
-                                        <td class="day" data-date="1699660800000">11</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="day" data-date="1699747200000">12</td>
-                                        <td class="day" data-date="1699833600000">13</td>
-                                        <td class="day" data-date="1699920000000">14</td>
-                                        <td class="day" data-date="1700006400000">15</td>
-                                        <td class="day" data-date="1700092800000">16</td>
-                                        <td class="day" data-date="1700179200000">17</td>
-                                        <td class="day" data-date="1700265600000">18</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="day" data-date="1700352000000">19</td>
-                                        <td class="day" data-date="1700438400000">20</td>
-                                        <td class="day" data-date="1700524800000">21</td>
-                                        <td class="day" data-date="1700611200000">22</td>
-                                        <td class="day" data-date="1700697600000">23</td>
-                                        <td class="day" data-date="1700784000000">24</td>
-                                        <td class="day" data-date="1700870400000">25</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="day" data-date="1700956800000">26</td>
-                                        <td class="day" data-date="1701043200000">27</td>
-                                        <td class="day" data-date="1701129600000">28</td>
-                                        <td class="day" data-date="1701216000000">29</td>
-                                        <td class="day" data-date="1701302400000">30</td>
-                                        <td class="new day" data-date="1701388800000">1</td>
-                                        <td class="new day" data-date="1701475200000">2</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="new day" data-date="1701561600000">3</td>
-                                        <td class="new day" data-date="1701648000000">4</td>
-                                        <td class="new day" data-date="1701734400000">5</td>
-                                        <td class="new day" data-date="1701820800000">6</td>
-                                        <td class="new day" data-date="1701907200000">7</td>
-                                        <td class="new day" data-date="1701993600000">8</td>
-                                        <td class="new day" data-date="1702080000000">9</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="7" class="today" style="display: none;">Today</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="7" class="clear" style="display: none;">Clear</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="datepicker-months" style="display: none;">
-                            <table class="table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th colspan="7" class="datepicker-title" style="display: none;"></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
-                                        <th colspan="5" class="datepicker-switch">2023</th>
-                                        <th class="next"><i class="mdi mdi-chevron-right"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span
-                                                class="month">Mar</span><span class="month">Apr</span><span
-                                                class="month">May</span><span class="month">Jun</span><span
-                                                class="month">Jul</span><span class="month">Aug</span><span
-                                                class="month">Sep</span><span class="month">Oct</span><span
-                                                class="month focused">Nov</span><span class="month">Dec</span></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="7" class="today" style="display: none;">Today</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="7" class="clear" style="display: none;">Clear</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="datepicker-years" style="display: none;">
-                            <table class="table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th colspan="7" class="datepicker-title" style="display: none;"></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
-                                        <th colspan="5" class="datepicker-switch">2020-2029</th>
-                                        <th class="next"><i class="mdi mdi-chevron-right"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="7"><span class="year old">2019</span><span class="year">2020</span><span
-                                                class="year">2021</span><span class="year">2022</span><span
-                                                class="year focused">2023</span><span class="year">2024</span><span
-                                                class="year">2025</span><span class="year">2026</span><span
-                                                class="year">2027</span><span class="year">2028</span><span
-                                                class="year">2029</span><span class="year new">2030</span></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="7" class="today" style="display: none;">Today</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="7" class="clear" style="display: none;">Clear</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="datepicker-decades" style="display: none;">
-                            <table class="table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th colspan="7" class="datepicker-title" style="display: none;"></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
-                                        <th colspan="5" class="datepicker-switch">2000-2090</th>
-                                        <th class="next"><i class="mdi mdi-chevron-right"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="7"><span class="decade old">1990</span><span
-                                                class="decade">2000</span><span class="decade">2010</span><span
-                                                class="decade focused">2020</span><span class="decade">2030</span><span
-                                                class="decade">2040</span><span class="decade">2050</span><span
-                                                class="decade">2060</span><span class="decade">2070</span><span
-                                                class="decade">2080</span><span class="decade">2090</span><span
-                                                class="decade new">2100</span></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="7" class="today" style="display: none;">Today</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="7" class="clear" style="display: none;">Clear</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="datepicker-centuries" style="display: none;">
-                            <table class="table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th colspan="7" class="datepicker-title" style="display: none;"></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
-                                        <th colspan="5" class="datepicker-switch">2000-2900</th>
-                                        <th class="next"><i class="mdi mdi-chevron-right"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="7"><span class="century old">1900</span><span
-                                                class="century focused">2000</span><span class="century">2100</span><span
-                                                class="century">2200</span><span class="century">2300</span><span
-                                                class="century">2400</span><span class="century">2500</span><span
-                                                class="century">2600</span><span class="century">2700</span><span
-                                                class="century">2800</span><span class="century">2900</span><span
-                                                class="century new">3000</span></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="7" class="today" style="display: none;">Today</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="7" class="clear" style="display: none;">Clear</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+        <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div id="inline-datepicker" class="datepicker table-responsive">
+                        <div class="datepicker datepicker-inline">
+                            <div class="datepicker-days">
+                                <table class="table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
+                                            <th colspan="5" class="datepicker-switch">November 2023</th>
+                                            <th class="next"><i class="mdi mdi-chevron-right"></i></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="dow">Su</th>
+                                            <th class="dow">Mo</th>
+                                            <th class="dow">Tu</th>
+                                            <th class="dow">We</th>
+                                            <th class="dow">Th</th>
+                                            <th class="dow">Fr</th>
+                                            <th class="dow">Sa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="old day" data-date="1698537600000">29</td>
+                                            <td class="old day" data-date="1698624000000">30</td>
+                                            <td class="old day" data-date="1698710400000">31</td>
+                                            <td class="day" data-date="1698796800000">1</td>
+                                            <td class="day" data-date="1698883200000">2</td>
+                                            <td class="day" data-date="1698969600000">3</td>
+                                            <td class="day" data-date="1699056000000">4</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day" data-date="1699142400000">5</td>
+                                            <td class="day" data-date="1699228800000">6</td>
+                                            <td class="day" data-date="1699315200000">7</td>
+                                            <td class="day" data-date="1699401600000">8</td>
+                                            <td class="today day" data-date="1699488000000">9</td>
+                                            <td class="day" data-date="1699574400000">10</td>
+                                            <td class="day" data-date="1699660800000">11</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day" data-date="1699747200000">12</td>
+                                            <td class="day" data-date="1699833600000">13</td>
+                                            <td class="day" data-date="1699920000000">14</td>
+                                            <td class="day" data-date="1700006400000">15</td>
+                                            <td class="day" data-date="1700092800000">16</td>
+                                            <td class="day" data-date="1700179200000">17</td>
+                                            <td class="day" data-date="1700265600000">18</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day" data-date="1700352000000">19</td>
+                                            <td class="day" data-date="1700438400000">20</td>
+                                            <td class="day" data-date="1700524800000">21</td>
+                                            <td class="day" data-date="1700611200000">22</td>
+                                            <td class="day" data-date="1700697600000">23</td>
+                                            <td class="day" data-date="1700784000000">24</td>
+                                            <td class="day" data-date="1700870400000">25</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day" data-date="1700956800000">26</td>
+                                            <td class="day" data-date="1701043200000">27</td>
+                                            <td class="day" data-date="1701129600000">28</td>
+                                            <td class="day" data-date="1701216000000">29</td>
+                                            <td class="day" data-date="1701302400000">30</td>
+                                            <td class="new day" data-date="1701388800000">1</td>
+                                            <td class="new day" data-date="1701475200000">2</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="new day" data-date="1701561600000">3</td>
+                                            <td class="new day" data-date="1701648000000">4</td>
+                                            <td class="new day" data-date="1701734400000">5</td>
+                                            <td class="new day" data-date="1701820800000">6</td>
+                                            <td class="new day" data-date="1701907200000">7</td>
+                                            <td class="new day" data-date="1701993600000">8</td>
+                                            <td class="new day" data-date="1702080000000">9</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7" class="today" style="display: none;">Today</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="7" class="clear" style="display: none;">Clear</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="datepicker-months" style="display: none;">
+                                <table class="table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
+                                            <th colspan="5" class="datepicker-switch">2023</th>
+                                            <th class="next"><i class="mdi mdi-chevron-right"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span
+                                                    class="month">Mar</span><span class="month">Apr</span><span
+                                                    class="month">May</span><span class="month">Jun</span><span
+                                                    class="month">Jul</span><span class="month">Aug</span><span
+                                                    class="month">Sep</span><span class="month">Oct</span><span
+                                                    class="month focused">Nov</span><span class="month">Dec</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7" class="today" style="display: none;">Today</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="7" class="clear" style="display: none;">Clear</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="datepicker-years" style="display: none;">
+                                <table class="table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
+                                            <th colspan="5" class="datepicker-switch">2020-2029</th>
+                                            <th class="next"><i class="mdi mdi-chevron-right"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7"><span class="year old">2019</span><span class="year">2020</span><span
+                                                    class="year">2021</span><span class="year">2022</span><span
+                                                    class="year focused">2023</span><span class="year">2024</span><span
+                                                    class="year">2025</span><span class="year">2026</span><span
+                                                    class="year">2027</span><span class="year">2028</span><span
+                                                    class="year">2029</span><span class="year new">2030</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7" class="today" style="display: none;">Today</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="7" class="clear" style="display: none;">Clear</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="datepicker-decades" style="display: none;">
+                                <table class="table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
+                                            <th colspan="5" class="datepicker-switch">2000-2090</th>
+                                            <th class="next"><i class="mdi mdi-chevron-right"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7"><span class="decade old">1990</span><span
+                                                    class="decade">2000</span><span class="decade">2010</span><span
+                                                    class="decade focused">2020</span><span class="decade">2030</span><span
+                                                    class="decade">2040</span><span class="decade">2050</span><span
+                                                    class="decade">2060</span><span class="decade">2070</span><span
+                                                    class="decade">2080</span><span class="decade">2090</span><span
+                                                    class="decade new">2100</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7" class="today" style="display: none;">Today</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="7" class="clear" style="display: none;">Clear</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="datepicker-centuries" style="display: none;">
+                                <table class="table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
+                                            <th colspan="5" class="datepicker-switch">2000-2900</th>
+                                            <th class="next"><i class="mdi mdi-chevron-right"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7"><span class="century old">1900</span><span
+                                                    class="century focused">2000</span><span class="century">2100</span><span
+                                                    class="century">2200</span><span class="century">2300</span><span
+                                                    class="century">2400</span><span class="century">2500</span><span
+                                                    class="century">2600</span><span class="century">2700</span><span
+                                                    class="century">2800</span><span class="century">2900</span><span
+                                                    class="century new">3000</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7" class="today" style="display: none;">Today</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="7" class="clear" style="display: none;">Clear</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card card-invoice">
-            <div class="card-body">
-              <h4 class="card-title pb-3">The most visited posts</h4>
-                 {% for post in top_posts %}
-
-
-                        <div class="list-card">
-                            <div class="row align-items-center">
-                            <div class="col-7 col-sm-8">
-                                <div class="row align-items-center">
-                                <div class="col-sm-4">
-                                    <a href="{{ url_for('blog.post' , slug=post.slug) }}">
-                                        <img src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" alt="">
-                                    </a>
-                                </div>
-                                <div class="col-sm-8 pr-0 pl-sm-0">
-                                    <span>{{ post.time.strftime('%d %B %Y') }}</span>
-                                    <h6 class="mb-1 mb-sm-0">{{ post.title[:15] }}...</h6>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-5 col-sm-4">
-                                <div class="d-flex pt-1 align-items-center">
-                                <div class="reload-outer bg-info">
-                                    <i class="mdi mdi-reload"></i>
-                                </div>
-                                <div class="dropdown dropleft pl-1 pt-3">
-                                    <div id="dropdownMenuButton2" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <p><i class="mdi mdi-dots-vertical"></i></p>
-                                    </div>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                    <a class="dropdown-item" href="{{ url_for('blog.post' , slug=post.slug) }}">Visit</a>
-                                    <a class="dropdown-item" href="{{ url_for('admin.post_edit' , post_id = post.id) }}">Edit</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-
-                 {% endfor %}
-
+        <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title pb-3">The most visited posts</h4>
+                       {% for post in top_posts %}
+                              <div class="list-card">
+                                  <div class="row align-items-center">
+                                  <div class="col-7 col-sm-8">
+                                      <div class="row align-items-center">
+                                      <div class="col-sm-4">
+                                          <a href="{{ url_for('blog.post' , slug=post.slug) }}">
+                                              <img src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" alt="" width="30px" height="30px">
+                                          </a>
+                                      </div>
+                                      <div class="col-sm-8 pr-0 pl-sm-0">
+                                          <span>{{ post.time.strftime('%d %B %Y') }}</span>
+                                          <h6 class="mb-1 mb-sm-0">{{ post.title[:15] }}...</h6>
+                                      </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-5 col-sm-4">
+                                      <div class="d-flex pt-1 align-items-center">
+                                      <div class="dropdown dropleft pl-1 pt-3">
+                                          <div id="dropdownMenuButton2" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                          <p><i class="mdi mdi-dots-vertical"></i></p>
+                                          </div>
+                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                          <a class="dropdown-item" href="{{ url_for('blog.post' , slug=post.slug) }}">Visit</a>
+                                          <a class="dropdown-item" href="{{ url_for('admin.post_edit' , post_id = post.id) }}">Edit</a>
+                                          </div>
+                                      </div>
+                                      </div>
+                                  </div>
+                                  </div>
+                              </div>
+      
+                       {% endfor %}
+      
+                  </div>
             </div>
         </div>
     </div>
