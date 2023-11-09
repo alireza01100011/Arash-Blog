@@ -34,7 +34,7 @@ def index():
     top_posts = Post.query.order_by(Post.views.desc()).limit(5).all()
 
     admin = Admin.query.filter(Admin.email==current_user.email).first()
-    if not admin.to_do:
+    if not admin.to_do: # If it is None, it will be filled with an empty list (to avoid errors)
         admin.to_do = pickle.dumps(list())
         db.session.commit()
     to_do_list = pickle.loads(admin.to_do)
@@ -45,14 +45,18 @@ def index():
                                   total_views=total_views, total_m_views='null',
                                   top_posts=top_posts, to_do_list=to_do_list)
 
+# Manage to-do lists 
+# Add-Done-Remove
 @admin.route('to-do/<string:action>', methods=['GET'])
 def to_do(action):
+    ## Get the task list and convert it into a Python list
     admin:Admin = Admin.query.filter(Admin.email==current_user.email).first()
     to_do:bytes = admin.to_do
-    if not to_do:
+    if not to_do: # If it is None, it will be filled with an empty list (to avoid errors)
         to_do:bytes = pickle.dumps(list())
     to_do:list= pickle.loads(to_do)
-
+    
+    #  To add item
     if action == 'add':
         name = request.args.get('name', default=None, type=str)
         if (not name) :
@@ -71,7 +75,7 @@ def to_do(action):
             'date':datetime.now(),
             'is_done':False
         })
-        
+    # Change the status of the task
     elif action == 'done':
         name = request.args.get('name', default=None, type=str)
         if not name :
@@ -79,7 +83,8 @@ def to_do(action):
         for task in to_do:
             if name == task.get('name'):
                 task['is_done'] = (not task['is_done'])
-        
+    
+    # Remove the task
     elif action == 'delete':
         name = request.args.get('name', default=None, type=str)
         if not name :
@@ -88,15 +93,19 @@ def to_do(action):
             if name == task.get('name'):
                 to_do.remove(task)
 
+    # 
+    else :
+        return redirect(url_for('admin.index'))
+    
+    # Convert to string to store edits in the database 
     admin.to_do = pickle.dumps(to_do)
+    
     try :
         db.session.commit()
     except IntegrityError :
         db.session.rollback()
         flash('The operation was not performed, please try again')
     return redirect(url_for('admin.index'))
-
-
 
 #### Post ####
 
