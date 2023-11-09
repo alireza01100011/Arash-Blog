@@ -134,6 +134,7 @@ class User(db.Model , UserMixin):
     bio = Column(String(256) , nullable=True , unique=False)
     role = Column(Integer , nullable=False , unique=False)
     image_id = Column(Integer , ForeignKey('imageprofile.id') , nullable=True)
+    time = Column(DateTime, default=datetime.now)
     posts = db.relationship('Post' , backref='author')
     files = db.relationship('File' , backref='uploader')
     madies = db.relationship('Madie' , backref='uploader')
