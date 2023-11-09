@@ -151,6 +151,15 @@ class User(db.Model , UserMixin):
         self.password = password
         self.role = role
 
+class Admin(db.Model):
+    __tablename__ = 'admin'
+    id = Column(Integer, primary_key=True)
+    email = Column(String(128) , nullable=False , unique=True)
+    to_do = Column(String(1024 * 36) , nullable=True , unique=False)
+    
+    def __repr__(self):
+        return f'{self.__class__.__name__} < {self.id} - {self.email}> '
+
 class ImageProfile(db.Model):
     __tablename__ = "imageprofile"
     id = Column(Integer , primary_key=True)

@@ -3,7 +3,7 @@ from flask_login import login_user , logout_user , login_required , current_user
 from sqlalchemy.exc import IntegrityError
 from mod_admin import admin
 from mod_admin.froms import SiteSettingsForm , IndexPageSettingsForm , FooterContentSettingsForm
-from mod_blog.models import Post , Category , User , Madie , SITE , INDEXPAGE
+from mod_blog.models import Post , Category , User , Madie , SITE , INDEXPAGE, Admin
 from mod_blog.forms import PostForm , CategoryForm
 from mod_user.froms import UserRoleForm
 from utils.calculation import readin_time
@@ -294,6 +294,25 @@ def user_edit(user_id):
     if request.method == 'POST':
         if form.validate_on_submit():
             return custom_render_template('admin/users/user-edit.html' , title=f'Change Ueer Role {user.full_name}' , form=form , user=user)        
+        
+        if form.role.data == '1':
+            AddAdmin = Admin()
+            AddAdmin.email = user.email
+            try :
+                db.session.add(AddAdmin)
+                db.session.commit()
+            except :
+                db.session.rollback()
+                flash('Failed. Please try again')
+        else :
+            DelAdmin = Admin.query.filter(Admin.email==user.email).first()
+            if DelAdmin:
+                try :
+                    db.session.delete(DelAdmin)
+                    db.session.commit()
+                except :
+                    db.session.rollback()
+                    flash('Failed. Please try again')
         user.role = form.role.data
         try :
             db.session.commit()
