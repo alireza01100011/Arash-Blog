@@ -14,9 +14,31 @@ from utils.flask import custom_render_template
 import uuid
 from datetime import datetime
 import os
+
 @admin.route('/')
 def index():
-    return custom_render_template('admin/index.html' , title='Dashboard')
+    _time_now = datetime.now()
+    
+    total_posts = Post.query.count()
+    total_m_posts = Post.query.filter(Post.time >= _time_now.replace(month=_time_now.month-1)).count()
+    
+    total_users = User.query.count()
+    total_m_users = User.query.filter(User.time >= _time_now.replace(month=_time_now.month-1)).count()
+    
+    total_likes = db.session.query(Post.total_liks).filter(Post.total_liks >= 1 ).all()
+    total_likes = sum([int(n[0]) for n in total_likes])
+    
+    total_views = db.session.query(Post.views).filter(Post.views >= 1 ).all()
+    total_views = sum([int(n[0]) for n in total_views])
+
+    top_posts = Post.query.order_by(Post.views.desc()).limit(5).all()
+
+    return custom_render_template('admin/index.html', title='Dashboard',
+                                  total_posts=total_posts, total_m_posts=total_m_posts,
+                                  total_users=total_users, total_m_users=total_m_users,
+                                  total_likes=total_likes, total_m_likes='null',
+                                  total_views=total_views, total_m_views='null',
+                                  top_posts=top_posts)
 
 
 #### Post ####
