@@ -10,7 +10,7 @@ def CreateCalendar(
     return {
         'year' : year,
         'month': datetime.datetime.now().strftime('%B'), #ex. November
-        'dayes': days # [(int,<False, None, True>), ....] 
+        'days': days # [(int,<False, None, True>), ....] 
                 -> True->today, False->this month,  None->Last month | next month
     }
     """
@@ -63,7 +63,7 @@ def CreateCalendar(
     return {
         'year' : year,
         'month': datetime.datetime.now().strftime('%B'),
-        'dayes': days
+        'days': days
     }
 
 
