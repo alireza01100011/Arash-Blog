@@ -62,7 +62,7 @@
                                     </span>
 
                                     <span class="post-read-more">
-                                        <a onclick="save('{{post.id}}-save')" value="{{post.id}}" id="{{post.id}}-save-a" >
+                                        <a onclick="save('{{ url_for('blog.save' , post_id = post.id) }}')"  id="{{post.id}}-save-a" >
                                             <i class="material-symbols-outlined style-buttons-actions" id="{{post.id}}-save-i">bookmark</i>
                                         </a>
                                     </span>

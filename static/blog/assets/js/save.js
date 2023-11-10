@@ -14,9 +14,11 @@ function color_save(x , id='save'){
 
 
 
-function save(id='save'){
+function save(url){
     const xhr = new XMLHttpRequest();
-    var url = document.getElementById(id + '-a').getAttribute('value')
+    var url = url
+    const myArray = url.split("/");
+    var id = myArray[myArray.length - 1] + '-save';
     xhr.open("POST", url);
     xhr.send();
     xhr.responseType = "json";
