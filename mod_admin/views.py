@@ -9,15 +9,17 @@ from mod_user.froms import UserRoleForm
 from utils.calculation import readin_time
 from utils.forms import formats
 from utils.flask import custom_render_template
+from utils.CreateCalendar import CreateCalendar
 from app import db 
 from utils.flask import custom_render_template 
 import uuid
-from datetime import datetime
+import datetime
+import calendar
 import os
 import pickle
 @admin.route('/')
 def index():
-    _time_now = datetime.now()
+    _time_now = datetime.datetime.now()
     
     total_posts = Post.query.count()
     total_m_posts = Post.query.filter(Post.time >= _time_now.replace(month=_time_now.month-1)).count()
@@ -38,12 +40,20 @@ def index():
         admin.to_do = pickle.dumps(list())
         db.session.commit()
     to_do_list = pickle.loads(admin.to_do)
+
+    calendar_dict = CreateCalendar()
+    days = list()
+    for week in range(7, (43+7), 7):
+        days.append((day for day in calendar_dict['days'][week - 7 : week]))
+    calendar_dict['days'] = days
+
     return custom_render_template('admin/index.html', title='Dashboard',
                                   total_posts=total_posts, total_m_posts=total_m_posts,
                                   total_users=total_users, total_m_users=total_m_users,
                                   total_likes=total_likes, total_m_likes='null',
                                   total_views=total_views, total_m_views='null',
-                                  top_posts=top_posts, to_do_list=to_do_list)
+                                  top_posts=top_posts, to_do_list=to_do_list,
+                                  calendar=calendar_dict)
 
 # Manage to-do lists 
 # Add-Done-Remove
@@ -72,7 +82,7 @@ def to_do(action):
         
         to_do.append({
             'name':name,
-            'date':datetime.now(),
+            'date':datetime.datetime.now(),
             'is_done':False
         })
     # Change the status of the task
@@ -201,7 +211,7 @@ def post_edit(post_id):
         post.summary = form.summary.data
         post.image = int(form.image.data)
         post.special = int(form.special.data) - 1
-        post.time = datetime.now()
+        post.time = datetime.datetime.now()
         if form.read_time.data == 0 and form.read_time.data == 0.0 :
             post.read_time = readin_time(str(form.content.data))
         else :

@@ -122,7 +122,7 @@
                                         </tr>
                                         <tr>
                                             <th class="prev"><i class="mdi mdi-chevron-left"></i></th>
-                                            <th colspan="5" class="datepicker-switch">November 2023</th>
+                                            <th colspan="5" class="datepicker-switch">{{ calendar.get('month') }} {{ calendar.get('year') }}</th>
                                             <th class="next"><i class="mdi mdi-chevron-right"></i></th>
                                         </tr>
                                         <tr>
@@ -136,60 +136,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="old day" data-date="1698537600000">29</td>
-                                            <td class="old day" data-date="1698624000000">30</td>
-                                            <td class="old day" data-date="1698710400000">31</td>
-                                            <td class="day" data-date="1698796800000">1</td>
-                                            <td class="day" data-date="1698883200000">2</td>
-                                            <td class="day" data-date="1698969600000">3</td>
-                                            <td class="day" data-date="1699056000000">4</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day" data-date="1699142400000">5</td>
-                                            <td class="day" data-date="1699228800000">6</td>
-                                            <td class="day" data-date="1699315200000">7</td>
-                                            <td class="day" data-date="1699401600000">8</td>
-                                            <td class="today day" data-date="1699488000000">9</td>
-                                            <td class="day" data-date="1699574400000">10</td>
-                                            <td class="day" data-date="1699660800000">11</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day" data-date="1699747200000">12</td>
-                                            <td class="day" data-date="1699833600000">13</td>
-                                            <td class="day" data-date="1699920000000">14</td>
-                                            <td class="day" data-date="1700006400000">15</td>
-                                            <td class="day" data-date="1700092800000">16</td>
-                                            <td class="day" data-date="1700179200000">17</td>
-                                            <td class="day" data-date="1700265600000">18</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day" data-date="1700352000000">19</td>
-                                            <td class="day" data-date="1700438400000">20</td>
-                                            <td class="day" data-date="1700524800000">21</td>
-                                            <td class="day" data-date="1700611200000">22</td>
-                                            <td class="day" data-date="1700697600000">23</td>
-                                            <td class="day" data-date="1700784000000">24</td>
-                                            <td class="day" data-date="1700870400000">25</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day" data-date="1700956800000">26</td>
-                                            <td class="day" data-date="1701043200000">27</td>
-                                            <td class="day" data-date="1701129600000">28</td>
-                                            <td class="day" data-date="1701216000000">29</td>
-                                            <td class="day" data-date="1701302400000">30</td>
-                                            <td class="new day" data-date="1701388800000">1</td>
-                                            <td class="new day" data-date="1701475200000">2</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="new day" data-date="1701561600000">3</td>
-                                            <td class="new day" data-date="1701648000000">4</td>
-                                            <td class="new day" data-date="1701734400000">5</td>
-                                            <td class="new day" data-date="1701820800000">6</td>
-                                            <td class="new day" data-date="1701907200000">7</td>
-                                            <td class="new day" data-date="1701993600000">8</td>
-                                            <td class="new day" data-date="1702080000000">9</td>
-                                        </tr>
+                                        {% for week in calendar.get('days') %}
+                                            <tr>
+                                                {% for day in week %}
+                                                    {% if day[1] == False %}
+                                                        <td class="day">{{ day[0] }}</td>
+                                                    {% elif day[1] == None %}
+                                                        <td class="old day">{{ day[0] }}</td>
+                                                    {% elif day[1] == True %}
+                                                        <td class="today day">{{ day[0] }}</td>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                                
+                                            </tr>
+                                        {% endfor %}
+
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
