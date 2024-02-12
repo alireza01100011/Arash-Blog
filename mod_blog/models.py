@@ -150,6 +150,20 @@ class User(db.Model , UserMixin):
         self.email = email 
         self.password = password
         self.role = role
+# ---
+
+class UnverifiedUser(db.Model):
+    __tablename__ = 'unverified_users'
+    id = Column(Integer , primary_key=True)
+    user_id = Column(Integer , nullable=False)
+
+    def __repr__(self)-> str:
+        return f'{self.__class__.__name__} < {self.id} - {self.user_id}>'
+    
+    def __init__(self, user_id:int)-> None:
+        self.user_id = user_id
+# ---
+
 
 class Admin(db.Model):
     __tablename__ = 'admin'
