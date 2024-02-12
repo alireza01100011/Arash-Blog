@@ -4,6 +4,10 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_ckeditor import CKEditor
+from flask_mail import Mail
+
+from redis import Redis
+
 from config import config , site
 
 site = site.JSON_DATA
@@ -23,6 +27,14 @@ login_manager.login_message_category = 'info'
 becrypt = Bcrypt(app)
 
 ckeditor = CKEditor(app)
+redis = Redis.from_url(config.REDIS_SERVER_URL)
+
+mail = Mail()
+mail.init_app(app)
+mail.server = config.MAIL_SERVER
+mail.password = config.MAIL_PASSWORD
+mail.port = config.MAIL_PORT
+mail.username = config.MAIL_USERNAME
 
 from views import *
 
