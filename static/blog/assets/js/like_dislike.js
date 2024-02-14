@@ -25,9 +25,10 @@ function color_defult(){
 
 function like(){
     const xhr = new XMLHttpRequest();
-    var url = document.getElementById('like-a').getAttribute('value')
-    xhr.open("POST", url);
+    var post_id = document.getElementById('like-a').getAttribute('post-id')
+    xhr.open("POST", `/posts/like/${post_id}`);
     xhr.send();
+
     xhr.responseType = "json";
     xhr.onload = () => {
       if (xhr.readyState == 4 && xhr.status == 200) {
@@ -50,8 +51,8 @@ function like(){
 
 function dislike(){
     const xhr = new XMLHttpRequest();
-    var url = document.getElementById('dislike-a').getAttribute('value')
-    xhr.open("POST", url);
+    var post_id = document.getElementById('dislike-a').getAttribute('post-id')
+    xhr.open("POST", `/posts/dislike/${post_id}`);
     xhr.send();
     xhr.responseType = "json";
     xhr.onload = () => {

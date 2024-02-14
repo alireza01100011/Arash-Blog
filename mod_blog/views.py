@@ -50,25 +50,37 @@ def post(slug):
     db.session.commit()
 
     suggestion = set() # -> Max Len == 6
+
+    def add_to_suggestion(_post:Post):
+        if _post.slug != slug:
+            suggestion.add(_post)
+    
     # Add posts with related categories
     if len(post.categories) >= 1 :
         for cat in post.categories:
             if len(suggestion) == 3 : break
-            _post = Post.query.order_by(Post.time.desc()).filter(Post.categories.any(name=cat.name)).first()
-            suggestion.add(_post)
+            _post = Post.query.order_by(Post.time.desc()).\
+                filter(Post.categories.any(name=cat.name)).first()
+
+            add_to_suggestion(_post)
     
     # Add co-authored posts
-    _posts = Post.query.order_by(Post.time.desc()).filter(Post.author.has(id=post.author.id)).limit(4).all()
+    _posts = Post.query.order_by(Post.time.desc()).\
+        filter(Post.author.has(id=post.author.id)).limit(4).all()
     for _post in _posts :
         if len(suggestion) == 4 : break
-        suggestion.add(_post)
+
+        add_to_suggestion(_post)
 
     # Add the latest posts 
     _posts = Post.query.order_by(Post.time.desc()).limit(12).all()
     for _post in _posts :
         if len(suggestion) == 6 : break
-        suggestion.add(_post)
+        
+        add_to_suggestion(_post)
 
+
+    
     return custom_render_template('blog/post.html' , post=post , suggestion_posts = suggestion, title=post.title , description=post.summary)
 
 
