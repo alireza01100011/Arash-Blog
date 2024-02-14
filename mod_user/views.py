@@ -50,7 +50,7 @@ def profile():
 @login_required
 def edit_profile():
     form= EditProfileForm()
-    user= User.query.get(current_user.id)
+    user:User= User.query.get(current_user.id)
     form._user= user
     
     if request.method== 'GET':
@@ -66,6 +66,21 @@ def edit_profile():
             flash('Validation failed', 'danger')    
             custom_render_template('user/_edit-profile.html', form=form)
         # ---    
+
+        if user.email != form.email.data:
+            link_ = f'<a href="{url_for("user.confirm_registration")}">Email Confirm</a>'
+            
+            db.session.add(UnverifiedUser(user.id))
+            flash(f'Please confirm your email ! ({link_})')
+            
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                flash(f'Unsuccessful. Please confirm your email! Then try again...({link_})')
+                
+                return redirect(url_for('user.edit_profile'))
+
         user.full_name= form.fullname.data
         user.email= form.email.data
         user.bio= form.bio.data
@@ -77,16 +92,19 @@ def edit_profile():
                 form.old_password,
                 form.confirm_password
                 )))
+                
         if _condition_:
             if not becrypt.check_password_hash(user.password, form.old_password.data):
                 flash('The password is not valid', 'danger')
                 custom_render_template('user/_edit-profile.html', form=form)
             # ---
+            
+            user.password= becrypt.\
+                generate_password_hash(form.password.data)
+
         del _condition_
         # ---
 
-        user.password= becrypt.\
-            generate_password_hash(form.password.data)
 
         request_image_profile= request.files['profile_image']
         
@@ -280,7 +298,10 @@ def confirm_registration():
 
     # Activate the user
     delete_from_redis(current_user, 'register')
-    db.session.delete(user_auth)
+
+    UnverifiedUser.query.\
+        filter(UnverifiedUser.user_id == current_user.id).\
+            delete(synchronize_session='evaluate')
     db.session.commit()
     # ---
 

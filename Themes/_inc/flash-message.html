@@ -3,9 +3,9 @@
     {% if messages %}
     {% for cat , msg in messages %}
     {% if not cat == 'message' %}
-    <div class="alert alert-{{cat}}" role="alert">{{msg}}</div>
+    <div class="alert alert-{{cat}}" role="alert">{{msg|safe}}</div>
     {% else %}
-    <div class="alert alert-primary" role="alert">{{msg}}</div>
+    <div class="alert alert-primary" role="alert">{{msg|safe}}</div>
     {% endif %}
     {% endfor %}
     {% endif %}
