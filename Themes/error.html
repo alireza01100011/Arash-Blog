@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+    <div style="width: 84%;margin:auto;">
+        <div class="card text-center">
+            <div class="card-header">
+            <h2>{{error.code}}</h2>
+            </div>
+            <div class="card-body"style="padding: 60px;">
+                <h5 class="card-text">{{error.description}}</h5>
+                <br>
+                <a href="/" class="btn btn-primary">Back To Home</a>
+            </div>
+        </div>
+    </div>
+        
+{% endblock %}

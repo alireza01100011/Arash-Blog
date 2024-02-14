@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -47,6 +47,19 @@ app.register_blueprint(admin)
 app.register_blueprint(library_views)
 app.register_blueprint(blog)
 app.register_blueprint(user)
+
+# Error Handler
+from utils.flask import custom_render_template
+def _http_error_handler(error):
+    return make_response(
+        custom_render_template('error.html', error=error, title=error.code),
+        error.code)
+
+from werkzeug.exceptions import default_exceptions
+for code in default_exceptions:
+    app.errorhandler(code)(_http_error_handler)
+# -------
+
 
 # Delete this line and file (SETUP.PY) after launching the site
 # This line is commented by default after launching the website
