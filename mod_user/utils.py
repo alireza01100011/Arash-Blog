@@ -9,8 +9,9 @@ from flask import url_for , redirect
 from flask_login import current_user
 
 # local vars
+from mod_blog.models import User
 from app import redis, mail, config
-from .models import User
+
 
 def refute_only_view(func):
     @wraps(func)
@@ -86,20 +87,21 @@ def send_registration_message(user:User, token:int)-> None:
     user -> User
     toke -> int[123456]
     """
-    url_email_confirm = f"http://{Configs.SERVER_NAME_MAIL}{url_for('user.confirm_registration', token=token)}"
+ 
+    url_email_confirm = f"http://{config.SERVER_NAME_MAIL}{url_for('user.confirm_registration', token=token)}"
 
     msg  = EmailMessage()
     msg['Subject'] = 'Welcoome - Your email verification code'
-    msg['From'] = Configs.MAIL_USERNAME
+    msg['From'] = config.MAIL_USERNAME
     msg['To'] = user.email
     msg.set_content(
         f"""Open this link to verify your email : {url_email_confirm}""")
 
     with smtplib.SMTP_SSL(
-        host=Configs.MAIL_SERVER, port=Configs.MAIL_PORT) as server:
+        host=config.MAIL_SERVER, port=config.MAIL_PORT) as server:
 
-        server.login(Configs.MAIL_USERNAME,
-                            Configs.MAIL_PASSWORD)
+        server.login(config.MAIL_USERNAME,
+                            config.MAIL_PASSWORD)
 
         server.send_message(msg)
 # End Function

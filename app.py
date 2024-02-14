@@ -8,7 +8,7 @@ from flask_mail import Mail
 
 from redis import Redis
 
-from config import config , site
+from config import config, site
 
 site = site.JSON_DATA
 

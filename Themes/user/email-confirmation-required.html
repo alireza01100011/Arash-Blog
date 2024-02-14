@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+    <div style="width: 84%;margin:auto;">
+        <div class="card text-center">
+            <div class="card-header">
+            Email Confirm
+            </div>
+            <div class="card-body"style="padding: 60px;">
+                <h3 class="card-text">{{msg}}</h3>
+                <br>
+                {% if url_href %}
+                <a href="{{url_href}}" class="btn btn-primary">{{url_text}}</a>
+                {% endif %}
+               
+            </div>
+    
+        </div>
+    </div>
+        
+{% endblock %}

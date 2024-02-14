@@ -9,11 +9,16 @@ from sqlalchemy.exc import IntegrityError
 from utils.flask import custom_render_template
 
 from mod_user import user
-from mod_user.utils import refute_only_view, refute_only_view_except_admin
+from mod_user.utils import (
+    refute_only_view, delete_from_redis,
+    refute_only_view_except_admin,
+    add_to_redis, get_from_redis,
+    send_registration_message)
+
 from mod_user.froms import RegisterForm, LoginForm, EditProfileForm
 from mod_blog.models import User, ImageProfile, UnverifiedUser
 
-from app import db, becrypt 
+from app import db, becrypt, config
 
 def CreateFileName(filename):
     _totla_test= 0
@@ -135,6 +140,14 @@ def login():
         user = User.query.\
             filter(User.email.ilike(f'{form.email.data}')).first()
         login_user(user, remember=form.remember.data)
+
+        # Has the user confirmed her email?
+        user_not_auth = UnverifiedUser.\
+            query.filter(UnverifiedUser.user_id.ilike(user.id)).first()
+        if user_not_auth:
+            return redirect(url_for('user.confirm_registration'))
+        # ---
+        
         
         flash('You have successfully logged in', 'info')
         return redirect(url_for('user.profile', tab='edit-profile'))
@@ -166,13 +179,19 @@ def register():
         try :
             db.session.add(NewUser)
             db.session.commit()
+            
+            db.session.add(UnverifiedUser(NewUser.id))
+            db.session.commit()
+
             flash('Your account has been created successfully')
             # To create a new user by admin
             try :
                 if current_user.role== 1 : 
                     return redirect(url_for('admin.user_edit', 
                         user_id= NewUser.id))
+                # ---
             except AttributeError : pass
+            
             return redirect(url_for('user.login'))
         
         except IntegrityError:
@@ -181,7 +200,8 @@ def register():
             return custom_render_template('user/register.html',
                 title='Register', form=form)
     # ---
-    return custom_render_template('user/register.html', title='Register', form=form)
+    return custom_render_template('user/register.html',
+        title='Register', form=form)
 # End Route
 
 @user.route('logout/')
@@ -192,6 +212,81 @@ def logout():
     return redirect(url_for('user.index'))
 # End Route
 
+@user.route('confirm/')
+@login_required
+def confirm_registration():
+
+    # Get Datas
+    email = current_user.email
+    resend = request.args.get(key='resend')
+    token = request.args.get(key='token', type=str)
+
+
+    user_auth = UnverifiedUser.query.filter(
+        UnverifiedUser.user_id.ilike(current_user.id)).first()
+
+    # If the user is active
+    if not user_auth:
+        return custom_render_template(
+            'user/email-confirmation-required.html',
+            msg=f"This user is already activated.",
+            url_href=url_for('user.profile'),
+            url_text='Profile')
+    # ---
+
+
+    # To resend the email
+    if resend :
+
+        flash('The authentication email has been re-send to your email address')
+        return redirect(url_for('user.confirm_registration'))
+        
+    # ---
+
+    # Request without arguments
+    if (not token):
+        """
+        If you send a request to this room without a token argument
+        (an authentication token will be created and sent)
+        """
+        token = add_to_redis(current_user, 'register')
+        send_registration_message(current_user, token)
+    
+        message = f"""Account activation link sent to your email address:
+                {config.MAIL_USERNAME}
+                Please follow the link inside to continue."""
+    
+        return custom_render_template(
+            'user/email-confirmation-required.html', msg=message,
+            url_href=url_for('user.confirm_registration', resend=True),
+            url_text='Re-Send'
+        )
+    # ---
+
+    # Checking the validity of the token
+    token_from_redis = get_from_redis(current_user, 'register')
+
+    if (not token_from_redis) or \
+        (str(token) != token_from_redis.decode('UTF-8')):
+        return custom_render_template(
+            'user/email-confirmation-required.html',
+            msg=f"The token has expired!",
+            
+            url_href=url_for(
+                'user.confirm_registration', resend=True),
+            url_text='Re-Send'
+        )
+    # ---
+
+    # Activate the user
+    delete_from_redis(current_user, 'register')
+    db.session.delete(user_auth)
+    db.session.commit()
+    # ---
+
+    flash('Your email has been successfully verified! welcome')
+    return redirect(url_for('user.profile'))
+# End Route
 
 @user.route('profile/iframe/posts/<string:q>')
 @login_required
