@@ -3,6 +3,7 @@ from flask.cli import FlaskGroup
 
 from app import app, db , becrypt 
 from mod_blog.models import User, ImageProfile, Admin, INDEXPAGE, SITE
+
 cli = FlaskGroup(app)
 
 @cli.command('create-db')
