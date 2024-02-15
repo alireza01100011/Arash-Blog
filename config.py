@@ -3,7 +3,7 @@ import json
 
 class config():
     SECRET_KEY = os.urandom(64)
-
+    SECRET_KEY = 'asdfasdfasdfadfS'
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
     REDIS_SERVER_URL = os.getenv('REDIS_SERVER_URL')
 
@@ -14,6 +14,8 @@ class config():
 
     SERVER_NAME_MAIL = os.getenv('SERVER_NAME_MAIL') 
 
-class site():
-    with open(os.path.join('' , 'site.json') , 'r') as file:
-        JSON_DATA = json.load(file)
+
+class DictToClass():
+    def __init__(self, _dict:dict):
+        for key, value in _dict.items():
+            setattr(self, key, value)

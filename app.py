@@ -8,9 +8,7 @@ from flask_mail import Mail
 
 from redis import Redis
 
-from config import config, site
-
-site = site.JSON_DATA
+from config import config
 
 app = Flask(__name__ , template_folder='Themes')
 app.config.from_object(config)
