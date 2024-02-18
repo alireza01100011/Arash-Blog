@@ -210,7 +210,7 @@ def register():
                 # ---
             except AttributeError : pass
             
-            return redirect(url_for('user.login'))
+            return redirect(url_for('user.confirm_registration'))
         
         except IntegrityError:
             db.session.rollback()

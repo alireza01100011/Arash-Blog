@@ -1,6 +1,9 @@
 import os
 import json
 
+from dotenv import load_dotenv
+load_dotenv()
+
 class config():
     SECRET_KEY = os.urandom(64)
     SECRET_KEY = 'asdfasdfasdfadfS'
