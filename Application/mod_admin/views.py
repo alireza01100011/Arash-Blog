@@ -422,7 +422,7 @@ def user_delete(user_id):
 @admin.route('setting/site/' , methods=['GET' , 'POST'])
 def setting_site():
     form = SiteSettingsForm()
-    settings = SITE.query.get(0)
+    settings = SITE.query.get(1)
     if request.method == 'GET':
         form.name_site.data = settings.name_site
         form.logo_site.data = settings.logo_site
@@ -456,7 +456,7 @@ def setting_site():
 @admin.route('setting/index-page/' , methods=['GET' , 'POST'])
 def setting_index_page():
     form = IndexPageSettingsForm()
-    settings = INDEXPAGE.query.get(0)
+    settings = INDEXPAGE.query.get(1)
     
     if request.method == 'GET':
         form.title_home.data = settings.title_home
@@ -486,7 +486,7 @@ def setting_index_page():
 @admin.route('setting/footer/' , methods=['GET' , 'POST'])
 def setting_footer():
     form = FooterContentSettingsForm()
-    settings = SITE.query.get(0)
+    settings = SITE.query.get(1)
     
     if request.method == 'GET':
         form.footer.data = settings.footer

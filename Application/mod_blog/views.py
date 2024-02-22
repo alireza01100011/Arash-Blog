@@ -11,7 +11,7 @@ def index():
     special_posts = Post.query.filter(Post.special.like(1)).order_by(Post.time.desc()).limit(4).all()
     posts = Post.query.filter(Post.special.like(0)).order_by(Post.time.desc()).limit(6).all()
 
-    home_page = INDEXPAGE.query.get(0)
+    home_page = INDEXPAGE.query.get(1)
     return custom_render_template('blog/index.html' , title=home_page.title_home , s_post = special_posts , posts=posts , home_page=home_page )
 
 @blog.route('authors/')

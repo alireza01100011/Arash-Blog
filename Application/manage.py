@@ -17,6 +17,7 @@ def create_db():
     site = SITE()
     indexPage = INDEXPAGE()
 
+    db.session.rollback()
     db.session.add_all((DefultImageProfile, site, indexPage))
     db.session.commit()
 
@@ -36,6 +37,7 @@ def CreateUserAdmin(fullname, email, password):
     NewAdmin = Admin()
     NewAdmin.email = email
 
+    db.session.rollback()
     db.session.add_all((AdminUser, NewAdmin))
     db.session.commit()
 

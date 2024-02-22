@@ -64,7 +64,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = Column(Integer() , primary_key=True , unique=True , nullable=False)
     title = Column(String(256) , nullable=False , unique=True)
-    content = Column(Text , nullable=False , unique=True)
+    content = Column(Text , nullable=False)
     summary = Column(String(256) , nullable=True , unique=True)
     slug = Column(String(128) , nullable=False , unique=True)
     image = Column(Integer , nullable=True , unique=False)
@@ -169,7 +169,7 @@ class Admin(db.Model):
     __tablename__ = 'admin'
     id = Column(Integer, primary_key=True)
     email = Column(String(128) , nullable=False , unique=True)
-    to_do = Column(String(1024 * 36) , nullable=True , unique=False)
+    to_do = Column(Text , nullable=True , unique=False)
     
     def __repr__(self):
         return f'{self.__class__.__name__} < {self.id} - {self.email}> '
