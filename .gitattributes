@@ -2,4 +2,4 @@
 *.htm inguist-detectable=false
 
 *.css linguist-detectable=false
-*.css inguist-detectable=false
+*.scss inguist-detectable=false
