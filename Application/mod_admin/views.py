@@ -11,11 +11,12 @@ from utils.forms import formats
 from utils.flask import custom_render_template
 from utils.CreateCalendar import CreateCalendar
 from app import db 
-from utils.flask import custom_render_template 
+from utils.flask import custom_render_template, base64_to_bytes, bytes_to_base64
 import uuid
 import datetime
 import calendar
 import os
+import base64
 import pickle
 @admin.route('/')
 def index():
@@ -35,12 +36,15 @@ def index():
 
     top_posts = Post.query.order_by(Post.views.desc()).limit(5).all()
 
-    admin = Admin.query.filter(Admin.email==current_user.email).first()
+    admin:Admin = Admin.query.filter(Admin.email==current_user.email).first()
     if not admin.to_do: # If it is None, it will be filled with an empty list (to avoid errors)
-        admin.to_do = pickle.dumps(list())
+        admin.to_do = bytes_to_base64(pickle.dumps(list()))
         db.session.commit()
-    to_do_list = pickle.loads(admin.to_do)
+        
+    to_do_list = pickle.loads(
+        base64_to_bytes(admin.to_do))
 
+    # return f'{to_do_list}'
     calendar_dict = CreateCalendar()
     days = list()
     for week in range(7, (43+7), 7):
@@ -61,10 +65,10 @@ def index():
 def to_do(action):
     ## Get the task list and convert it into a Python list
     admin:Admin = Admin.query.filter(Admin.email==current_user.email).first()
-    to_do:bytes = admin.to_do
+    to_do:str = admin.to_do
     if not to_do: # If it is None, it will be filled with an empty list (to avoid errors)
-        to_do:bytes = pickle.dumps(list())
-    to_do:list= pickle.loads(to_do)
+        to_do:str = bytes_to_base64(pickle.dumps(list()))
+    to_do:list= pickle.loads(base64_to_bytes(admin.to_do))
     
     #  To add item
     if action == 'add':
@@ -108,9 +112,10 @@ def to_do(action):
         return redirect(url_for('admin.index'))
     
     # Convert to string to store edits in the database 
-    admin.to_do = pickle.dumps(to_do)
+    admin.to_do = bytes_to_base64(pickle.dumps(to_do))
     
     try :
+        
         db.session.commit()
     except IntegrityError :
         db.session.rollback()
