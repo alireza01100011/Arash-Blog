@@ -1,5 +1,5 @@
 *.html linguist-detectable=false
 *.htm inguist-detectable=false
 
-*.css linguist-detectable=false
+*.scss linguist-detectable=false
 *.scss inguist-detectable=false
