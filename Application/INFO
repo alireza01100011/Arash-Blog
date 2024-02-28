@@ -1,0 +1,9 @@
+ApplicationName : Arash
+ApplicatioVersion : 0.9.1
+
+Framework : Flask-3.0.2
+Runer : gunicorn-21.2.0
+WebServer : nginx
+
+DataBase : MySQL
+ORM : FlaskSqlalchemy-3.1.1
