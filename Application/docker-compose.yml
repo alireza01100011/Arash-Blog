@@ -1,0 +1,141 @@
+version: '3.3'
+
+
+services:
+  # Main Application
+  app:
+    # container
+    container_name: ${APP_CONTAINER_NAME}
+    build: 
+      context: .
+      dockerfile: ./Docker/dockerfile
+    image: afsane:0.9.1
+    restart: always
+    
+    # resources
+    mem_limit: ${APP_MEM_LIMIT}
+    mem_reservation: ${APP_MEM_RESERVATION}
+    cpus: ${APP_CPUS}
+    
+    # config's
+    networks:
+      - app-net
+    depends_on:
+      - mysql
+      - reids_register
+    ports:
+      - '${APP_PORT}'    
+    logging:
+      driver: "${APP_LOGGING_DRIVER}"
+      options:
+        max-size: "${APP_LOGGING_MAX_SIZE}"
+        max-file: "${APP_LOGGING_MAX_FILE}"
+        labels: "${APP_LOGGING_LABELS}"
+        env: "${APP_LOGGING_ENV}"
+  
+  # Web Server And Load Balancer
+  nginx:
+    # container
+    container_name: ${NGNIX_CONTAINER_NAME}
+    image: nginx:1.25.3
+    restart: always
+    
+    # resources
+    mem_limit: ${NGNIX_MEM_LIMIT}
+    mem_reservation: ${NGNIX_MEM_RESERVATION}
+    cpus: ${NGNIX_CPUS}
+    
+    # config's
+    environment:
+      LISTEN_PORT: 80
+      APP_PORT: ${APP_PORT}
+      NGNIX_SERVER_NAME: ${NGNIX_SERVER_NAME}
+    volumes:
+      # - ${NGNIX_CONFIG_DEFAULT}:/etc/nginx/org.nginx.conf:ro
+      - ${NGNIX_CONFIG_TEMPLATE}:/etc/nginx/org.nginx.conf.template:ro
+      - $NGNIX_CONFIG_SETUP:/nginx-setup.sh:ro
+      - ./static:/var/static/:ro
+    depends_on:
+      - app
+    networks:
+      - app-net
+    ports:
+      - '${NGNIX_HOST_PORT}:${NGNIX_LOCAL_PORT}'    
+    command: sh nginx-setup.sh
+    logging:
+      driver: "${NGNIX_LOGGING_DRIVER}"
+      options:
+        max-size: "${NGNIX_LOGGING_MAX_SIZE}"
+        max-file: "${NGNIX_LOGGING_MAX_FILE}"
+        labels: "${NGNIX_LOGGING_LABELS}"
+        env: "${NGNIX_LOGGING_ENV}"
+  
+  
+  # Databse
+  mysql:
+    # container
+    container_name: ${MYSQL_CONTAINER_NAME}
+    image: mysql:8.0
+    restart: always
+    cap_add:
+      - SYS_NICE
+    # resources
+    mem_limit: ${MYSQL_MEM_LIMIT}
+    mem_reservation: ${MYSQL_MEM_RESERVATION}
+    cpus: ${MYSQL_CPUS}
+    
+    # config's
+    environment:
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+    networks:
+      - app-net
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - '3306:${MYSQL_PORT}'
+    logging:
+      driver: "${MYSQL_LOGGING_DRIVER}"
+      options:
+        max-size: "${MYSQL_LOGGING_MAX_SIZE}"
+        max-file: "${MYSQL_LOGGING_MAX_FILE}"
+        labels: "${MYSQL_LOGGING_LABELS}"
+        env: "${MYSQL_LOGGING_ENV}"
+  
+  # To store email verification codes
+  reids_register:
+    env_file:
+      - ../Application/.env
+    # container 
+    container_name: ${REDIS_REGISTER_CONTAINER_NAME}
+    image: redis:6.2-alpine    
+    restart: always
+    
+    # resources
+    mem_limit: ${REDIS_REGISTER_MEM_LIMIT}
+    mem_reservation: ${REDIS_REGISTER_MEM_RESERVATION}
+    cpus: ${REDIS_REGISTER_CPUS}
+    
+    # config's
+    networks:
+      - app-net
+    ports:
+      - '${REDIS_REGISTER_PORT}'
+    logging:
+      driver: "${REDIS_REGISTER_LOGGING_DRIVER}"
+      options:
+        max-size: "${REDIS_REGISTER_LOGGING_MAX_SIZE}"
+        max-file: "${REDIS_REGISTER_LOGGING_MAX_FILE}"
+        labels: "${REDIS_REGISTER_LOGGING_LABELS}"
+        env: "${REDIS_REGISTER_LOGGING_ENV}"
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
+
