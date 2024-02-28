@@ -9,3 +9,6 @@
 
 *.css linguist-detectable=false
 *.css inguist-detectable=false
+
+*.less linguist-detectable=false
+*.less inguist-detectable=false
