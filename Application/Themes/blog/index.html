@@ -46,12 +46,12 @@
 										<span class="post-date">{{ post.time.strftime('%d %B %Y') }}</span><span class="dot"></span><span class="post-read"> {{ post.read_time }} min read</span>
 										</span>
 										<span class="post-read-more">
-											<a onclick="save('{{ url_for('blog.like' , post_id = post.id) }}')"  id="{{post.id}}-save-a" >
+											<a onclick="save(this)" post-id="{{post.id}}" id="{{post.id}}-save-a" >
 												<i class="material-symbols-outlined style-buttons-actions" id="{{post.id}}-save-i">bookmark</i>
 											</a>
 										</span>
 										{% if post in current_user.posts_saved %}
-											<script>color_save('active' , '{{post.id}}-save' )</script>
+											<script>color_save('active' , '{{post.id}}')</script>
 										{% endif %}
 									</span>
 								</div>
