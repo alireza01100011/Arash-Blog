@@ -147,7 +147,7 @@ File address: './Docts/SimpleDocker.drawio'
 </br>
 
 > ### Common steps :
- + Download the latest version of the software <a href="releases/" title="">Click here</a>
+ + Download the latest version of the software <a href="https://github.com/alireza01100011/Arash-Blog/releases/" title="">Click here</a>
  + Copy .env.example to .env
  + Configure the .env file
    + "Almost all settings are in this file"
