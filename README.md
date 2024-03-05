@@ -144,7 +144,6 @@ File address: './Docts/SimpleDocker.drawio'
 
 ## Use and setup
 
-</br>
 
 > ### Common steps :
  + Download the latest version of the software <a href="https://github.com/alireza01100011/Arash-Blog/releases/" title="">Click here</a>
@@ -153,30 +152,43 @@ File address: './Docts/SimpleDocker.drawio'
  + Configure the .env file
    + "Almost all settings are in this file"
 
-> ### Docker-Compose:
- + `docker-compose up -d`
+</br>
+
+> ### Docker-Compose (recommendation):
+ `note : The engineering settings in Docker Compose are in this direction : ./Application/Docker/nginx.conf.template`
+ + $`docker-compose up -d`
+   
++ Database migration:
+   + Creating tables in the database :
+   + $ `docker exec {Application_Name} bash -c "python3 manage.py create-db"`
+   + Create the first admin user :
+   + $ `docker exec {Application_Name} bash -c "python3 manage.py create-admin {FullName} {Email} {PassWord}"`
+ 
+   `note : Application_Name = container-id or ($APP_CONTAINER_NAME in to .env)`
+
+</br>
 
 > ### Without Docker:
  + Start a MySQL
  + Start a Redis
  + Start a Nginx
- 
- </br>
- 
  + Configure the .env file
- 
+   
  + Database migration:
      + Creating tables in the database :
      - $`python3 manage.py create-db`
      + Create the first admin user :
-     - $`python3 manage.py create-admin {FullName} {Email} {PassWord} `
+     - $`python3 manage.py create-admin {FullName} {Email} {PassWord}`
  
  + Run the project with (<a href="https://gunicorn.org/" title="">gunicorn</a>).
      + $`gunicorn -b '{IP}:{PORT}' app:app `
+ 
  + Configure your service nginx : The goal is a reverse proxy to our (gunicorn) and other settings.
  + Restart service Nginx
 
+ </br>
 
+#### ⚠️ My recommendation is to use Docker-Compose to run !
 
-
-Documents are being completed ....
+</br>
+In the future, the documentation will be more and more detailed ....
