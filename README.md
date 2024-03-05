@@ -67,13 +67,13 @@ Persian:
 </br>
 
 ### Technologies used in this WebApplication (docker-compose) : 
-  * Python 3.10
-  * Flask
-  * sqlalchemy -- flask-sqlalchemy
-  * MySQL
-  * Nginx
-  * Redis
-  * gunicorn
+  * <a href="https://python.org/" title="Python 3.10">Python 3.10</a>
+  * <a href="https://flask.palletsprojects.com/en/3.0.x/" title="Flask">Flask</a>
+  * <a href="https://www.sqlalchemy.org/" title="SQLalchemy">SQLalchemy</a> -- <a href="https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/" title="flask-SQLalchemy">flask-SQLalchemy</a>
+  * <a href="https://MySQL.com/" title="MySQL">MySQL</a>
+  * <a href="https://nginx.com/" title="Nginx">Nginx</a>
+  * <a href="https://redis.io/" title="Redis">Redis</a>
+  * <a href="https://gunicorn.org/" title="Gunicorn">Gunicorn</a>
 
 </br></br>
 
@@ -148,10 +148,33 @@ File address: './Docts/SimpleDocker.drawio'
 
 > ### Common steps :
  + Download the latest version of the software <a href="https://github.com/alireza01100011/Arash-Blog/releases/" title="">Click here</a>
+ + CD To Directory, './Application'
  + Copy .env.example to .env
  + Configure the .env file
    + "Almost all settings are in this file"
-  
+
+> ### Docker-Compose:
+ + `docker-compose up -d`
+
+> ### Without Docker:
+ + Start a MySQL
+ + Start a Redis
+ + Start a Nginx
+ 
+ </br>
+ 
+ + Configure the .env file
+ 
+ + Database migration:
+     + Creating tables in the database :
+     - $`python3 manage.py create-db`
+     + Create the first admin user :
+     - $`python3 manage.py create-admin {FullName} {Email} {PassWord} `
+ 
+ + Run the project with (<a href="https://gunicorn.org/" title="">gunicorn</a>).
+     + $`gunicorn -b '{IP}:{PORT}' app:app `
+ + Configure your service nginx : The goal is a reverse proxy to our (gunicorn) and other settings.
+ + Restart service Nginx
 
 
 
