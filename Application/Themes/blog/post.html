@@ -226,7 +226,7 @@
 			<div class="col-md-4 margin-bottom-posts box-suggestion-posts">
 				<div class="card">
 					<a href="{{ url_for('blog.post' , slug=post.slug) }}">
-						<img src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" alt="">
+						<img class="img-fluid img-thumb" src="{{ url_for('library_views.madie_get' , madie_id= post.image) }}" alt="">
 					</a>
 					<div class="card-block">
 						<h2 class="card-title"><a href="{{ url_for('blog.post' , slug=post.slug) }}">{{ post.title

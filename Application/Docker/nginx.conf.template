@@ -9,7 +9,7 @@ http {
         server_name ${NGINX_SERVER_NAME};
         
         location / {
-            proxy_set_header Host $host;
+            proxy_set_header Host ${NGINX_SERVER_NAME};
             proxy_pass http://app:${APP_PORT};
         }
 
